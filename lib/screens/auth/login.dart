@@ -1,6 +1,6 @@
+import 'package:echirp/components/bottom_bar.dart';
 import 'package:echirp/components/custom_btn.dart';
-import 'package:echirp/screens/home/home.dart';
-import 'package:echirp/utils/constents.dart';
+import 'package:echirp/utils/global_variabes.dart';
 import 'package:flutter/material.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -108,7 +108,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       size: size,
                       onPressed: () {
                         Navigator.of(context)
-                            .pushReplacementNamed(HomeScreen.routeName);
+                            .pushReplacementNamed(BottomBar.routeName);
                       },
                     ),
                     const Text(

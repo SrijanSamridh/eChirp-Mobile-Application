@@ -1,4 +1,4 @@
-import 'package:echirp/utils/constents.dart';
+import 'package:echirp/utils/global_variabes.dart';
 import 'package:flutter/material.dart';
 
 class CustomBtn extends StatelessWidget {
@@ -7,11 +7,17 @@ class CustomBtn extends StatelessWidget {
     required this.text,
     required this.size,
     required this.onPressed,
+    this.height,
+    this.width,
+    this.textSize,
   });
 
   final Size size;
   final String text;
   final VoidCallback onPressed;
+  final double? height;
+  final double? width;
+  final double? textSize;
 
   @override
   Widget build(BuildContext context) {
@@ -19,19 +25,18 @@ class CustomBtn extends StatelessWidget {
       onTap: onPressed,
       child: Container(
         padding: EdgeInsets.symmetric(
-          horizontal: size.width * 0.2,
-          vertical: size.height * 0.018,
+          horizontal: width ?? size.width * 0.2,
+          vertical: height ?? size.height * 0.018,
         ),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(18),
-          // color: Colors.white,
-          gradient: GlobalVariables.kPrimaryGradientColor
-        ),
+            borderRadius: BorderRadius.circular(18),
+            // color: Colors.white,
+            gradient: GlobalVariables.kPrimaryGradientColor),
         child: Text(
           text,
-          style: const TextStyle(
+          style: TextStyle(
             color: Colors.white,
-            fontSize: 16,
+            fontSize: textSize ?? 16,
             fontWeight: FontWeight.bold,
           ),
         ),

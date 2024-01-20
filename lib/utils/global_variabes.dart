@@ -11,11 +11,18 @@ class ColorSchema {
       Color.fromRGBO(238, 143, 143, 1),
     ],
   );
+  static const LinearGradient _unselectedCardGradient =
+      LinearGradient(colors: [Colors.white, Colors.white]);
 }
 
 class GlobalVariables {
   static const Color kPrimaryColor = ColorSchema._primary;
   static const Color kSecondaryColor = ColorSchema._secondary;
+  static const backgroundColor = Colors.white;
+  static var selectedNavBarColor = Colors.orange[800]!;
+  static const unselectedNavBarColor = Colors.black87;
   static const LinearGradient kPrimaryGradientColor =
       ColorSchema._primaryGradient;
+  static const LinearGradient kUnselectedCardGradientColor =
+      ColorSchema._unselectedCardGradient;
 }

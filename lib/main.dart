@@ -1,8 +1,14 @@
 import 'package:echirp/routes/routes.dart';
 import 'package:echirp/screens/splash/splash.dart';
+import 'package:echirp/utils/global_variabes.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+  ]);
   runApp(const MyApp());
 }
 
@@ -15,12 +21,13 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'eChirp',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: GlobalVariables.kPrimaryColor),
         useMaterial3: true,
       ),
       onGenerateRoute: (routeSettings) => onGenerateRoute(routeSettings),
-      debugShowCheckedModeBanner: false,
       initialRoute: SplashScreen.routeName,
+      debugShowCheckedModeBanner: false,
+
     );
   }
 }

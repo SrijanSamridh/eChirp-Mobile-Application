@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../utils/constents.dart';
+import '../utils/global_variabes.dart';
 
 class HeadlineWithHyperLink extends StatelessWidget {
   const HeadlineWithHyperLink({
