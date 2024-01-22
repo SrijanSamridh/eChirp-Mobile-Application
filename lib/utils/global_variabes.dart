@@ -25,4 +25,7 @@ class GlobalVariables {
       ColorSchema._primaryGradient;
   static const LinearGradient kUnselectedCardGradientColor =
       ColorSchema._unselectedCardGradient;
+
+
+  static const List<String> kEventCategory = <String>['Music and Dance', 'Two', 'Three', 'Four'];
 }

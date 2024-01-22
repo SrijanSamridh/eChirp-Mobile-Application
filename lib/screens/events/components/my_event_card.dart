@@ -6,9 +6,25 @@ class MyEventCard extends StatelessWidget {
   const MyEventCard({
     super.key,
     required this.size,
+    required this.imgUrl,
+    required this.date,
+    required this.time,
+    required this.typeOfEvent,
+    required this.location,
+    required this.about,
+    required this.visibility,
+    required this.guest,
   });
 
   final Size size;
+  final String imgUrl;
+  final String date;
+  final String time;
+  final String typeOfEvent;
+  final String location;
+  final String about;
+  final String visibility;
+  final int guest;
 
   @override
   Widget build(BuildContext context) {
@@ -26,8 +42,8 @@ class MyEventCard extends StatelessWidget {
         children: [
           ClipRRect(
             borderRadius: BorderRadius.circular(30.0),
-            child: const Image(
-              image: AssetImage('assets/images/dummy_event.png'),
+            child: Image(
+              image: AssetImage(imgUrl),
             ),
           ),
           Container(
@@ -43,12 +59,12 @@ class MyEventCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Text(
-                  '23 Dec at 10:00 am',
+                  '$date at $time',
                   textAlign: TextAlign.left,
                   style: TextStyle(fontSize: size.height * 0.012),
                 ),
-                const Text(
-                  'Poetry Event',
+                Text(
+                  typeOfEvent,
                   textAlign: TextAlign.left,
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
@@ -60,7 +76,7 @@ class MyEventCard extends StatelessWidget {
                       size: size.height * 0.016,
                     ),
                     Text(
-                      'Mumbai, Maharshtra , India ',
+                      location,
                       textAlign: TextAlign.left,
                       style: TextStyle(fontSize: size.height * 0.012),
                     ),
@@ -68,7 +84,7 @@ class MyEventCard extends StatelessWidget {
                 ),
                 SizedBox(height: size.height * 0.002),
                 Text(
-                  'Lorem ipsum dolor sit amet, conct adipiscing elit.',
+                  about,
                   textAlign: TextAlign.left,
                   style: TextStyle(fontSize: size.height * 0.012),
                 ),
@@ -78,12 +94,12 @@ class MyEventCard extends StatelessWidget {
           Column(
             children: [
               Text(
-                'Public',
+                visibility,
                 textAlign: TextAlign.left,
                 style: TextStyle(fontSize: size.height * 0.012),
               ),
               Text(
-                '100 guest',
+                '$guest guest',
                 textAlign: TextAlign.left,
                 style: TextStyle(fontSize: size.height * 0.012),
               ),
