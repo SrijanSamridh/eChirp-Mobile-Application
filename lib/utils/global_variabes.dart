@@ -15,6 +15,10 @@ class ColorSchema {
       LinearGradient(colors: [Colors.white, Colors.white]);
 }
 
+enum EventType { private, public }
+
+enum Gender { male, female, others }
+
 class GlobalVariables {
   static const Color kPrimaryColor = ColorSchema._primary;
   static const Color kSecondaryColor = ColorSchema._secondary;
@@ -26,6 +30,78 @@ class GlobalVariables {
   static const LinearGradient kUnselectedCardGradientColor =
       ColorSchema._unselectedCardGradient;
 
-
-  static const List<String> kEventCategory = <String>['Music and Dance', 'Two', 'Three', 'Four'];
+  static const List<String> kEventCategory = <String>[
+    'Music and Dance',
+    'Social Food & Drink',
+    'Social Pickup Sports',
+    'Social Activities'
+  ];
+  static const List<String> kAgeGroups = <String>[
+    'Anyone',
+    '10-15',
+    '15-25',
+    '25-35',
+    '35-45',
+    '45-60',
+    'greater than 60'
+  ];
+  static const List<String> kOccupations = [
+    'Any',
+    'Accountant',
+    'Actor',
+    'Architect',
+    'Artist',
+    'Astronaut',
+    'Athlete',
+    'Author',
+    'Baker',
+    'Banker',
+    'Barista',
+    'Biologist',
+    'Botanist',
+    'Carpenter',
+    'Chef',
+    'Chemist',
+    'Coach',
+    'Dentist',
+    'Designer',
+    'Doctor',
+    'Electrician',
+    'Engineer',
+    'Farmer',
+    'Firefighter',
+    'Flight Attendant',
+    'Graphic Designer',
+    'Hair Stylist',
+    'Historian',
+    'Journalist',
+    'Judge',
+    'Lawyer',
+    'Librarian',
+    'Mechanic',
+    'Meteorologist',
+    'Musician',
+    'Nurse',
+    'Painter',
+    'Pharmacist',
+    'Photographer',
+    'Physician',
+    'Pilot',
+    'Plumber',
+    'Police Officer',
+    'Professor',
+    'Programmer',
+    'Psychologist',
+    'Real Estate Agent',
+    'Scientist',
+    'Singer',
+    'Social Worker',
+    'Software Engineer',
+    'Teacher',
+    'Translator',
+    'Veterinarian',
+    'Waiter/Waitress',
+    'Web Developer',
+    'Writer',
+  ];
 }

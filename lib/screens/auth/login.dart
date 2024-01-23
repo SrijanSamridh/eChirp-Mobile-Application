@@ -108,7 +108,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       size: size,
                       onPressed: () {
                         Navigator.of(context)
-                            .pushReplacementNamed(BottomBar.routeName);
+                            .pushReplacementNamed(BottomBar.routeName, arguments: 0);
                       },
                     ),
                     const Text(

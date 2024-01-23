@@ -1,3 +1,4 @@
+import 'package:echirp/components/bottom_bar.dart';
 import 'package:echirp/utils/global_variabes.dart';
 import 'package:flutter/material.dart';
 
@@ -81,7 +82,13 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
 
           // ? Events section
-          HeadlineWithHyperLink(headingText: 'Events', onPressed: () {}),
+          HeadlineWithHyperLink(
+              headingText: 'Events',
+              onPressed: () {
+                Navigator.of(context).pushNamedAndRemoveUntil(
+                  BottomBar.routeName, arguments: 1,
+                  (route) => false);
+              }),
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: Row(
@@ -116,7 +123,11 @@ class _HomeScreenState extends State<HomeScreen> {
 
           // ? Mutual Friends section
           HeadlineWithHyperLink(
-              headingText: 'Mutual Friends', onPressed: () {}),
+              headingText: 'Mutual Friends', onPressed: () {
+                Navigator.of(context).pushNamedAndRemoveUntil(
+                  BottomBar.routeName, arguments: 2,
+                  (route) => false);
+              }),
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: Row(
@@ -149,7 +160,11 @@ class _HomeScreenState extends State<HomeScreen> {
               ],
             ),
           ),
-          HeadlineWithHyperLink(headingText: "Groups", onPressed: () {}),
+          HeadlineWithHyperLink(headingText: "Groups", onPressed: () {
+            Navigator.of(context).pushNamedAndRemoveUntil(
+                  BottomBar.routeName, arguments: 3,
+                  (route) => false);
+          }),
           Container(
             margin: const EdgeInsets.symmetric(horizontal: 10.0),
             padding: EdgeInsets.all(size.height * 0.02),

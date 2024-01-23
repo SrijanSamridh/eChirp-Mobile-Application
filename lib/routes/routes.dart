@@ -1,6 +1,7 @@
 import 'package:echirp/components/bottom_bar.dart';
 import 'package:echirp/screens/auth/login.dart';
 import 'package:echirp/screens/events/components/event_cerate_form.dart';
+import 'package:echirp/screens/events/components/upload_status.dart';
 import 'package:echirp/screens/events/create_event.dart';
 import 'package:echirp/screens/events/events.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +20,11 @@ onGenerateRoute(RouteSettings routeSettings) {
         builder: (_) => const LoginScreen(),
       );
     case BottomBar.routeName:
-      return MaterialPageRoute(builder: (_) => const BottomBar());
+      int pageIndex = routeSettings.arguments as int;
+      return MaterialPageRoute(
+          builder: (_) => BottomBar(
+                page: pageIndex,
+              ));
     case HomeScreen.routeName:
       return MaterialPageRoute(
         builder: (_) => const HomeScreen(),
@@ -33,9 +38,14 @@ onGenerateRoute(RouteSettings routeSettings) {
         builder: (_) => const CreateEventScreen(),
       );
     case EventCreateFrom.routeName:
-    String category = routeSettings.arguments as String;
+      String category = routeSettings.arguments as String;
       return MaterialPageRoute(
         builder: (_) => EventCreateFrom(category: category),
+      );
+    case UploadStatusScreen.routeName:
+      String eventType = routeSettings.arguments as String;
+      return MaterialPageRoute(
+        builder: (_) => UploadStatusScreen(eventType: eventType),
       );
     default:
       return MaterialPageRoute(

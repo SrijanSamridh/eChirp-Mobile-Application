@@ -5,17 +5,18 @@ import 'package:badges/badges.dart' as badges;
 import '../screens/home/home.dart';
 import '../utils/global_variabes.dart';
 
-
+// ignore: must_be_immutable
 class BottomBar extends StatefulWidget {
   static const String routeName = '/actual-home';
-  const BottomBar({super.key});
+  BottomBar({super.key, required this.page});
+
+  int page;
 
   @override
   State<BottomBar> createState() => _BottomBarState();
 }
 
 class _BottomBarState extends State<BottomBar> {
-  int _page = 0;
   double bottomBarHeight = 60;
   double bottomBarWidth = 42;
   double bottomBarBorderWidth = 5;
@@ -29,16 +30,16 @@ class _BottomBarState extends State<BottomBar> {
   ];
   void updatePage(int page) {
     setState(() {
-      _page = page;
+      widget.page = page;
     });
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _screens[_page],
+      body: _screens[widget.page],
       bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _page,
+        currentIndex: widget.page,
         selectedItemColor: GlobalVariables.selectedNavBarColor,
         unselectedItemColor: GlobalVariables.unselectedNavBarColor,
         backgroundColor: GlobalVariables.backgroundColor,
@@ -52,7 +53,7 @@ class _BottomBarState extends State<BottomBar> {
               decoration: BoxDecoration(
                 border: Border(
                   top: BorderSide(
-                    color: _page == 0
+                    color: widget.page == 0
                         ? GlobalVariables.selectedNavBarColor
                         : GlobalVariables.backgroundColor,
                     width: bottomBarBorderWidth,
@@ -70,7 +71,7 @@ class _BottomBarState extends State<BottomBar> {
               decoration: BoxDecoration(
                 border: Border(
                   top: BorderSide(
-                    color: _page == 1
+                    color: widget.page == 1
                         ? GlobalVariables.selectedNavBarColor
                         : GlobalVariables.backgroundColor,
                     width: bottomBarBorderWidth,
@@ -91,7 +92,7 @@ class _BottomBarState extends State<BottomBar> {
               decoration: BoxDecoration(
                 border: Border(
                   top: BorderSide(
-                    color: _page == 2
+                    color: widget.page == 2
                         ? GlobalVariables.selectedNavBarColor
                         : GlobalVariables.backgroundColor,
                     width: bottomBarBorderWidth,
@@ -109,7 +110,7 @@ class _BottomBarState extends State<BottomBar> {
               decoration: BoxDecoration(
                 border: Border(
                   top: BorderSide(
-                    color: _page == 3
+                    color: widget.page == 3
                         ? GlobalVariables.selectedNavBarColor
                         : GlobalVariables.backgroundColor,
                     width: bottomBarBorderWidth,
@@ -127,7 +128,7 @@ class _BottomBarState extends State<BottomBar> {
               decoration: BoxDecoration(
                 border: Border(
                   top: BorderSide(
-                    color: _page == 4
+                    color: widget.page == 4
                         ? GlobalVariables.selectedNavBarColor
                         : GlobalVariables.backgroundColor,
                     width: bottomBarBorderWidth,
@@ -143,14 +144,15 @@ class _BottomBarState extends State<BottomBar> {
                   ),
                 ),
                 // badgeColor: GlobalVariables.secondaryColor,
-                child: Center(child: Padding(
+                child: Center(
+                    child: Padding(
                   padding: EdgeInsets.only(top: 2.0),
                   child: Icon(Icons.notifications_on_outlined),
                 )),
               ),
-              ),
-            label: 'Notification',
             ),
+            label: 'Notification',
+          ),
         ],
       ),
     );
