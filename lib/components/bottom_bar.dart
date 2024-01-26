@@ -1,8 +1,10 @@
 import 'package:echirp/screens/events/events.dart';
 import 'package:flutter/material.dart';
 import 'package:badges/badges.dart' as badges;
+import 'package:lottie/lottie.dart';
 
 import '../screens/home/home.dart';
+import '../screens/notification/notification.dart';
 import '../utils/global_variabes.dart';
 
 // ignore: must_be_immutable
@@ -24,9 +26,40 @@ class _BottomBarState extends State<BottomBar> {
   final List<Widget> _screens = [
     const HomeScreen(),
     const EventsScreen(),
-    const Center(child: Text('Add Friends')),
-    const Center(child: Text('Join Groups')),
-    const Center(child: Text('Notification')),
+    Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Lottie.asset('assets/animations/under-development.json', height: 500),
+          const Text(
+            'Add Friends Feature',
+            textAlign: TextAlign.center,
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
+          ),
+          const Padding(
+            padding: EdgeInsets.all(8.0),
+            child: Text(
+                'Opps! Srijan is still developing this feature it will be done soon.',
+                textAlign: TextAlign.center),
+          ),
+        ],
+      ),
+    ),
+    Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Lottie.asset('assets/animations/under-development.json', height: 500),
+          const Text(
+            'Groups Feature',
+            textAlign: TextAlign.center,
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
+          ),
+          const Text('Comming soon.', textAlign: TextAlign.center),
+        ],
+      ),
+    ),
+    const NotificationScreen(),
   ];
   void updatePage(int page) {
     setState(() {

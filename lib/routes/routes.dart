@@ -4,6 +4,7 @@ import 'package:echirp/screens/events/components/event_cerate_form.dart';
 import 'package:echirp/screens/events/components/upload_status.dart';
 import 'package:echirp/screens/events/create_event.dart';
 import 'package:echirp/screens/events/events.dart';
+import 'package:echirp/screens/notification/notification.dart';
 import 'package:flutter/material.dart';
 
 import '../screens/home/home.dart';
@@ -39,13 +40,22 @@ onGenerateRoute(RouteSettings routeSettings) {
       );
     case EventCreateFrom.routeName:
       String category = routeSettings.arguments as String;
+      String subCategory = routeSettings.arguments as String;
+      String subSubCategory = routeSettings.arguments as String;
       return MaterialPageRoute(
-        builder: (_) => EventCreateFrom(category: category),
+        builder: (_) => EventCreateFrom(
+            category: category,
+            subCategory: subCategory,
+            subSubCategory: subSubCategory),
       );
     case UploadStatusScreen.routeName:
       String eventType = routeSettings.arguments as String;
       return MaterialPageRoute(
         builder: (_) => UploadStatusScreen(eventType: eventType),
+      );
+    case NotificationScreen.routeName:
+      return MaterialPageRoute(
+        builder: (_) => const NotificationScreen(),
       );
     default:
       return MaterialPageRoute(

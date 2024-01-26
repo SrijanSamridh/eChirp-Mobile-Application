@@ -13,8 +13,14 @@ import '../../../utils/utils.dart';
 
 class EventCreateFrom extends StatefulWidget {
   static const String routeName = "/event-create-form";
-  const EventCreateFrom({super.key, required this.category});
+  const EventCreateFrom(
+      {super.key,
+      required this.category,
+      required this.subCategory,
+      this.subSubCategory});
   final String category;
+  final String subCategory;
+  final String? subSubCategory;
 
   @override
   State<EventCreateFrom> createState() => _EventCreateFromState();
@@ -38,7 +44,7 @@ class _EventCreateFromState extends State<EventCreateFrom> {
   TextEditingController eventTitleController = TextEditingController();
   TextEditingController eventDescriptionController = TextEditingController();
   EventType? _type = EventType.public;
-  Gender? _gender = Gender.male;
+  Gender? _gender;
   File? image1;
   Color borderColor = GlobalVariables.kPrimaryColor;
   double stroke = 1;
@@ -116,221 +122,13 @@ class _EventCreateFromState extends State<EventCreateFrom> {
                           maxMemberController: maxMemberController,
                         )
                       : currentIndex == 2
-                          ? Column(
-                              children: [
-                                CustomFields().customLabel(size, context,
-                                    'assets/icons/Vector-2.png', 'Event Type'),
-                                Column(
-                                  children: <Widget>[
-                                    Row(
-                                      children: [
-                                        Radio<EventType>(
-                                          value: EventType.public,
-                                          groupValue: _type,
-                                          onChanged: (EventType? value) {
-                                            setState(() {
-                                              _type = value;
-                                            });
-                                          },
-                                        ),
-                                        const Text('Public'),
-                                      ],
-                                    ),
-                                    Row(
-                                      children: [
-                                        Radio<EventType>(
-                                          value: EventType.private,
-                                          groupValue: _type,
-                                          onChanged: (EventType? value) {
-                                            setState(() {
-                                              _type = value;
-                                            });
-                                          },
-                                        ),
-                                        const Text('Private'),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                                CustomFields().customLabel(
-                                    size,
-                                    context,
-                                    'assets/icons/game-icons_ages.png',
-                                    'Age Group',
-                                    optional: true),
-                                Row(
-                                  children: [
-                                    Padding(
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: size.width * 0.08),
-                                      child: CustomDropdown(
-                                        dropdownValue: ageGroupRange,
-                                        size: size,
-                                        onChnaged: (String? value) {
-                                          // This is called when the user selects an item.
-                                          setState(
-                                            () {
-                                              ageGroupRange = value!;
-                                            },
-                                          );
-                                        },
-                                        categorys:
-                                            GlobalVariables.kAgeGroups,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                CustomFields().customLabel(
-                                    size,
-                                    context,
-                                    'assets/icons/mdi_human-male-female.png',
-                                    'Gender Choices',
-                                    optional: true),
-                                Row(
-                                  children: <Widget>[
-                                    Row(
-                                      children: [
-                                        Radio<Gender>(
-                                          value: Gender.others,
-                                          groupValue: _gender,
-                                          onChanged: (Gender? value) {
-                                            setState(() {
-                                              _gender = value;
-                                            });
-                                          },
-                                        ),
-                                        const Text('Male'),
-                                      ],
-                                    ),
-                                    Row(
-                                      children: [
-                                        Radio<Gender>(
-                                          value: Gender.female,
-                                          groupValue: _gender,
-                                          onChanged: (Gender? value) {
-                                            setState(() {
-                                              _gender = value;
-                                            });
-                                          },
-                                        ),
-                                        const Text('Female'),
-                                      ],
-                                    ),
-                                    Row(
-                                      children: [
-                                        Radio<Gender>(
-                                          value: Gender.others,
-                                          groupValue: _gender,
-                                          onChanged: (Gender? value) {
-                                            setState(() {
-                                              _gender = value;
-                                            });
-                                          },
-                                        ),
-                                        const Text('Others'),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                                CustomFields().customLabel(
-                                    size,
-                                    context,
-                                    'assets/icons/foundation_torsos-female-male.png',
-                                    'Gender Count',
-                                    optional: true),
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      child: Padding(
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal: size.width * 0.1),
-                                        child: TextFormField(
-                                          keyboardType: TextInputType.number,
-                                          controller: femaleCntController,
-                                          decoration: const InputDecoration(
-                                            labelText: "Female",
-                                            hintText: "05",
-                                            isDense: true,
-                                            contentPadding: EdgeInsets.fromLTRB(
-                                                10, 10, 10, 0),
-                                            enabledBorder: OutlineInputBorder(
-                                              borderSide: BorderSide(
-                                                color: GlobalVariables
-                                                    .kPrimaryColor,
-                                              ),
-                                              borderRadius: BorderRadius.all(
-                                                Radius.circular(30),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    const Padding(
-                                      padding: EdgeInsets.all(8.0),
-                                      child: Text(" : "),
-                                    ),
-                                    Expanded(
-                                      child: Padding(
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal: size.width * 0.1),
-                                        child: TextFormField(
-                                          keyboardType: TextInputType.number,
-                                          controller: maleCntController,
-                                          decoration: const InputDecoration(
-                                            labelText: "Male",
-                                            hintText: "05",
-                                            isDense: true,
-                                            contentPadding: EdgeInsets.fromLTRB(
-                                                10, 10, 10, 0),
-                                            enabledBorder: OutlineInputBorder(
-                                              borderSide: BorderSide(
-                                                color: GlobalVariables
-                                                    .kPrimaryColor,
-                                              ),
-                                              borderRadius: BorderRadius.all(
-                                                Radius.circular(30),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                CustomFields().customLabel(
-                                    size,
-                                    context,
-                                    'assets/icons/ic_baseline-work.png',
-                                    'Occupation',
-                                    optional: true),
-                                Row(
-                                  children: [
-                                    Padding(
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: size.width * 0.08),
-                                      child: CustomDropdown(
-                                        dropdownValue: occupationValue,
-                                        size: size,
-                                        onChnaged: (String? value) {
-                                          // This is called when the user selects an item.
-                                          setState(
-                                            () {
-                                              occupationValue = value!;
-                                            },
-                                          );
-                                        },
-                                        categorys:
-                                            GlobalVariables.kOccupations,
-                                      ),
-                                    ),
-                                  ],
-                                )
-                              ],
-                            )
+                          // From part 2
+                          ? eventSpecification(size, context)
+                          // From part 3
                           : uploadData(size, context, height),
                 ),
-                SizedBox(height: size.height * 0.1),
+
+                SizedBox(height: size.height * 0.05),
                 currentIndex >= 3
                     ? Container()
                     : Row(
@@ -385,6 +183,240 @@ class _EventCreateFromState extends State<EventCreateFrom> {
           ),
         ),
       ),
+    );
+  }
+
+  // * Event Specification part 2
+  Column eventSpecification(Size size, BuildContext context) {
+    return Column(
+      children: [
+        CustomFields().customLabel(
+            size, context, 'assets/icons/pajamas_title.png', 'Event Kind'),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: size.width * 0.1),
+          child: Row(
+            children: [
+              const Text(
+                'Category : ',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              Text(widget.category.toUpperCase())
+            ],
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: size.width * 0.1),
+          child: Row(
+            children: [
+              const Text(
+                'Sub Category : ',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              Text(widget.subCategory.toUpperCase())
+            ],
+          ),
+        ),
+        widget.subSubCategory != ''
+            ? Padding(
+                padding: EdgeInsets.symmetric(horizontal: size.width * 0.1),
+                child: Row(
+                  children: [
+                    const Text(
+                      'Sub-Sub Category : ',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    Text(widget.subSubCategory?.toUpperCase() ?? '')
+                  ],
+                ),
+              )
+            : const SizedBox(),
+        CustomFields().customLabel(
+            size, context, 'assets/icons/Vector-2.png', 'Event Mode'),
+        Row(
+          children: <Widget>[
+            Row(
+              children: [
+                Radio<EventType>(
+                  value: EventType.public,
+                  groupValue: _type,
+                  onChanged: (EventType? value) {
+                    setState(() {
+                      _type = value;
+                    });
+                  },
+                ),
+                const Text('Public'),
+              ],
+            ),
+            Row(
+              children: [
+                Radio<EventType>(
+                  value: EventType.private,
+                  groupValue: _type,
+                  onChanged: (EventType? value) {
+                    setState(() {
+                      _type = value;
+                    });
+                  },
+                ),
+                const Text('Private'),
+              ],
+            ),
+          ],
+        ),
+        CustomFields().customLabel(
+            size, context, 'assets/icons/game-icons_ages.png', 'Age Group',
+            optional: true),
+        Row(
+          children: [
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: size.width * 0.08),
+              child: CustomDropdown(
+                dropdownValue: ageGroupRange,
+                size: size,
+                onChanged: (String? value) {
+                  // This is called when the user selects an item.
+                  setState(
+                    () {
+                      ageGroupRange = value!;
+                    },
+                  );
+                },
+                categories: GlobalVariables.kAgeGroups,
+              ),
+            ),
+          ],
+        ),
+        CustomFields().customLabel(size, context,
+            'assets/icons/mdi_human-male-female.png', 'Gender Choices',
+            optional: true),
+        Row(
+          children: <Widget>[
+            Row(
+              children: [
+                Radio<Gender>(
+                  value: Gender.male,
+                  groupValue: _gender,
+                  onChanged: (Gender? value) {
+                    setState(() {
+                      _gender = value;
+                    });
+                  },
+                ),
+                const Text('Male'),
+              ],
+            ),
+            Row(
+              children: [
+                Radio<Gender>(
+                  value: Gender.female,
+                  groupValue: _gender,
+                  onChanged: (Gender? value) {
+                    setState(() {
+                      _gender = value;
+                    });
+                  },
+                ),
+                const Text('Female'),
+              ],
+            ),
+            Row(
+              children: [
+                Radio<Gender>(
+                  value: Gender.others,
+                  groupValue: _gender,
+                  onChanged: (Gender? value) {
+                    setState(() {
+                      _gender = value;
+                    });
+                  },
+                ),
+                const Text('Others'),
+              ],
+            ),
+          ],
+        ),
+        CustomFields().customLabel(size, context,
+            'assets/icons/foundation_torsos-female-male.png', 'Gender Count',
+            optional: true),
+        Row(
+          children: [
+            Expanded(
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: size.width * 0.1),
+                child: TextFormField(
+                  keyboardType: TextInputType.number,
+                  controller: femaleCntController,
+                  decoration: const InputDecoration(
+                    labelText: "Female",
+                    hintText: "05",
+                    isDense: true,
+                    contentPadding: EdgeInsets.fromLTRB(10, 10, 10, 0),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: GlobalVariables.kPrimaryColor,
+                      ),
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(30),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            const Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Text(" : "),
+            ),
+            Expanded(
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: size.width * 0.1),
+                child: TextFormField(
+                  keyboardType: TextInputType.number,
+                  controller: maleCntController,
+                  decoration: const InputDecoration(
+                    labelText: "Male",
+                    hintText: "05",
+                    isDense: true,
+                    contentPadding: EdgeInsets.fromLTRB(10, 10, 10, 0),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: GlobalVariables.kPrimaryColor,
+                      ),
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(30),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+        CustomFields().customLabel(
+            size, context, 'assets/icons/ic_baseline-work.png', 'Occupation',
+            optional: true),
+        Row(
+          children: [
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: size.width * 0.08),
+              child: CustomDropdown(
+                dropdownValue: occupationValue,
+                size: size,
+                onChanged: (String? value) {
+                  // This is called when the user selects an item.
+                  setState(
+                    () {
+                      occupationValue = value!;
+                    },
+                  );
+                },
+                categories: GlobalVariables.kOccupations,
+              ),
+            ),
+          ],
+        )
+      ],
     );
   }
 
@@ -760,6 +792,8 @@ class _EventCreateFromState extends State<EventCreateFrom> {
                       // If the form is valid, display a snackbar. In the real world,
                       // you'd often call a server or save the information in a database.
                       debugPrint('${widget.category}\n'
+                          '${widget.subCategory}\n'
+                          '${widget.subSubCategory}\n'
                           '${dateController.text}\n'
                           '${startTimeController.text} - ${endTimeController.text}\n'
                           '${locationController.text}\n'

@@ -36,6 +36,56 @@ class GlobalVariables {
     'Social Pickup Sports',
     'Social Activities'
   ];
+
+  static const Map<String, List<String>> kEventSubCategory = {
+    'Music and Dance' : <String>['Classical', 'Western', 'others'],
+    'Social Food & Drink': <String>['Drinks/Cocktails', 'Mocktails', 'Brunch Gathering', 'Dinner Party'],
+    'Social Pickup Sports': <String>['Soccer', 'Basketball', 'Pickleball', 'Tennis'],
+    'Social Activities': <String>['Reading party', 'Card games', 'Crafts', 'Dog social'],
+  };
+
+  static const Map<String, List<String>> kEventSubSubCategory = {
+    'Card games': ["Poker", "Bridge", "Cribbage", "Mahjong"],
+    'Crafts': ["Knitting", "Crocheting", "Needlepoint", "Sewing", "Sketching"],
+    'Dog social': [],
+    'Reading party': [],
+    'Drinks/Cocktails': [],
+    'Mocktails': [],
+    'Brunch Gathering': [],
+    'Dinner Party': [],
+    'Soccer': [],
+    'Basketball': [],
+    'Pickleball': [],
+    'Tennis': [],
+    'Classical': [],
+    'Western': [],
+    'others': [],
+  };
+
+  // static const Map<String, Map<String, List<String>>> kEventSubCategory = {
+  //   'check': {},
+  //   'Music and Dance': {'Classical': [], 'Western': [], 'others': []},
+  //   'Social Food & Drink': {
+  //     'Drinks/Cocktails': [],
+  //     'Mocktails': [],
+  //     'Brunch Gathering': [],
+  //     'Dinner Party': []
+  //   },
+  //   'Social Pickup Sports': {
+  //     'Soccer': [],
+  //     'Basketball': [],
+  //     'Pickleball': [],
+  //     'Tennis': []
+  //   },
+  //   'Social Activities': {
+  //     'Reading party': [],
+  //     'Card games': ["Poker", "Bridge", "Cribbage", "Mahjong"],
+  //     'Dog social': [],
+  //     'Crafts': ["Knitting", "Crocheting", "Needlepoint", "Sewing", "Sketching"]
+  //   }
+  // };
+
+
   static const List<String> kAgeGroups = <String>[
     'Anyone',
     '10-15',
