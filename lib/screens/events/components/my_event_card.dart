@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 import '../../../utils/global_variabes.dart';
 
@@ -66,7 +67,7 @@ class MyEventCard extends StatelessWidget {
                 Text(
                   typeOfEvent,
                   textAlign: TextAlign.left,
-                  style: TextStyle(fontWeight: FontWeight.bold),
+                  style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
                 SizedBox(height: size.height * 0.01),
                 Row(
@@ -83,10 +84,12 @@ class MyEventCard extends StatelessWidget {
                   ],
                 ),
                 SizedBox(height: size.height * 0.002),
-                Text(
-                  about,
-                  textAlign: TextAlign.left,
-                  style: TextStyle(fontSize: size.height * 0.012),
+                Expanded(
+                  child: Text(
+                    about,
+                    textAlign: TextAlign.left,
+                    style: TextStyle(fontSize: size.height * 0.012),
+                  ),
                 ),
               ],
             ),

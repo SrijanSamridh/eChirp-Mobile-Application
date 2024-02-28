@@ -1,5 +1,5 @@
 import 'package:echirp/components/bottom_bar.dart';
-import 'package:echirp/screens/auth/login.dart';
+import 'package:echirp/screens/auth/auth.dart';
 import 'package:echirp/screens/events/components/event_cerate_form.dart';
 import 'package:echirp/screens/events/components/upload_status.dart';
 import 'package:echirp/screens/events/create_event.dart';
@@ -16,9 +16,9 @@ onGenerateRoute(RouteSettings routeSettings) {
       return MaterialPageRoute(
         builder: (_) => const SplashScreen(),
       );
-    case LoginScreen.routeName:
+    case AuthScreen.routeName:
       return MaterialPageRoute(
-        builder: (_) => const LoginScreen(),
+        builder: (_) => const AuthScreen(),
       );
     case BottomBar.routeName:
       int pageIndex = routeSettings.arguments as int;

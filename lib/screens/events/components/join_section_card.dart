@@ -21,7 +21,7 @@ class JoinSectionCard extends StatelessWidget {
   final String profileImg;
   final String username;
   final String typeOfEvent;
-  final String date;
+  final DateTime? date;
   final String time;
   final String location;
 

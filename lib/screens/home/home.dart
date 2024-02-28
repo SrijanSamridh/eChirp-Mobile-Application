@@ -1,6 +1,9 @@
 import 'package:echirp/components/bottom_bar.dart';
+import 'package:echirp/screens/auth/auth.dart';
 import 'package:echirp/utils/global_variabes.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../components/custom_clipper.dart';
 import '../../components/custom_search_bar.dart';
@@ -17,6 +20,20 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  String username = "";
+  Future<void> getUsername() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      username = prefs.getString("username")!;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getUsername();
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -42,23 +59,34 @@ class _HomeScreenState extends State<HomeScreen> {
                         padding: const EdgeInsets.symmetric(horizontal: 7.0),
                         child: Row(
                           children: [
-                            const Text(
-                              'Welcome, Alison!',
-                              style: TextStyle(
+                            Text(
+                              'Welcome, $username!',
+                              style: const TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 20,
                               ),
                             ),
                             const Spacer(),
-                            CircleAvatar(
-                              child: ClipRRect(
-                                  borderRadius: const BorderRadius.all(
-                                      Radius.circular(100)),
-                                  child: Image.asset(
-                                    'assets/images/dummyDP.png',
-                                    fit: BoxFit.fitWidth,
-                                  )),
+                            GestureDetector(
+                              onTap: () async {
+                                SharedPreferences prefs =
+                                    await SharedPreferences.getInstance();
+                                prefs.remove('x-auth-token');
+                                prefs.remove('username');
+                                // ignore: use_build_context_synchronously
+                                Navigator.of(context).pushNamedAndRemoveUntil(
+                                    AuthScreen.routeName, (route) => false);
+                              },
+                              child: CircleAvatar(
+                                child: ClipRRect(
+                                    borderRadius: const BorderRadius.all(
+                                        Radius.circular(100)),
+                                    child: Image.asset(
+                                      'assets/images/dummyDP.png',
+                                      fit: BoxFit.fitWidth,
+                                    )),
+                              ),
                             ),
                           ],
                         ),
@@ -86,8 +114,7 @@ class _HomeScreenState extends State<HomeScreen> {
               headingText: 'Events',
               onPressed: () {
                 Navigator.of(context).pushNamedAndRemoveUntil(
-                  BottomBar.routeName, arguments: 1,
-                  (route) => false);
+                    BottomBar.routeName, arguments: 1, (route) => false);
               }),
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
@@ -123,10 +150,10 @@ class _HomeScreenState extends State<HomeScreen> {
 
           // ? Mutual Friends section
           HeadlineWithHyperLink(
-              headingText: 'Mutual Friends', onPressed: () {
+              headingText: 'Mutual Friends',
+              onPressed: () {
                 Navigator.of(context).pushNamedAndRemoveUntil(
-                  BottomBar.routeName, arguments: 2,
-                  (route) => false);
+                    BottomBar.routeName, arguments: 2, (route) => false);
               }),
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
@@ -160,11 +187,12 @@ class _HomeScreenState extends State<HomeScreen> {
               ],
             ),
           ),
-          HeadlineWithHyperLink(headingText: "Groups", onPressed: () {
-            Navigator.of(context).pushNamedAndRemoveUntil(
-                  BottomBar.routeName, arguments: 3,
-                  (route) => false);
-          }),
+          HeadlineWithHyperLink(
+              headingText: "Groups",
+              onPressed: () {
+                Navigator.of(context).pushNamedAndRemoveUntil(
+                    BottomBar.routeName, arguments: 3, (route) => false);
+              }),
           Container(
             margin: const EdgeInsets.symmetric(horizontal: 10.0),
             padding: EdgeInsets.all(size.height * 0.02),
