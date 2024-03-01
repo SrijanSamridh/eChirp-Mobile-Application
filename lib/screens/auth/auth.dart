@@ -1,4 +1,4 @@
-import 'dart:convert';
+// ignore_for_file: use_build_context_synchronously
 
 import 'package:echirp/API/controller/auth.controller.dart';
 import 'package:echirp/API/models/user.models.dart';
@@ -7,7 +7,7 @@ import 'package:echirp/utils/global_variabes.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../components/bottom_bar.dart';
-import 'package:http/http.dart' as http;
+// import 'package:http/http.dart' as http;
 
 enum AuthMode {
   signUp,
@@ -32,77 +32,55 @@ class _AuthScreenState extends State<AuthScreen> {
   Future<void> signIn() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    authController
-        .login(_usernameController.text.trim(), _passwordController.text.trim())
-        .then((User? user) async {
-      String? token = user?.user?.token;
+    User? user = await authController.signIn(
+      _usernameController.text.trim(),
+      _passwordController.text.trim(),
+    );
+
+    if (user != null && user.user != null) {
+      String? token = user.user!.token;
       prefs.setString("x-auth-token", token!);
-      prefs.setString("username", user!.user!.username!);
+      prefs.setString("username", user.user!.username!);
 
       debugPrint(
-          "User : ${prefs.getString('username')}, \nloacl Storage : ${prefs.getString('x-auth-token')},");
+        "User : ${prefs.getString('username')}, \nlocal Storage : ${prefs.getString('x-auth-token')},",
+      );
 
-      if (prefs.getString('x-auth-token') != null) {
-        // ignore: use_build_context_synchronously
-        Navigator.of(context)
-            .pushReplacementNamed(BottomBar.routeName, arguments: 0);
-      }
-    });
+      Navigator.of(context)
+          .pushReplacementNamed(BottomBar.routeName, arguments: 0);
+    } else {
+      // Handle invalid login credentials or other errors
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Login Error'),
+          content:
+              const Text('Invalid username or password. Please try again.'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('OK'),
+            ),
+          ],
+        ),
+      );
+    }
   }
 
   void signUp() async {
-    try {
-      // ignore: no_leading_underscores_for_local_identifiers
-      var _payload = {
-        'username': _usernameController.text.trim(),
-        'password': _passwordController.text.trim(),
-        'email': _emailController.text.trim()
-      };
+    // ignore: no_leading_underscores_for_local_identifiers
+    var _payload = {
+      'username': _usernameController.text.trim(),
+      'password': _passwordController.text.trim(),
+      'email': _emailController.text.trim()
+    };
 
-      debugPrint(_payload.toString());
-
-      // Make the POST request
-      var response = await http.post(
-        Uri.parse('https://api.eventchirp.com/api/auth/signup/'),
-        body: json.encode(_payload),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      );
-
-      debugPrint('Response: ${response.body}');
-
-      // Check if the response has a successful status code
-      if (response.statusCode == 200) {
-        var res = json.decode(response.body);
-
-        // Check if the user key exists in the response
-        if (res.containsKey('body')) {
-          Map<String, dynamic> userData = res['body'];
-
-          // Access user data
-          User user = User(
-            message: res['message'],
-            user: UserClass(
-              id: userData['_id'],
-              username: userData['username'],
-              email: userData['email'],
-            ),
-          );
-
-          debugPrint('User Registered: ${user.user?.username}');
-          setState(() {
-            _authMode = AuthMode.signIn;
-          });
-        } else {
-          debugPrint('User key not found in the response.');
-        }
-      } else {
-        debugPrint(
-            'Error: ${response.statusCode}, ${response.reasonPhrase}, $response');
-      }
-    } catch (error) {
-      debugPrint('Error: $error');
+    var user = await authController.signUp(context, _payload);
+    // ignore: unnecessary_null_comparison
+    if (user != null) {
+      setState(() {
+        _authMode = AuthMode.signIn;
+      });
     }
   }
 
