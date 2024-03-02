@@ -49,6 +49,7 @@ class _EventsScreenState extends State<EventsScreen> {
           preferredSize: Size.fromHeight(size.height * 0.18),
           child: CustomAppBar(
             size: size,
+            showCreate: true,
             title: 'Events',
             tabs: const <Widget>[
               Tab(

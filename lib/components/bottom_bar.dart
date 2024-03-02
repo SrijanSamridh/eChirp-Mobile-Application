@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:badges/badges.dart' as badges;
 import 'package:lottie/lottie.dart';
 
+import '../screens/friends/friends.dart';
 import '../screens/home/home.dart';
 import '../screens/notification/notification.dart';
 import '../utils/global_variabes.dart';
@@ -26,25 +27,7 @@ class _BottomBarState extends State<BottomBar> {
   final List<Widget> _screens = [
     const HomeScreen(),
     const EventsScreen(),
-    Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Lottie.asset('assets/animations/under-development.json', height: 500),
-          const Text(
-            'Add Friends Feature',
-            textAlign: TextAlign.center,
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
-          ),
-          const Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Text(
-                'Opps! Srijan is still developing this feature it will be done soon.',
-                textAlign: TextAlign.center),
-          ),
-        ],
-      ),
-    ),
+    const FriendsScreen(),
     Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,

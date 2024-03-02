@@ -2,7 +2,6 @@ import 'package:echirp/components/bottom_bar.dart';
 import 'package:echirp/screens/auth/auth.dart';
 import 'package:echirp/utils/global_variabes.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../components/custom_clipper.dart';
