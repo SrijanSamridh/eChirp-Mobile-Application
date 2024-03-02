@@ -13,7 +13,7 @@ class CustomTile extends StatelessWidget {
         height: size.height / 8,
         width: size.width / 1.09,
         decoration: BoxDecoration(
-            color: Colors.black12, borderRadius: BorderRadius.circular(12)),
+            color: Colors.black12, borderRadius: BorderRadius.circular(18)),
         child: Center(
             child: ListTile(
           leading: CircleAvatar(),
