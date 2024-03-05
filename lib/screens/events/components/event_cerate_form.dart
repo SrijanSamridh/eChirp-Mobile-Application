@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:dotted_border/dotted_border.dart';
+import 'package:echirp/API/controller/event.controller.dart';
 import 'package:echirp/components/custom_dropdown.dart';
 import 'package:echirp/components/custom_fields.dart';
 import 'package:echirp/screens/events/components/custom_stepper_count.dart';
@@ -88,6 +89,71 @@ class _EventCreateFromState extends State<EventCreateFrom> {
     });
   }
 
+  void _handleSubmitButton() async {
+    // Validate returns true if the form is valid, or false otherwise.
+    if (image1?.path == null && !_formKey.currentState!.validate()) {
+      setState(() {
+        borderColor = Colors.red;
+        stroke = 2;
+      });
+    } else {
+      // If the form is valid, display a snackbar. In the real world,
+      // you'd often call a server or save the information in a database.
+      Map<String, dynamic> dataMap = {
+        'mainCategory': widget.category,
+        'subCategory': widget.subCategory,
+        'subSubCategory': widget.subSubCategory,
+        'dateOfEvent': dateController.text,
+        'startTime': startTimeController.text,
+        'endTime': endTimeController.text,
+        'location': locationController.text,
+        'address': addressController.text,
+        'maxParticipants': int.tryParse(maxMemberController.text) ?? 0,
+        'eventMode': _type,
+        'femaleCount': int.tryParse(femaleCntController.text) ?? 0,
+        'maleCount': int.tryParse(maleCntController.text) ?? 0,
+        'eventTitle': eventTitleController.text,
+        'eventDescription': eventDescriptionController.text,
+        'coverImgUrl': image1?.path ?? 'Not provided',
+        'img1Url': image2?.path ?? 'Not provided',
+        'img2Url': image3?.path ?? 'Not provided',
+        'img3Url': image4?.path ?? 'Not provided',
+        'img4Url': image5?.path ?? 'Not provided',
+      };
+
+      // Print the map
+      debugPrint(dataMap.toString());
+      var response = await EventController().createEvent(dataMap);
+      debugPrint(response.toString());
+
+      // ignore: use_build_context_synchronously
+      // Navigator.of(context).pushAndRemoveUntil(
+      //   MaterialPageRoute(
+      //     builder: (context) => UploadStatusScreen(
+      //       eventType: _type.toString(),
+      //     ),
+      //   ),
+      //   (route) => false,
+      // );
+    }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    dateController.dispose();
+    startTimeController.dispose();
+    endTimeController.dispose();
+    locationController.dispose();
+    nameOfPlaceController.dispose();
+    addressController.dispose();
+    maxMemberController.dispose();
+    femaleCntController.dispose();
+    maleCntController.dispose();
+    eventTitleController.dispose();
+    eventDescriptionController.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -127,7 +193,6 @@ class _EventCreateFromState extends State<EventCreateFrom> {
                           // From part 3
                           : uploadData(size, context, height),
                 ),
-
                 SizedBox(height: size.height * 0.05),
                 currentIndex >= 3
                     ? Container()
@@ -780,43 +845,7 @@ class _EventCreateFromState extends State<EventCreateFrom> {
               style: ButtonStyle(
                   backgroundColor:
                       MaterialStateProperty.all(GlobalVariables.kPrimaryColor)),
-              onPressed: () {
-                setState(
-                  () {
-                    // Validate returns true if the form is valid, or false otherwise.
-                    if (image1?.path == null &&
-                        !_formKey.currentState!.validate()) {
-                      borderColor = Colors.red;
-                      stroke = 2;
-                    } else {
-                      // If the form is valid, display a snackbar. In the real world,
-                      // you'd often call a server or save the information in a database.
-                      debugPrint('${widget.category}\n'
-                          '${widget.subCategory}\n'
-                          '${widget.subSubCategory}\n'
-                          '${dateController.text}\n'
-                          '${startTimeController.text} - ${endTimeController.text}\n'
-                          '${locationController.text}\n'
-                          '${addressController.text}\n'
-                          '${maxMemberController.text}\n'
-                          '$_type\n'
-                          '$ageGroupRange\n'
-                          '$_gender\n'
-                          '${femaleCntController.text} - ${maleCntController.text}\n'
-                          '$occupationValue\n'
-                          '${eventTitleController.text}\n'
-                          '${eventDescriptionController.text}\n'
-                          'image1: ${image1?.path}, image2: ${image2?.path}, image3: ${image3?.path}, image4: ${image4?.path}, image5: ${image5?.path}');
-                      Navigator.of(context).pushAndRemoveUntil(
-                          MaterialPageRoute(
-                              builder: (context) => UploadStatusScreen(
-                                    eventType: _type.toString(),
-                                  )),
-                          (route) => false);
-                    }
-                  },
-                );
-              },
+              onPressed: _handleSubmitButton,
               child: const Text(
                 'Submit',
                 style: TextStyle(color: Colors.white),

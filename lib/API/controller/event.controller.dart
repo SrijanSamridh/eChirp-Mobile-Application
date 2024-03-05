@@ -4,6 +4,7 @@ import 'package:echirp/API/models/event.models.dart';
 import 'package:echirp/API/services/base_client.dart';
 import 'package:flutter/material.dart';
 
+
 class EventController {
   final client = BaseClient();
 
@@ -26,7 +27,9 @@ class EventController {
       final eventsData = decodedResponse['events'];
 
       if (eventsData != null && eventsData is List) {
-        final events = eventsData.map<Event>((eventData) => Event.fromJson(eventData)).toList();
+        final events = eventsData
+            .map<Event>((eventData) => Event.fromJson(eventData))
+            .toList();
         return Events(events: events);
       } else {
         debugPrint('Events data not found in response');
@@ -56,4 +59,21 @@ class EventController {
       return null;
     }
   }
+
+  Future<Event?> createEvent(dynamic body) async {
+  try {
+    var response = await BaseClient().post('/events', body);
+    
+    if (response != null && response.isNotEmpty) {
+      return Event.fromJson(response);
+    } else {
+      debugPrint('Empty or null response received');
+      return null;
+    }
+  } catch (e) {
+    debugPrint('Error creating event: $e');
+    return null;
+  }
+}
+
 }

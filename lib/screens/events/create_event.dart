@@ -137,7 +137,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                   },
                   categories: dropdownSubSubCategories,
                 ),
-              // ! Need to check the above section
+              // TODO: Need to check the above section
 
               SizedBox(height: size.height * 0.01),
               GestureDetector(
