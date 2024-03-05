@@ -6,7 +6,7 @@ import 'package:echirp/components/custom_dropdown.dart';
 import 'package:echirp/components/custom_fields.dart';
 import 'package:echirp/screens/events/components/custom_stepper_count.dart';
 import 'package:echirp/screens/events/components/event_info_form.dart';
-import 'package:echirp/screens/events/components/upload_status.dart';
+// import 'package:echirp/screens/events/components/upload_status.dart';
 import 'package:echirp/utils/global_variabes.dart';
 import 'package:flutter/material.dart';
 

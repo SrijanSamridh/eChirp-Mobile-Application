@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
+import '../screens/search/search.dart';
 import '../utils/global_variabes.dart';
 
 class CustomSearchBar extends StatelessWidget {
   const CustomSearchBar({
     super.key,
-    required this.onPressed,
     required this.searchFor,
     required this.backgroundColor,
     required this.fillColor,
@@ -14,7 +14,6 @@ class CustomSearchBar extends StatelessWidget {
     this.textSize, this.textColor,
   });
 
-  final VoidCallback onPressed;
   final String searchFor;
   final Color backgroundColor;
   final Color fillColor;
@@ -30,7 +29,9 @@ class CustomSearchBar extends StatelessWidget {
       borderRadius: BorderRadius.circular(18),
       elevation: 1,
       child: TextFormField(
-        onFieldSubmitted: (value) => {onPressed},
+        onFieldSubmitted: (value) => {
+          Navigator.pushNamed(context, SearchScreen.routeName, arguments: value)
+        },
         style: TextStyle(
           color: textColor ?? Colors.white,
         ),

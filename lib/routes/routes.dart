@@ -5,6 +5,7 @@ import 'package:echirp/screens/events/components/upload_status.dart';
 import 'package:echirp/screens/events/create_event.dart';
 import 'package:echirp/screens/events/events.dart';
 import 'package:echirp/screens/notification/notification.dart';
+import 'package:echirp/screens/search/search.dart';
 import 'package:flutter/material.dart';
 
 import '../screens/home/home.dart';
@@ -52,6 +53,11 @@ onGenerateRoute(RouteSettings routeSettings) {
       String eventType = routeSettings.arguments as String;
       return MaterialPageRoute(
         builder: (_) => UploadStatusScreen(eventType: eventType),
+      );
+    case SearchScreen.routeName:
+      String query = routeSettings.arguments as String;
+      return MaterialPageRoute(
+        builder: (_) => SearchScreen(query: query),
       );
     case NotificationScreen.routeName:
       return MaterialPageRoute(

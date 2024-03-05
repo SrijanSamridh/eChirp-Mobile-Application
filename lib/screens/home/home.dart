@@ -93,13 +93,13 @@ class _HomeScreenState extends State<HomeScreen> {
                       const SizedBox(
                         height: 18.0,
                       ),
-                      CustomSearchBar(
-                        onPressed: () {},
+                      const CustomSearchBar(
+                        // onPressed: () {},
                         searchFor: 'events',
                         backgroundColor:
-                            const Color.fromARGB(64, 255, 255, 255),
-                        fillColor: const Color.fromARGB(90, 50, 50, 50),
-                        iconColor: const Color.fromARGB(255, 239, 239, 239),
+                            Color.fromARGB(64, 255, 255, 255),
+                        fillColor: Color.fromARGB(90, 50, 50, 50),
+                        iconColor: Color.fromARGB(255, 239, 239, 239),
                       ),
                     ],
                   ),

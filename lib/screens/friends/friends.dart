@@ -4,8 +4,6 @@ import 'package:echirp/API/controller/friend.controller.dart';
 import 'package:echirp/components/custom_app_bar.dart';
 import 'package:echirp/screens/friends/components/customTile.dart';
 
-import '../search/search.dart';
-
 class FriendsScreen extends StatefulWidget {
   static const String routeName = '/friends';
 
@@ -27,7 +25,6 @@ class _FriendsScreenState extends State<FriendsScreen> {
 
   Future<List<Friends>?> _initFriends() async {
     try {
-
       return friendFuture.fetchMyFriends('/friends');
     } catch (e) {
       debugPrint('Error initializing friends: $e');
@@ -44,40 +41,31 @@ class _FriendsScreenState extends State<FriendsScreen> {
         child: Scaffold(
           appBar: PreferredSize(
               preferredSize: Size.fromHeight(size.height * 0.18),
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => SearchScreen()));
-                },
-                child: CustomAppBar(
-                    size: size,
-                    title: 'Find People',
-                    showCreate: false,
-                    tabs: const <Widget>[
-                      Tab(
-                        text: "My Friends",
-                      ),
-                      Tab(
-                        text: "Potential Friends",
-                      ),
-                    ],
-                    searchfor: 'people',
-                    onPressed: () {}),
-              )),
-          body: TabBarView(children: <Widget>[
-            _myFriendsList(),
-            Container()
-          ]),
+              child: CustomAppBar(
+                  size: size,
+                  title: 'Find People',
+                  showCreate: false,
+                  tabs: const <Widget>[
+                    Tab(
+                      text: "My Friends",
+                    ),
+                    Tab(
+                      text: "Potential Friends",
+                    ),
+                  ],
+                  searchfor: 'people',
+                  onPressed: () {},
+                  )),
+          body: TabBarView(children: <Widget>[_myFriendsList(), Container()]),
         ));
   }
 
-  Widget _myFriendsList()
-  {
+  Widget _myFriendsList() {
     return FutureBuilder<List<Friends>?>(
         future: _myFriends,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
           } else if (snapshot.hasData) {
@@ -87,7 +75,8 @@ class _FriendsScreenState extends State<FriendsScreen> {
               itemBuilder: (context, index) {
                 final friend = friends[index];
                 return Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 6.0, horizontal: 24.0),
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 6.0, horizontal: 24.0),
                   child: CustomTile(
                     title: friend.username ?? '',
                     subTitle: friend.bio ?? '',
@@ -97,8 +86,7 @@ class _FriendsScreenState extends State<FriendsScreen> {
               },
             );
           } else {
-            
-            return Center(child: Text('No friends available'));
+            return const Center(child: Text('No friends available'));
           }
         });
   }

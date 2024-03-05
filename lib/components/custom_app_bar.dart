@@ -69,7 +69,6 @@ class CustomAppBar extends StatelessWidget {
               ),
               const SizedBox(height: 10.0),
               CustomSearchBar(
-                onPressed: onPressed,
                 searchFor: searchfor,
                 backgroundColor: GlobalVariables.kPrimaryColor,
                 fillColor: Colors.white,
