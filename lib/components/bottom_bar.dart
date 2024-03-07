@@ -1,4 +1,5 @@
 import 'package:echirp/screens/events/events.dart';
+import 'package:echirp/screens/profile/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:badges/badges.dart' as badges;
 import 'package:lottie/lottie.dart';
@@ -25,7 +26,9 @@ class _BottomBarState extends State<BottomBar> {
   double bottomBarBorderWidth = 5;
 
   final List<Widget> _screens = [
+    
     const HomeScreen(),
+    //ProfileScreen(),
     const EventsScreen(),
     const FriendsScreen(),
     Center(

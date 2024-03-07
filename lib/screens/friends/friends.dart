@@ -1,4 +1,5 @@
 import 'package:echirp/API/models/friends.model.dart';
+import 'package:echirp/API/models/potentialFriends.dart';
 import 'package:flutter/material.dart';
 import 'package:echirp/API/controller/friend.controller.dart';
 import 'package:echirp/components/custom_app_bar.dart';
@@ -15,12 +16,14 @@ class FriendsScreen extends StatefulWidget {
 
 class _FriendsScreenState extends State<FriendsScreen> {
   late Future<List<Friends>?> _myFriends;
+  late Future<PotentialFriends?> _potentialFriends;
   final friendFuture = FriendController();
 
   @override
   void initState() {
     super.initState();
     _myFriends = _initFriends();
+    _initPotentialFriends();
   }
 
   Future<List<Friends>?> _initFriends() async {
@@ -29,6 +32,14 @@ class _FriendsScreenState extends State<FriendsScreen> {
     } catch (e) {
       debugPrint('Error initializing friends: $e');
       return null;
+    }
+  }
+
+  Future<void> _initPotentialFriends() async {
+    try {
+      _potentialFriends = friendFuture.fetchPotentialFriends('/potential');
+    } catch (e) {
+      debugPrint('Error initializing potentialFriends: $e');
     }
   }
 
@@ -56,7 +67,7 @@ class _FriendsScreenState extends State<FriendsScreen> {
                   searchfor: 'people',
                   onPressed: () {},
                   )),
-          body: TabBarView(children: <Widget>[_myFriendsList(), Container()]),
+          body: TabBarView(children: <Widget>[_myFriendsList(), _potentialFriendsList()]),
         ));
   }
 
@@ -74,14 +85,44 @@ class _FriendsScreenState extends State<FriendsScreen> {
               itemCount: friends.length,
               itemBuilder: (context, index) {
                 final friend = friends[index];
-                return Padding(
-                  padding: const EdgeInsets.symmetric(
-                      vertical: 6.0, horizontal: 24.0),
-                  child: CustomTile(
+                return 
+                //Padding(
+                  //padding: const EdgeInsets.symmetric(
+                    //  vertical: 6.0, horizontal: 24.0),
+                  //child: 
+                  CustomTile(
                     title: friend.username ?? '',
                     subTitle: friend.bio ?? '',
-                    Image: '', // Provide image URL here if applicable
-                  ),
+                    image: '', 
+                    mutuals: friend.numberOfFriends.toString()
+                  );
+              },
+            );
+          } else {
+            return const Center(child: Text('No friends available'));
+          }
+        });
+  }
+
+  Widget _potentialFriendsList() {
+    return FutureBuilder<PotentialFriends?>(
+        future: _potentialFriends,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return Center(child: Text('Error: ${snapshot.error}'));
+          } else if (snapshot.hasData) {
+            final potentialFriends = snapshot.data!.potentialFriends;
+            return ListView.builder(
+              itemCount: potentialFriends.length,
+              itemBuilder: (context, index) {
+                final friend = potentialFriends[index];
+                return CustomTile(
+                  title: friend.friend.username ?? '',
+                  subTitle:  '',
+                  image:'' ,
+                  mutuals: '', // Provide image URL here if applicable
                 );
               },
             );
@@ -91,3 +132,4 @@ class _FriendsScreenState extends State<FriendsScreen> {
         });
   }
 }
+

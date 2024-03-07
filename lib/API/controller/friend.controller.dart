@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:echirp/API/models/potentialFriends.dart';
 import 'package:flutter/material.dart';
 
 import '../models/friends.model.dart';
@@ -35,7 +36,7 @@ print("printrd list");
 return friendsList;
 
     } catch (e) {
-      debugPrint('Error fetching events: $e');
+      debugPrint('Error fetching potentialFriends: $e');
       return null;
     }
   }
@@ -61,14 +62,50 @@ if (decodedResponse.isEmpty) {
 final List<Friends> friendsList = decodedResponse.map<Friends>((friendData) {
   return Friends.fromJson(friendData as Map<String, dynamic>);
 }).toList();
-print("printinting friend list");
-print(friendsList);
-print("printrd list");
+
 return friendsList;
 
     } catch (e) {
-      debugPrint('Error fetching events: $e');
+      debugPrint('Error fetching potentialFriends: $e');
       return null;
     }
   }
+
+
+
+
+Future<PotentialFriends?> fetchPotentialFriends(String route) async {
+  try {
+      final response = await client.get("/friend$route");
+
+      if (response == null || response.isEmpty) {
+        debugPrint('Unexpected response format: $response');
+        return null;
+      }
+
+      final decodedResponse = json.decode(response);
+
+      if (decodedResponse is! Map<String, dynamic>) {
+        debugPrint('Unexpected response format: $decodedResponse');
+        return null;
+      }
+
+      final potentialFriendsData = decodedResponse['potentialFriends'];
+
+      if (potentialFriendsData != null && potentialFriendsData is List) {
+        final potentialFriends = potentialFriendsData
+            .map<PotentialFriend>((potentialFriendsData) => PotentialFriend.fromJson(potentialFriendsData))
+            .toList();
+            print(PotentialFriends(potentialFriends: potentialFriends));
+        return PotentialFriends(potentialFriends: potentialFriends);
+      } else {
+        debugPrint('Events data not found in response');
+        return null;
+      }
+    } catch (e) {
+      debugPrint('Error fetching potentialFriends: $e');
+      return null;
+    }
+}
+
 }
