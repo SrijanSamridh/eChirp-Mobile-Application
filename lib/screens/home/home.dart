@@ -1,5 +1,6 @@
 import 'package:echirp/components/bottom_bar.dart';
 import 'package:echirp/screens/auth/auth.dart';
+import 'package:echirp/screens/profile/profile.dart';
 import 'package:echirp/utils/global_variabes.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -68,14 +69,21 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                             const Spacer(),
                             GestureDetector(
-                              onTap: () async {
-                                SharedPreferences prefs =
-                                    await SharedPreferences.getInstance();
-                                prefs.remove('x-auth-token');
-                                prefs.remove('username');
-                                // ignore: use_build_context_synchronously
-                                Navigator.of(context).pushNamedAndRemoveUntil(
-                                    AuthScreen.routeName, (route) => false);
+                              onTap: (){
+                                // SharedPreferences prefs =
+                                //     await SharedPreferences.getInstance();
+                                // prefs.remove('x-auth-token');
+                                // prefs.remove('username');
+                                // // ignore: use_build_context_synchronously
+                                // Navigator.of(context).pushNamedAndRemoveUntil(
+                                //     AuthScreen.routeName, (route) => false);
+
+
+                                Navigator.of(context).pushNamed(
+                                    ProfileScreen.routeName);
+
+
+
                               },
                               child: CircleAvatar(
                                 child: ClipRRect(

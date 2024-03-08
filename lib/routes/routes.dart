@@ -5,6 +5,7 @@ import 'package:echirp/screens/events/components/upload_status.dart';
 import 'package:echirp/screens/events/create_event.dart';
 import 'package:echirp/screens/events/events.dart';
 import 'package:echirp/screens/notification/notification.dart';
+import 'package:echirp/screens/profile/profile.dart';
 import 'package:echirp/screens/search/search.dart';
 import 'package:flutter/material.dart';
 
@@ -62,6 +63,11 @@ onGenerateRoute(RouteSettings routeSettings) {
     case NotificationScreen.routeName:
       return MaterialPageRoute(
         builder: (_) => const NotificationScreen(),
+      );
+
+    case ProfileScreen.routeName:
+      return MaterialPageRoute(
+        builder: (_) =>  ProfileScreen(),
       );
     default:
       return MaterialPageRoute(

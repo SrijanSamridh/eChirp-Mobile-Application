@@ -102,11 +102,14 @@ class EventBriefCard extends StatelessWidget {
                           size: size.height * 0.02,
                         ),
                         const SizedBox(width: 10.0),
-                        Text(
-                          location,
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: size.height * 0.014),
+                        Expanded(
+                          child: Text(
+                            location,
+                            style: TextStyle(
+                                color: Colors.white,
+                                overflow: TextOverflow.ellipsis,
+                                fontSize: size.height * 0.014),
+                          ),
                         )
                       ],
                     ),
