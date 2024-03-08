@@ -94,7 +94,8 @@ class _FriendsScreenState extends State<FriendsScreen> {
                     title: friend.username ?? '',
                     subTitle: friend.bio ?? '',
                     image: '', 
-                    mutuals: friend.numberOfFriends.toString()
+                    mutuals: friend.numberOfFriends.toString(),
+                    myFriend: true,
                   );
               },
             );
@@ -122,7 +123,8 @@ class _FriendsScreenState extends State<FriendsScreen> {
                   title: friend.friend.username ?? '',
                   subTitle:  '',
                   image:'' ,
-                  mutuals: '', // Provide image URL here if applicable
+                  mutuals: '',
+                  myFriend: false, // Provide image URL here if applicable
                 );
               },
             );
