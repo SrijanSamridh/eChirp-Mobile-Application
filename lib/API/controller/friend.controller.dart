@@ -4,6 +4,7 @@ import 'package:echirp/API/models/potentialFriends.dart';
 import 'package:flutter/material.dart';
 
 import '../models/friends.model.dart';
+import '../models/userData.model.dart';
 import '../services/base_client.dart';
 
 class FriendController {
@@ -107,5 +108,30 @@ Future<PotentialFriends?> fetchPotentialFriends(String route) async {
       return null;
     }
 }
+
+ Future<UserData?> fetchFriendProfile(String route) async {
+    try {
+      print('friend id: $route');
+      final response = await client.get("/friend/profile$route");
+
+      if (response == null || response.isEmpty) {
+        debugPrint('Unexpected response format: $response');
+        return null;
+      }
+
+      final decodedResponse = json.decode(response);
+
+      if (decodedResponse is! Map<String, dynamic>) {
+        debugPrint('Unexpected response format: $decodedResponse');
+        return null;
+      } else{
+        return UserData.fromJson(decodedResponse);
+      }
+      
+    } catch (e) {
+      debugPrint('Error fetching friend data: $e');
+      return null;
+    }
+  }
 
 }

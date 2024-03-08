@@ -48,11 +48,11 @@ class UserData {
     });
 
     factory UserData.fromJson(Map<String, dynamic> json) => UserData(
-        numberOfEventsAttended: json["numberOfEventsAttended"],
-        id: json["_id"],
-        username: json["username"],
-        email: json["email"],
-        password: json["password"],
+        numberOfEventsAttended: json["numberOfEventsAttended"] ?? '',
+        id: json["_id"] ?? '',
+        username: json["username"] ?? '',
+        email: json["email"] ?? '',
+        password: json["password"] ?? '',
         friends: List<String>.from(json["friends"].map((x) => x)),
         friendRequests: List<dynamic>.from(json["friendRequests"].map((x) => x)),
         numberOfFriends: json["numberOfFriends"],
@@ -60,11 +60,11 @@ class UserData {
         eventsAttended: List<String>.from(json["eventsAttended"].map((x) => x)),
         createdAt: DateTime.parse(json["createdAt"]),
         updatedAt: DateTime.parse(json["updatedAt"]),
-        v: json["__v"],
-        bio: json["bio"],
-        firstName: json["firstName"],
-        lastName: json["lastName"],
-        numberOfEventsCreated: json["numberOfEventsCreated"],
+        v: json["__v"]?? '',
+        bio: json["bio"]?? '',
+        firstName: json["firstName"]?? '',
+        lastName: json["lastName"]?? '',
+        numberOfEventsCreated: json["numberOfEventsCreated"]?? '',
     );
 
     Map<String, dynamic> toJson() => {

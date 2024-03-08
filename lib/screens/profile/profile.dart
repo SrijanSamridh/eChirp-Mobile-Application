@@ -1,6 +1,8 @@
 import 'package:dotted_line/dotted_line.dart';
 import 'package:echirp/API/controller/event.controller.dart';
+import 'package:echirp/API/controller/friend.controller.dart';
 import 'package:echirp/API/controller/userData.controller.dart';
+import 'package:echirp/API/models/potentialFriends.dart';
 import 'package:echirp/screens/home/components/event_brief_card.dart';
 import 'package:echirp/screens/profile/components/createdEventTile.dart';
 import 'package:echirp/utils/global_variabes.dart';
@@ -11,6 +13,14 @@ import '../../API/models/userData.model.dart';
 
 class ProfileScreen extends StatefulWidget {
   static const String routeName = '/profile';
+
+  final String id;
+  final bool loggedUser;
+
+  const ProfileScreen({
+    this.loggedUser = true,
+    this.id = ''
+  });
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();
 }
@@ -21,6 +31,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   late Future<UserData?> _profileData;
   final eventsFuture = EventController();
   final profileFuture = UserDataController();
+  final friendFuture = FriendController();
 
   @override
   void initState() {
@@ -30,9 +41,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Future<void> _initEvents() async {
     try {
+      
       _eventsAttended = eventsFuture.fetchEvents('/attended');
       _eventsCreated = eventsFuture.fetchEvents('/created');
-      _profileData = profileFuture.fetchUserData();
+      
+      _profileData =
+        widget.loggedUser
+        ?profileFuture.fetchUserData()
+        :friendFuture.fetchFriendProfile('/${widget.id}');
+      
     } catch (e) {
       debugPrint('Error initializing events: $e');
     }
@@ -74,7 +91,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              userData.username,
+                              userData.username ?? '',
                               style: TextStyle(
                                   fontSize: 20, fontWeight: FontWeight.w600),
                             ),
@@ -82,7 +99,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ],
                         ),
                         SizedBox(height: 5),
-                        Container(
+                        widget.loggedUser
+                        ?Container()
+                        :Container(
                           height: 35,
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(12),
@@ -105,7 +124,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 20.0),
                       child: Text(
-                        userData.bio,
+                        userData.bio ?? '',
                         textAlign: TextAlign.start,
                         style: TextStyle(fontSize: 14, color: Colors.black87),
                       ),
@@ -126,7 +145,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
-                                  userData.myCreatedEvents.length.toString(), // Replace with actual number of events created
+                                  userData.myCreatedEvents.length.toString() ?? 'N/A', // Replace with actual number of events created
                                   style: TextStyle(
                                       color: Colors.white,
                                       fontWeight: FontWeight.bold,
@@ -153,7 +172,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
-                                  userData.numberOfFriends.toString(), // Replace with actual number of events created
+                                  userData.numberOfFriends.toString() ?? 'N/A', // Replace with actual number of events created
                                   style: TextStyle(
                                       color: Colors.white,
                                       fontWeight: FontWeight.bold,

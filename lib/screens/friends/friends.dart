@@ -85,17 +85,14 @@ class _FriendsScreenState extends State<FriendsScreen> {
               itemCount: friends.length,
               itemBuilder: (context, index) {
                 final friend = friends[index];
-                return 
-                //Padding(
-                  //padding: const EdgeInsets.symmetric(
-                    //  vertical: 6.0, horizontal: 24.0),
-                  //child: 
+                return
                   CustomTile(
                     title: friend.username ?? '',
                     subTitle: friend.bio ?? '',
-                    image: '', 
+                    image: '',
                     mutuals: friend.numberOfFriends.toString(),
                     myFriend: true,
+                    id: friend.id ?? '',
                   );
               },
             );
@@ -119,12 +116,14 @@ class _FriendsScreenState extends State<FriendsScreen> {
               itemCount: potentialFriends.length,
               itemBuilder: (context, index) {
                 final friend = potentialFriends[index];
+                print('iddddd: ${friend.friend.id}');
                 return CustomTile(
-                  title: friend.friend.username ?? '',
+                  title: friend.friend.username,
                   subTitle:  '',
                   image:'' ,
                   mutuals: '',
-                  myFriend: false, // Provide image URL here if applicable
+                  myFriend: false,
+                   id: friend.friend.id, // Provide image URL here if applicable
                 );
               },
             );
