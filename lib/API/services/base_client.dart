@@ -42,6 +42,7 @@ class BaseClient {
   }
 
   Future<dynamic> post(String route, dynamic object) async {
+    debugPrint("Procssing BaseClient with:\n $object");
     var url = Uri.parse(baseUrl + route);
     var _payload = json.encode(object);
     var token = await getToken();

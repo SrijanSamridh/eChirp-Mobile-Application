@@ -11,6 +11,7 @@ import 'package:echirp/utils/global_variabes.dart';
 import 'package:flutter/material.dart';
 
 import '../../../utils/utils.dart';
+import 'upload_status.dart';
 
 class EventCreateFrom extends StatefulWidget {
   static const String routeName = "/event-create-form";
@@ -127,14 +128,14 @@ class _EventCreateFromState extends State<EventCreateFrom> {
       debugPrint(response.toString());
 
       // ignore: use_build_context_synchronously
-      // Navigator.of(context).pushAndRemoveUntil(
-      //   MaterialPageRoute(
-      //     builder: (context) => UploadStatusScreen(
-      //       eventType: _type.toString(),
-      //     ),
-      //   ),
-      //   (route) => false,
-      // );
+      Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(
+          builder: (context) => UploadStatusScreen(
+            eventType: _type.toString(),
+          ),
+        ),
+        (route) => false,
+      );
     }
   }
 
