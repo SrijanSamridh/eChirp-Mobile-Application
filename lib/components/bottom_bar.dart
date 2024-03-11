@@ -26,6 +26,7 @@ class _BottomBarState extends State<BottomBar> {
   double bottomBarBorderWidth = 5;
 
   final List<Widget> _screens = [
+    
     const HomeScreen(),
     const EventsScreen(),
     const FriendsScreen(),

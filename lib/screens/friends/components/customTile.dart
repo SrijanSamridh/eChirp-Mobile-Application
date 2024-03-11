@@ -78,7 +78,7 @@ class CustomTile extends StatelessWidget {
                           ),
                         ),
                           Text(
-                            'fbdifbdibidsbdifbidfbvbdfdfbviubdvibd',
+                            subTitle,
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(
                               fontSize: 14,

@@ -92,6 +92,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           decoration: BoxDecoration(
                               gradient: GlobalVariables.kPrimaryGradientColor,
                               borderRadius: BorderRadius.circular(25)),
+                              child: Center(
+                                child: Text(
+                                userData.firstName.substring(0, 1).toUpperCase(),
+                                style: TextStyle(fontSize: 24),
+                                                            ),
+                              ),
                         ),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,

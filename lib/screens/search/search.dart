@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../API/controller/friend.controller.dart';
 import '../../API/models/friends.model.dart';
+import '../../utils/global_variabes.dart';
 
 class SearchScreen extends StatefulWidget {
   static const String routeName = "/search";
@@ -33,12 +34,17 @@ class _SearchScreenState extends State<SearchScreen> {
 
   @override
   Widget build(BuildContext context) {
+     Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Find People'),
+        title: Text('Find People', style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: size.height * 0.02),
+                  ),
+                  centerTitle: false,
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.symmetric(horizontal:16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -52,30 +58,69 @@ class _SearchScreenState extends State<SearchScreen> {
   }
 
   Widget _buildSearchBar() {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: Colors.grey),
-      ),
+    return Material(
+      color: GlobalVariables.kPrimaryColor,
+      borderRadius: BorderRadius.circular(18),
+      elevation: 1,
       child: Row(
         children: [
           Expanded(
-            child: TextField(
+            child: TextFormField(
+              onFieldSubmitted: (value) => {
+                _searchUsers(_searchController.text)
+        },
               controller: _searchController,
-              decoration: const InputDecoration(
-                hintText: 'Search Users',
-                contentPadding: EdgeInsets.all(16),
-                border: InputBorder.none,
-              ),
+              style: TextStyle(
+          color: Colors.black,
+        ),
+        cursorColor: GlobalVariables.kPrimaryColor,
+        decoration: InputDecoration(
+          prefixIcon: Padding(
+            padding: const EdgeInsets.only(left: 6),
+            child: Icon(
+              Icons.search,
+              color: GlobalVariables.kPrimaryColor,
+              size: 18,
+            ),
+          ),
+          filled: true,
+          fillColor: Colors.white,
+          contentPadding: const EdgeInsets.only(top: 10),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(18),
+            borderSide: BorderSide.none,
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(18),
+            borderSide: const BorderSide(
+              color: GlobalVariables.kPrimaryColor,
+              width: 1,
+            ),
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(18),
+            borderSide: const BorderSide(
+              color: Colors.transparent,
+              width: 0,
+            ),
+          ),
+          hintText: 'Search for Users',
+          hintStyle: TextStyle(
+            fontWeight: FontWeight.w500,
+            color: const Color.fromARGB(255, 158, 158, 158),
+            fontSize: 15,
+          ),
+        ),
               onChanged: _onSearchTextChanged,
             ),
           ),
-          IconButton(
-            icon: const Icon(Icons.search),
-            onPressed: () {
-              _searchUsers(_searchController.text);
-            },
-          ),
+          
+          // IconButton(
+          //   icon: const Icon(Icons.search),
+          //   onPressed: () {
+          //     _searchUsers(_searchController.text);
+          //   },
+          // ),
         ],
       ),
     );
