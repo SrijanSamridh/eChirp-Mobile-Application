@@ -17,10 +17,7 @@ class ProfileScreen extends StatefulWidget {
   final String id;
   final bool loggedUser;
 
-  const ProfileScreen({
-    this.loggedUser = true,
-    this.id = ''
-  });
+  const ProfileScreen({this.loggedUser = true, this.id = ''});
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();
 }
@@ -41,15 +38,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Future<void> _initEvents() async {
     try {
-      
       _eventsAttended = eventsFuture.fetchEvents('/attended');
       _eventsCreated = eventsFuture.fetchEvents('/created');
-      
-      _profileData =
-        widget.loggedUser
-        ?profileFuture.fetchUserData()
-        :friendFuture.fetchFriendProfile('/${widget.id}');
-      
+
+      _profileData = widget.loggedUser
+          ? profileFuture.fetchUserData()
+          : friendFuture.fetchFriendProfile('/${widget.id}');
     } catch (e) {
       debugPrint('Error initializing events: $e');
     }
@@ -60,14 +54,26 @@ class _ProfileScreenState extends State<ProfileScreen> {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
-        surfaceTintColor: Colors.transparent,
+        backgroundColor:
+            Colors.transparent, // Set background color to transparent
+        actions: [
+          widget.loggedUser
+              ? IconButton(
+                  icon: const Icon(
+                      Icons.settings), // Use IconButton for interaction
+                  onPressed: () {
+                    // Handle settings button press action (optional)
+                  },
+                )
+              : Container(),
+        ],
       ),
       body: SingleChildScrollView(
         child: FutureBuilder<UserData?>(
           future: _profileData,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(child: CircularProgressIndicator());
+              return const Center(child: CircularProgressIndicator());
             } else if (snapshot.hasError) {
               return Center(child: Text('Error: ${snapshot.error}'));
             } else if (snapshot.hasData) {
@@ -91,45 +97,47 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              userData.username ?? '',
-                              style: TextStyle(
+                              userData.username,
+                              style: const TextStyle(
                                   fontSize: 20, fontWeight: FontWeight.w600),
                             ),
-                            Text('Artist')
+                            const Text('Artist')
                           ],
                         ),
-                        SizedBox(height: 5),
+                        const SizedBox(height: 5),
                         widget.loggedUser
-                        ?Container()
-                        :Container(
-                          height: 35,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(12),
-                              gradient: GlobalVariables.kPrimaryGradientColor),
-                          child: TextButton(
-                            onPressed: () {
-                              // Handle add friend action
-                            },
-                            child: Text(
-                              'Add Friend',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w600),
-                            ),
-                          ),
-                        ),
+                            ? Container()
+                            : Container(
+                                height: 35,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(12),
+                                    gradient:
+                                        GlobalVariables.kPrimaryGradientColor),
+                                child: TextButton(
+                                  onPressed: () {
+                                    // Handle add friend action
+                                  },
+                                  child: const Text(
+                                    'Add Friend',
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w600),
+                                  ),
+                                ),
+                              ),
                       ],
                     ),
-                    SizedBox(height: 8),
+                    const SizedBox(height: 8),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 20.0),
                       child: Text(
                         userData.bio ?? '',
                         textAlign: TextAlign.start,
-                        style: TextStyle(fontSize: 14, color: Colors.black87),
+                        style: const TextStyle(
+                            fontSize: 14, color: Colors.black87),
                       ),
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 12.0),
                       child: Container(
@@ -137,7 +145,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         decoration: BoxDecoration(
                             color: Colors.black,
                             borderRadius: BorderRadius.circular(20)),
-                        padding: EdgeInsets.all(10),
+                        padding: const EdgeInsets.all(10),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
@@ -145,13 +153,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
-                                  userData.myCreatedEvents.length.toString() ?? 'N/A', // Replace with actual number of events created
-                                  style: TextStyle(
+                                  userData.myCreatedEvents.length.toString() ??
+                                      'N/A', // Replace with actual number of events created
+                                  style: const TextStyle(
                                       color: Colors.white,
                                       fontWeight: FontWeight.bold,
                                       fontSize: 20),
                                 ),
-                                Text(
+                                const Text(
                                   'Events Created',
                                   style: TextStyle(
                                       color: Colors.white,
@@ -160,25 +169,26 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 ),
                               ],
                             ),
-                            DottedLine(
+                            const DottedLine(
                               direction: Axis.vertical,
                               dashColor: Colors.white,
                               lineThickness: 1.5,
                             ),
-                            SizedBox(
+                            const SizedBox(
                               width: 8,
                             ),
                             Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
-                                  userData.numberOfFriends.toString() ?? 'N/A', // Replace with actual number of events created
-                                  style: TextStyle(
+                                  userData.numberOfFriends.toString() ??
+                                      'N/A', // Replace with actual number of events created
+                                  style: const TextStyle(
                                       color: Colors.white,
                                       fontWeight: FontWeight.bold,
                                       fontSize: 20),
                                 ),
-                                Text(
+                                const Text(
                                   'Friends',
                                   style: TextStyle(
                                       color: Colors.white,
@@ -187,10 +197,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 ),
                               ],
                             ),
-                            SizedBox(
+                            const SizedBox(
                               width: 8,
                             ),
-                            DottedLine(
+                            const DottedLine(
                               direction: Axis.vertical,
                               dashColor: Colors.white,
                               lineThickness: 1.5,
@@ -199,13 +209,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
-                                  userData.eventsAttended.length.toString(), // Replace with actual number of events created
-                                  style: TextStyle(
+                                  userData.eventsAttended.length
+                                      .toString(), // Replace with actual number of events created
+                                  style: const TextStyle(
                                       color: Colors.white,
                                       fontWeight: FontWeight.bold,
                                       fontSize: 20),
                                 ),
-                                Text(
+                                const Text(
                                   'Events Attended',
                                   style: TextStyle(
                                       color: Colors.white,
@@ -218,29 +229,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ),
                       ),
                     ),
-                    SizedBox(height: 20),
-                    Text(
+                    const SizedBox(height: 20),
+                    const Text(
                       'My Created Events',
                       style:
                           TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                     ),
-                    Container(
-                        height: 250,
-                        child: _buildEventsCreated(size)),
-                    
-                    Text(
+                    Container(height: 250, child: _buildEventsCreated(size)),
+                    const Text(
                       'Events Attended',
                       style:
                           TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                     ),
-                    Container(
-                        height: 200,
-                        child: _buildEventsAttended(size)),
+                    Container(height: 200, child: _buildEventsAttended(size)),
                   ],
                 ),
               );
             } else {
-              return Center(child: Text('No user data available'));
+              return const Center(child: Text('No user data available'));
             }
           },
         ),
