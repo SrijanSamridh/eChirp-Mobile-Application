@@ -25,6 +25,7 @@ class GlobalVariables {
   static const backgroundColor = Colors.white;
   static var selectedNavBarColor = Colors.orange[800]!;
   static const unselectedNavBarColor = Colors.black87;
+  static const chatBubbleColor =  Color(0xffFBE6BD);
   static const LinearGradient kPrimaryGradientColor =
       ColorSchema._primaryGradient;
   static const LinearGradient kUnselectedCardGradientColor =

@@ -11,11 +11,13 @@ class CustomAppBar extends StatelessWidget {
     required this.tabs,
     required this.searchfor,
     required this.onPressed,
-    required this.showCreate
+    required this.showCreate,
+    this.showGroup = false
   });
 
   final Size size;
   final bool showCreate;
+  final bool showGroup;
   final String title;
   final List<Widget> tabs;
   final String searchfor;
@@ -57,11 +59,13 @@ class CustomAppBar extends StatelessWidget {
                         iconSize:
                             MaterialStateProperty.all(size.height * 0.02)),
                     onPressed: onPressed,
-                    child: const Row(
+                    child: Row(
                       children: [
                         Icon(Icons.add),
                         SizedBox(width: 8.0),
-                        Text('Create Event'),
+                        showGroup
+                        ? Text('Create Group')
+                        : Text('Create Event'),
                       ],
                     ),
                   ),

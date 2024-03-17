@@ -4,6 +4,7 @@ import 'package:echirp/screens/events/components/event_cerate_form.dart';
 import 'package:echirp/screens/events/components/upload_status.dart';
 import 'package:echirp/screens/events/create_event.dart';
 import 'package:echirp/screens/events/events.dart';
+import 'package:echirp/screens/group/groupInfo.dart';
 import 'package:echirp/screens/notification/notification.dart';
 import 'package:echirp/screens/profile/profile.dart';
 import 'package:echirp/screens/search/search.dart';
@@ -69,6 +70,11 @@ onGenerateRoute(RouteSettings routeSettings) {
       return MaterialPageRoute(
         builder: (_) =>  ProfileScreen(),
       );
+
+    case GroupInfoScreen.routeName:
+      return MaterialPageRoute(
+        builder: (_) =>  GroupInfoScreen(),
+      );  
     default:
       return MaterialPageRoute(
         builder: (_) => const SplashScreen(),

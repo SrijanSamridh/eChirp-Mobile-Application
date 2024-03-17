@@ -1,9 +1,11 @@
 import 'package:echirp/screens/events/events.dart';
+import 'package:echirp/screens/group/group.dart';
+import 'package:echirp/screens/group/groupInfo.dart';
 import 'package:echirp/screens/profile/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:badges/badges.dart' as badges;
 import 'package:lottie/lottie.dart';
-
+import '../screens/chat/chat.dart';
 import '../screens/friends/friends.dart';
 import '../screens/home/home.dart';
 import '../screens/notification/notification.dart';
@@ -26,24 +28,10 @@ class _BottomBarState extends State<BottomBar> {
   double bottomBarBorderWidth = 5;
 
   final List<Widget> _screens = [
-    
     const HomeScreen(),
     const EventsScreen(),
     const FriendsScreen(),
-    Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Lottie.asset('assets/animations/under-development.json', height: 500),
-          const Text(
-            'Groups Feature',
-            textAlign: TextAlign.center,
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
-          ),
-          const Text('Comming soon.', textAlign: TextAlign.center),
-        ],
-      ),
-    ),
+    const GroupScreen(),
     const NotificationScreen(),
   ];
   void updatePage(int page) {
