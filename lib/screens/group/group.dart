@@ -7,9 +7,10 @@ import 'package:echirp/components/custom_app_bar.dart';
 import 'package:echirp/screens/friends/components/customTile.dart';
 
 import '../chat/chat.dart';
+import 'components/create_group.dart';
 
 class GroupScreen extends StatefulWidget {
-  static const String routeName = '/friends';
+  static const String routeName = '/group';
 
   const GroupScreen({Key? key}) : super(key: key);
 
@@ -68,7 +69,9 @@ class _GroupScreenState extends State<GroupScreen> {
                   ),
                 ],
                 searchfor: 'Groups',
-                onPressed: () {},
+                onPressed: () {
+              Navigator.of(context).pushNamed(CreateGroupScreen.routeName);
+            },
                 showGroup: true,
               )),
           body: TabBarView(
