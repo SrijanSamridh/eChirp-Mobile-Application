@@ -17,6 +17,7 @@ class FriendsScreen extends StatefulWidget {
 class _FriendsScreenState extends State<FriendsScreen> {
   late Future<List<Friends>?> _myFriends;
   late Future<PotentialFriends?> _potentialFriends;
+
   final friendFuture = FriendController();
 
   @override
@@ -48,26 +49,29 @@ class _FriendsScreenState extends State<FriendsScreen> {
     Size size = MediaQuery.of(context).size;
     return DefaultTabController(
         initialIndex: 0,
-        length: 2,
+        length: 3,
         child: Scaffold(
           appBar: PreferredSize(
               preferredSize: Size.fromHeight(size.height * 0.18),
               child: CustomAppBar(
                   size: size,
-                  title: 'Find People',
+                  title: 'Find Friends',
                   showCreate: false,
                   tabs: const <Widget>[
                     Tab(
-                      text: "My Friends",
+                      text: "Friends",
                     ),
                     Tab(
-                      text: "Potential Friends",
+                      text: "Potential",
+                    ),
+                    Tab(
+                      text: "Requests",
                     ),
                   ],
                   searchfor: 'people',
                   onPressed: () {},
                   )),
-          body: TabBarView(children: <Widget>[_myFriendsList(), _potentialFriendsList()]),
+          body: TabBarView(children: <Widget>[_myFriendsList(), _potentialFriendsList(), _friendRequestsList()]),
         ));
   }
 
@@ -116,7 +120,6 @@ class _FriendsScreenState extends State<FriendsScreen> {
               itemCount: potentialFriends.length,
               itemBuilder: (context, index) {
                 final friend = potentialFriends[index];
-                print('iddddd: ${friend.friend.id}');
                 return CustomTile(
                   title: friend.friend.username,
                   subTitle:  '',
@@ -129,6 +132,35 @@ class _FriendsScreenState extends State<FriendsScreen> {
             );
           } else {
             return const Center(child: Text('No friends available'));
+          }
+        });
+  }
+  Widget _friendRequestsList() {
+    return FutureBuilder<PotentialFriends?>(
+        future: _potentialFriends,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return Center(child: Text('Error: ${snapshot.error}'));
+          } else if (snapshot.hasData) {
+            final potentialFriends = snapshot.data!.potentialFriends;
+            return ListView.builder(
+              itemCount: potentialFriends.length,
+              itemBuilder: (context, index) {
+                final friend = potentialFriends[index];
+                return CustomTile(
+                  title: friend.friend.username,
+                  subTitle:  '',
+                  image:'' ,
+                  mutuals: '',
+                  myFriend: false,
+                   id: friend.friend.id, // Provide image URL here if applicable
+                );
+              },
+            );
+          } else {
+            return const Center(child: Text('No Request available'));
           }
         });
   }
