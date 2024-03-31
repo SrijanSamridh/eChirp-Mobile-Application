@@ -3,11 +3,13 @@ import 'package:echirp/API/controller/event.controller.dart';
 import 'package:echirp/API/controller/friend.controller.dart';
 import 'package:echirp/API/controller/userData.controller.dart';
 import 'package:echirp/API/models/potentialFriends.dart';
+import 'package:echirp/screens/auth/auth.dart';
 import 'package:echirp/screens/home/components/event_brief_card.dart';
 import 'package:echirp/screens/profile/components/createdEventTile.dart';
 import 'package:echirp/utils/global_variabes.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../API/models/event.models.dart';
 import '../../API/models/userData.model.dart';
 
@@ -61,8 +63,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ? IconButton(
                   icon: const Icon(
                       Icons.settings), // Use IconButton for interaction
-                  onPressed: () {
-                    // Handle settings button press action (optional)
+                  onPressed: () async {
+                    SharedPreferences pref =
+                        await SharedPreferences.getInstance();
+                    pref.remove('x-auth-token');
+                    Navigator.pushNamedAndRemoveUntil(
+                        // ignore: use_build_context_synchronously
+                        context,
+                        AuthScreen.routeName,
+                        (route) => false);
                   },
                 )
               : Container(),
@@ -92,12 +101,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           decoration: BoxDecoration(
                               gradient: GlobalVariables.kPrimaryGradientColor,
                               borderRadius: BorderRadius.circular(25)),
-                              child: Center(
-                                child: Text(
-                                userData.firstName.substring(0, 1).toUpperCase(),
-                                style: TextStyle(fontSize: 24),
-                                                            ),
-                              ),
+                          child: Center(
+                            child: Text(
+                              userData.firstName.substring(0, 1).toUpperCase(),
+                              style: const TextStyle(fontSize: 24),
+                            ),
+                          ),
                         ),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -270,18 +279,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
           return Center(child: Text('Error: ${snapshot.error}'));
         } else if (snapshot.hasData) {
           final events = snapshot.data!.events;
+          if (events == null || events.isEmpty) {
+            return const Center(child: Text('No events available'));
+          }
           return ListView.builder(
             scrollDirection: Axis.horizontal,
-            itemCount: events?.length,
+            itemCount: events.length,
             itemBuilder: (context, index) {
-              final event = events?[index];
+              final event = events[index];
               return EventBriefCard(
                 size: size,
                 imageUrl: 'assets/images/dummy_event.png',
                 profileImg: 'assets/images/dummyDP.png',
                 userName: "By Meg Rigden",
                 dateTime:
-                    "${formatDate(event!.dateOfEvent.toString(), false)} at ${formatTime(event.startTime.toString())}",
+                    "${formatDate(event.dateOfEvent.toString(), false)} at ${formatTime(event.startTime.toString())}",
                 location: '${event.location}, ${event.address}',
               );
             },
@@ -303,13 +315,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
           return Center(child: Text('Error: ${snapshot.error}'));
         } else if (snapshot.hasData) {
           final events = snapshot.data!.events;
+          if (events == null || events.isEmpty) {
+            return const Center(child: Text('No events available'));
+          }
           return ListView.builder(
-            itemCount: events?.length,
+            itemCount: events.length,
             itemBuilder: (context, index) {
-              final event = events?[index];
+              final event = events[index];
               return EventTile(
-                category: event!.mainCategory.toString(),
-                title: event!.eventDescription.toString(),
+                category: event.mainCategory.toString(),
+                title: event.eventDescription.toString(),
                 date: formatDate(event.dateOfEvent.toString(), true),
                 time: formatTime(event.startTime.toString()),
                 imageUrl: 'assets/images/dummy_event.png',

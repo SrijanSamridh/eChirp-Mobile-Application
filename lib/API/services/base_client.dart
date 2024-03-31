@@ -94,21 +94,31 @@ class BaseClient {
     }
   }
 
-  // Delete request code snippet
   Future<dynamic> delete(String route) async {
-    var url = Uri.parse(baseUrl + route);
-    // ignore: unused_local_variable,
-    var _headers = {
-      'Authorization': 'Bearer',
-      'Accept': 'application/json',
-    };
-    var response = await client.delete(url); // header is optional
+  var url = Uri.parse(baseUrl + route);
+  var token = await getToken();
+  var _headers = {
+    'Content-Type': 'application/json',
+    'x-auth-token': token,
+  };
+  try {
+    var response = await client.delete(url, headers: _headers);
+    debugPrint("Response from BaseClient : ${response.body}");
+
     if (response.statusCode == 200) {
-      return response.body;
+      return json.decode(response.body);
     } else {
-      return null;
+      var errorJson = json.decode(response.body);
+      var errorMessage = errorJson["message"] ?? "Error";
+      debugPrint('Error: ${response.statusCode}, $errorMessage');
+      throw Exception(errorMessage);
     }
+  } catch (error) {
+    debugPrint('Error: $error');
+    throw Exception('Internal server error');
   }
+}
+
 }
 
 

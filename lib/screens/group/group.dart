@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:echirp/API/models/friends.model.dart';
 import 'package:echirp/API/models/potentialFriends.dart';
 import 'package:echirp/screens/group/components/groupTile.dart';
@@ -52,7 +54,7 @@ class _GroupScreenState extends State<GroupScreen> {
     Size size = MediaQuery.of(context).size;
     return DefaultTabController(
         initialIndex: 0,
-        length: 2,
+        length: 3,
         child: Scaffold(
           appBar: PreferredSize(
               preferredSize: Size.fromHeight(size.height * 0.18),
@@ -67,6 +69,9 @@ class _GroupScreenState extends State<GroupScreen> {
                   Tab(
                     text: "Joined Groups",
                   ),
+                  Tab(
+                    text: "All Groups",
+                  ),
                 ],
                 searchfor: 'Groups',
                 onPressed: () {
@@ -75,7 +80,7 @@ class _GroupScreenState extends State<GroupScreen> {
                 showGroup: true,
               )),
           body: TabBarView(
-              children: <Widget>[_myFriendsList(), _potentialFriendsList()]),
+              children: <Widget>[_myFriendsList(), _potentialFriendsList(), const Center(child: Text("All Groups"))]),
         ));
   }
 
@@ -98,9 +103,9 @@ class _GroupScreenState extends State<GroupScreen> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => ChatScreen(title: 'Poker mates',image: '',)));
+                          builder: (context) => const ChatScreen(title: 'Poker mates',image: '',)));
                   },
-                  child: GroupTile(
+                  child: const GroupTile(
                     image: 'https://blog.photofeeler.com/wp-content/uploads/2017/09/instagram-profile-picture-maker.jpg',
                       title: 'Poker Mates',
                       recentMessage: 'Are we playing today?',
@@ -131,7 +136,7 @@ class _GroupScreenState extends State<GroupScreen> {
               itemBuilder: (context, index) {
                 final friend = potentialFriends[index];
                 print('iddddd: ${friend.friend.id}');
-                return GroupTile(
+                return const GroupTile(
                   image: 'https://blog.photofeeler.com/wp-content/uploads/2017/09/instagram-profile-picture-maker.jpg',
                   title: 'Poker mates',
                   recentMessage: 'Are we playing today?',

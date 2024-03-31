@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:echirp/components/bottom_bar.dart';
 import 'package:echirp/screens/auth/auth.dart';
-import 'package:echirp/screens/group/groupInfo.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -25,13 +24,9 @@ class _SplashScreenState extends State<SplashScreen> {
       () async {
         final prefs = await SharedPreferences.getInstance();
         if (prefs.containsKey('x-auth-token')) {
-          // ignore: use_build_context_synchronously
-          Navigator.of(context)
-              .popAndPushNamed(
-                //GroupInfoScreen.routeName
-                
-                BottomBar.routeName, arguments: 0
-                );
+          Navigator.pushNamedAndRemoveUntil(
+              // ignore: use_build_context_synchronously
+              context, BottomBar.routeName, arguments: 0, (route) => false);
         } else {
           setState(() {
             loader = true;

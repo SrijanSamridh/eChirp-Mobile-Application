@@ -1,9 +1,38 @@
-import 'package:echirp/API/models/friends.model.dart';
-import 'package:echirp/API/models/potentialFriends.dart';
+// ignore_for_file: prefer_typing_uninitialized_variables
+
 import 'package:flutter/material.dart';
-import 'package:echirp/API/controller/friend.controller.dart';
 import 'package:echirp/components/custom_app_bar.dart';
 import 'package:echirp/screens/friends/components/customTile.dart';
+import 'package:provider/provider.dart';
+
+import '../../API/provider/friend_provider.dart';
+
+class SkeletonLoader extends StatelessWidget {
+  final double width;
+  final double height;
+  final EdgeInsetsGeometry margin;
+
+  const SkeletonLoader({
+    Key? key,
+    this.width = double.infinity,
+    this.height = 16.0,
+    this.margin = EdgeInsets.zero,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: width,
+      height: height,
+      margin: margin,
+      decoration: BoxDecoration(
+        color: Colors.grey[300],
+        borderRadius: BorderRadius.circular(4.0),
+      ),
+    );
+  }
+}
+
 
 class FriendsScreen extends StatefulWidget {
   static const String routeName = '/friends';
@@ -15,82 +44,155 @@ class FriendsScreen extends StatefulWidget {
 }
 
 class _FriendsScreenState extends State<FriendsScreen> {
-  late Future<List<Friends>?> _myFriends;
-  late Future<PotentialFriends?> _potentialFriends;
-
-  final friendFuture = FriendController();
+  late Future<void> potentialFriendList;
+  late Future<void> friendsList;
+  late Future<void> friendRequestList;
 
   @override
   void initState() {
     super.initState();
-    _myFriends = _initFriends();
-    _initPotentialFriends();
+    potentialFriendList = _initPotentialFriendList();
+    friendsList = _initFriendsList();
+    friendRequestList = _initFriendRequestList();
   }
 
-  Future<List<Friends>?> _initFriends() async {
-    try {
-      return friendFuture.fetchMyFriends('/friends');
-    } catch (e) {
-      debugPrint('Error initializing friends: $e');
-      return null;
-    }
+  Future<void> _initPotentialFriendList() async {
+    await Provider.of<FriendProvider>(context, listen: false)
+        .fetchPotentialFriends();
   }
 
-  Future<void> _initPotentialFriends() async {
-    try {
-      _potentialFriends = friendFuture.fetchPotentialFriends('/potential');
-    } catch (e) {
-      debugPrint('Error initializing potentialFriends: $e');
-    }
+  Future<void> _initFriendsList() async {
+    await Provider.of<FriendProvider>(context, listen: false).fetchFriends();
+  }
+
+  Future<void> _initFriendRequestList() async {
+    await Provider.of<FriendProvider>(context, listen: false)
+        .fetchFriendRequests();
   }
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
+    final Size size = MediaQuery.of(context).size;
     return DefaultTabController(
-        initialIndex: 0,
-        length: 3,
-        child: Scaffold(
-          appBar: PreferredSize(
-              preferredSize: Size.fromHeight(size.height * 0.18),
-              child: CustomAppBar(
-                  size: size,
-                  title: 'Find Friends',
-                  showCreate: false,
-                  tabs: const <Widget>[
-                    Tab(
-                      text: "Friends",
-                    ),
-                    Tab(
-                      text: "Potential",
-                    ),
-                    Tab(
-                      text: "Requests",
-                    ),
-                  ],
-                  searchfor: 'people',
-                  onPressed: () {},
-                  )),
-          body: TabBarView(children: <Widget>[_myFriendsList(), _potentialFriendsList(), _friendRequestsList()]),
-        ));
+      initialIndex: 1,
+      length: 3,
+      child: Scaffold(
+        appBar: PreferredSize(
+          preferredSize: const Size.fromHeight(200),
+          child: CustomAppBar(
+            size: size,
+            title: 'Find Friends',
+            showCreate: false,
+            tabs: const <Widget>[
+              Tab(text: "Friends"),
+              Tab(text: "Potential"),
+              Tab(text: "Requests"),
+            ],
+            searchfor: 'people',
+            onPressed: () {},
+          ),
+        ),
+        body: TabBarView(
+          children: <Widget>[
+            RefreshIndicator(
+              onRefresh: () async {
+                await Provider.of<FriendProvider>(context, listen: false)
+                    .fetchFriends();
+              },
+              child: FutureBuilder<void>(
+                future: friendsList,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const FriendsListSkeleton();
+                  } else {
+                    return const FriendsList();
+                  }
+                },
+              ),
+            ),
+            RefreshIndicator(
+              onRefresh: () async {
+                await Provider.of<FriendProvider>(context, listen: false)
+                    .fetchPotentialFriends();
+              },
+              child: FutureBuilder<void>(
+                future: potentialFriendList,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const PotentialFriendsListSkeleton();
+                  } else {
+                    return const PotentialFriendsList();
+                  }
+                },
+              ),
+            ),
+            RefreshIndicator(
+              onRefresh: () async {
+                await Provider.of<FriendProvider>(context, listen: false)
+                    .fetchFriendRequests();
+              },
+              child: const FriendRequestsList(),
+            ),
+          ],
+        ),
+      ),
+    );
   }
+}
 
-  Widget _myFriendsList() {
-    return FutureBuilder<List<Friends>?>(
-        future: _myFriends,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            return Center(child: Text('Error: ${snapshot.error}'));
-          } else if (snapshot.hasData) {
-            final friends = snapshot.data!;
-            return ListView.builder(
-              itemCount: friends.length,
-              itemBuilder: (context, index) {
-                final friend = friends[index];
-                return
-                  CustomTile(
+class FriendsListSkeleton extends StatelessWidget {
+  const FriendsListSkeleton({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      itemCount: 5, // Adjust as needed
+      itemBuilder: (context, index) {
+        return const ListTile(
+          leading: SkeletonLoader(width: 48.0, height: 48.0),
+          title: SkeletonLoader(width: 100.0),
+          subtitle: SkeletonLoader(width: 150.0),
+        );
+      },
+    );
+  }
+}
+
+class PotentialFriendsListSkeleton extends StatelessWidget {
+  const PotentialFriendsListSkeleton({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      itemCount: 5, // Adjust as needed
+      itemBuilder: (context, index) {
+        return const ListTile(
+          leading: SkeletonLoader(width: 48.0, height: 48.0),
+          title: SkeletonLoader(width: 100.0),
+        );
+      },
+    );
+  }
+}
+
+
+class FriendsList extends StatelessWidget {
+  const FriendsList({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final friendProvider = Provider.of<FriendProvider>(context);
+    final friends = friendProvider.myFriends;
+
+    return friends == null
+        ? const Center(child: CircularProgressIndicator())
+        : friends.isEmpty
+            ? const Center(child: Text('No friends available'))
+            : ListView.builder(
+                itemCount: friends.length,
+                itemBuilder: (context, index) {
+                  final friend = friends[index];
+                  return CustomTile(
                     title: friend.username ?? '',
                     subTitle: friend.bio ?? '',
                     image: '',
@@ -98,71 +200,66 @@ class _FriendsScreenState extends State<FriendsScreen> {
                     myFriend: true,
                     id: friend.id ?? '',
                   );
-              },
-            );
-          } else {
-            return const Center(child: Text('No friends available'));
-          }
-        });
-  }
-
-  Widget _potentialFriendsList() {
-    return FutureBuilder<PotentialFriends?>(
-        future: _potentialFriends,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            return Center(child: Text('Error: ${snapshot.error}'));
-          } else if (snapshot.hasData) {
-            final potentialFriends = snapshot.data!.potentialFriends;
-            return ListView.builder(
-              itemCount: potentialFriends.length,
-              itemBuilder: (context, index) {
-                final friend = potentialFriends[index];
-                return CustomTile(
-                  title: friend.friend.username,
-                  subTitle:  '',
-                  image:'' ,
-                  mutuals: '',
-                  myFriend: false,
-                   id: friend.friend.id, // Provide image URL here if applicable
-                );
-              },
-            );
-          } else {
-            return const Center(child: Text('No friends available'));
-          }
-        });
-  }
-  Widget _friendRequestsList() {
-    return FutureBuilder<PotentialFriends?>(
-        future: _potentialFriends,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            return Center(child: Text('Error: ${snapshot.error}'));
-          } else if (snapshot.hasData) {
-            final potentialFriends = snapshot.data!.potentialFriends;
-            return ListView.builder(
-              itemCount: potentialFriends.length,
-              itemBuilder: (context, index) {
-                final friend = potentialFriends[index];
-                return CustomTile(
-                  title: friend.friend.username,
-                  subTitle:  '',
-                  image:'' ,
-                  mutuals: '',
-                  myFriend: false,
-                   id: friend.friend.id, // Provide image URL here if applicable
-                );
-              },
-            );
-          } else {
-            return const Center(child: Text('No Request available'));
-          }
-        });
+                },
+              );
   }
 }
 
+class PotentialFriendsList extends StatelessWidget {
+  const PotentialFriendsList({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final friendProvider = Provider.of<FriendProvider>(context);
+    final potentialFriends = friendProvider.potentialFriends?.potentialFriends;
+
+    return potentialFriends == null
+        ? const Center(child: CircularProgressIndicator())
+        : potentialFriends.isEmpty
+            ? const Center(child: Text('No potential friends available'))
+            : ListView.builder(
+                itemCount: potentialFriends.length,
+                itemBuilder: (context, index) {
+                  final friend = potentialFriends[index].friend;
+                  return CustomTile(
+                    title: friend.username ?? '',
+                    subTitle: '',
+                    image: '',
+                    mutuals: '',
+                    myFriend: false,
+                    id: friend.id ?? '',
+                  );
+                },
+              );
+  }
+}
+
+class FriendRequestsList extends StatelessWidget {
+  const FriendRequestsList({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final friendProvider = Provider.of<FriendProvider>(context);
+    final friendRequests = friendProvider.friendRequests;
+
+    return friendRequests == null
+        ? const Center(child: CircularProgressIndicator())
+        : friendRequests.isEmpty
+            ? const Center(child: Text('No friend requests available'))
+            : ListView.builder(
+                itemCount: friendRequests.length,
+                itemBuilder: (context, index) {
+                  final friend = friendRequests[index];
+                  return CustomTile(
+                    title: friend.username ?? '',
+                    subTitle: friend.bio ?? '',
+                    image: '',
+                    mutuals: friend.numberOfFriends.toString(),
+                    myFriend: true,
+                    requests: true,
+                    id: friend.id ?? '',
+                  );
+                },
+              );
+  }
+}

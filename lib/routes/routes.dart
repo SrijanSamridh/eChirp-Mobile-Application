@@ -70,7 +70,7 @@ onGenerateRoute(RouteSettings routeSettings) {
 
     case ProfileScreen.routeName:
       return MaterialPageRoute(
-        builder: (_) =>  ProfileScreen(),
+        builder: (_) =>  const ProfileScreen(),
       );
 
     case GroupInfoScreen.routeName:
