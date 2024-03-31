@@ -41,24 +41,30 @@ class BaseClient {
     }
   }
 
-  Future<dynamic> post(String route, dynamic object) async {
+  Future<Map<String, dynamic>> post(String route, dynamic object) async {
+
     debugPrint("Procssing BaseClient with:\n $object");
+
     var url = Uri.parse(baseUrl + route);
-    var _payload = json.encode(object);
+    var _payload = jsonEncode(object);
+
+    // Get Token
     var token = await getToken();
 
     debugPrint("$_payload, Url : $url, \nToken : $token");
+    
+    // Header Config
     var _headers = {
       'Content-Type': 'application/json',
       'x-auth-token': token,
     };
 
     try {
-      var response = await client.post(url, body: _payload, headers: _headers);
+      var response = await http.post(url, body: _payload, headers: _headers);
       debugPrint("Response from BaseClient : ${response.body}");
 
       if (response.statusCode == 200 || response.statusCode == 201) {
-        return json.decode(response.body);
+        return jsonDecode(response.body);
       } else {
         var errorJson = json.decode(response.body);
         var errorMessage = errorJson["message"] ?? "Error";
@@ -86,7 +92,7 @@ class BaseClient {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
     };
-    var response = await client.put(url, body: _payload); // header is optional
+    var response = await client.put(url, body: _payload);
     if (response.statusCode == 200) {
       return response.body;
     } else {
@@ -95,30 +101,27 @@ class BaseClient {
   }
 
   Future<dynamic> delete(String route) async {
-  var url = Uri.parse(baseUrl + route);
-  var token = await getToken();
-  var _headers = {
-    'Content-Type': 'application/json',
-    'x-auth-token': token,
-  };
-  try {
-    var response = await client.delete(url, headers: _headers);
-    debugPrint("Response from BaseClient : ${response.body}");
+    var url = Uri.parse(baseUrl + route);
+    var token = await getToken();
+    var _headers = {
+      'Content-Type': 'application/json',
+      'x-auth-token': token,
+    };
+    try {
+      var response = await client.delete(url, headers: _headers);
+      debugPrint("Response from BaseClient : ${response.body}");
 
-    if (response.statusCode == 200) {
-      return json.decode(response.body);
-    } else {
-      var errorJson = json.decode(response.body);
-      var errorMessage = errorJson["message"] ?? "Error";
-      debugPrint('Error: ${response.statusCode}, $errorMessage');
-      throw Exception(errorMessage);
+      if (response.statusCode == 200) {
+        return json.decode(response.body);
+      } else {
+        var errorJson = json.decode(response.body);
+        var errorMessage = errorJson["message"] ?? "Error";
+        debugPrint('Error: ${response.statusCode}, $errorMessage');
+        throw Exception(errorMessage);
+      }
+    } catch (error) {
+      debugPrint('Error: $error');
+      throw Exception('Internal server error');
     }
-  } catch (error) {
-    debugPrint('Error: $error');
-    throw Exception('Internal server error');
   }
 }
-
-}
-
-
