@@ -5,6 +5,7 @@ import 'package:echirp/screens/events/components/upload_status.dart';
 import 'package:echirp/screens/events/create_event.dart';
 import 'package:echirp/screens/events/events.dart';
 import 'package:echirp/screens/group/components/group_createForm.dart';
+import 'package:echirp/screens/group/components/group_detail.dart';
 import 'package:echirp/screens/group/groupInfo.dart';
 import 'package:echirp/screens/notification/notification.dart';
 import 'package:echirp/screens/profile/profile.dart';
@@ -76,6 +77,10 @@ onGenerateRoute(RouteSettings routeSettings) {
     case GroupInfoScreen.routeName:
       return MaterialPageRoute(
         builder: (_) =>  GroupInfoScreen(),
+      );
+      case GroupDetailsPage.routeName:
+      return MaterialPageRoute(
+        builder: (_) =>  GroupDetailsPage(),
       );
 
       case CreateGroupScreen.routeName:

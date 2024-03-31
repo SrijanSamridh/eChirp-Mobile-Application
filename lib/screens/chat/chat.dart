@@ -1,3 +1,4 @@
+import 'package:echirp/screens/group/components/group_detail.dart';
 import 'package:echirp/screens/group/groupInfo.dart';
 import 'package:echirp/utils/global_variabes.dart';
 import 'package:flutter/cupertino.dart';
@@ -35,7 +36,7 @@ class _ChatScreenState extends State<ChatScreen> {
         title: GestureDetector(
           onTap: () =>  Navigator.of(context)
               .pushNamed(
-                GroupInfoScreen.routeName),
+                GroupDetailsPage.routeName),
           child: Row(
             children: [
               CircleAvatar(

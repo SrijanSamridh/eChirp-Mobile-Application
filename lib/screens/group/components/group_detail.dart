@@ -1,7 +1,13 @@
 import 'package:echirp/utils/global_variabes.dart';
 import 'package:flutter/material.dart';
 
-class GroupDetailsPage extends StatelessWidget {
+class GroupDetailsPage extends StatefulWidget {
+  static const String routeName = '/group-detail';
+  @override
+  State<GroupDetailsPage> createState() => _GroupDetailsPageState();
+}
+
+class _GroupDetailsPageState extends State<GroupDetailsPage> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -76,24 +82,27 @@ class GroupDetailsPage extends StatelessWidget {
                     SizedBox(height: 10.0),
                     Row(
                       children: [
-                        SizedBox(width: 10,),
+                        SizedBox(
+                          width: 10,
+                        ),
                         Container(
-                          width: 40,
-                          height: 40,
+                            width: 40,
+                            height: 40,
                             decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(50),
+                                borderRadius: BorderRadius.circular(50),
                                 //shape: BoxShape.circle,
                                 color: Colors.grey[300]),
                             child: Center(
                                 child: Icon(Icons.people_rounded,
                                     color: GlobalVariables.kPrimaryColor))),
-                                    SizedBox(width: 10,),
+                        SizedBox(
+                          width: 10,
+                        ),
                         Text("Add People to Group",
                             style: TextStyle(
                                 color: GlobalVariables.kPrimaryColor,
                                 fontWeight: FontWeight.bold,
-                                fontSize: 16
-                                ))
+                                fontSize: 16))
                       ],
                     ),
                     Divider(),
@@ -162,7 +171,9 @@ class GroupDetailsPage extends StatelessWidget {
           margin: EdgeInsets.symmetric(vertical: 10.0),
           child: Row(
             children: [
-              SizedBox(width: 10,),
+              SizedBox(
+                width: 10,
+              ),
               CircleAvatar(
                 backgroundColor: Colors.black,
               ),

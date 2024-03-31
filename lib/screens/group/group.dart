@@ -3,6 +3,7 @@
 import 'package:echirp/API/models/friends.model.dart';
 import 'package:echirp/API/models/potentialFriends.dart';
 import 'package:echirp/screens/group/components/groupTile.dart';
+import 'package:echirp/screens/group/groupInfo.dart';
 import 'package:flutter/material.dart';
 import 'package:echirp/API/controller/friend.controller.dart';
 import 'package:echirp/components/custom_app_bar.dart';
@@ -80,11 +81,13 @@ class _GroupScreenState extends State<GroupScreen> {
                 showGroup: true,
               )),
           body: TabBarView(
-              children: <Widget>[_myFriendsList(), _potentialFriendsList(), const Center(child: Text("All Groups"))]),
+              children: <Widget>[_myGroupsList(), _joinedGroupsList(),
+              _allGroupsList(),
+              const Center(child: Text("All Groups"))]),
         ));
   }
 
-  Widget _myFriendsList() {
+  Widget _myGroupsList() {
     return FutureBuilder<List<Friends>?>(
         future: _myFriends,
         builder: (context, snapshot) {
@@ -121,7 +124,7 @@ class _GroupScreenState extends State<GroupScreen> {
         });
   }
 
-  Widget _potentialFriendsList() {
+  Widget _joinedGroupsList() {
     return FutureBuilder<PotentialFriends?>(
         future: _potentialFriends,
         builder: (context, snapshot) {
@@ -142,6 +145,39 @@ class _GroupScreenState extends State<GroupScreen> {
                   recentMessage: 'Are we playing today?',
                   senderName: 'John Doe',
                   totalMembers: 10,
+                );
+              },
+            );
+          } else {
+            return const Center(child: Text('No Groups available'));
+          }
+        });
+  }
+
+  Widget _allGroupsList() {
+    return FutureBuilder<PotentialFriends?>(
+        future: _potentialFriends,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return Center(child: Text('Error: ${snapshot.error}'));
+          } else if (snapshot.hasData) {
+            final potentialFriends = snapshot.data!.potentialFriends;
+            return ListView.builder(
+              itemCount: potentialFriends.length,
+              itemBuilder: (context, index) {
+                final friend = potentialFriends[index];
+                print('iddddd: ${friend.friend.id}');
+                return GestureDetector(
+                  onTap: () => Navigator.pushNamed(context, GroupInfoScreen.routeName),
+                  child: const GroupTile(
+                    image: 'https://blog.photofeeler.com/wp-content/uploads/2017/09/instagram-profile-picture-maker.jpg',
+                    title: 'Poker mates',
+                    recentMessage: 'Are we playing today?',
+                    senderName: 'John Doe',
+                    totalMembers: 10,
+                  ),
                 );
               },
             );
