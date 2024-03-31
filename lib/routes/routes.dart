@@ -12,6 +12,7 @@ import 'package:echirp/screens/search/search.dart';
 import 'package:flutter/material.dart';
 
 import '../screens/group/components/create_group.dart';
+import '../screens/group/components/group_detail.dart';
 import '../screens/home/home.dart';
 import '../screens/splash/splash.dart';
 
@@ -76,6 +77,10 @@ onGenerateRoute(RouteSettings routeSettings) {
     case GroupInfoScreen.routeName:
       return MaterialPageRoute(
         builder: (_) =>  GroupInfoScreen(),
+      );
+      case GroupDetailsPage.routeName:
+      return MaterialPageRoute(
+        builder: (_) =>  GroupDetailsPage(),
       );
 
       case CreateGroupScreen.routeName:
