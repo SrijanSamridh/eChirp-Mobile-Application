@@ -4,8 +4,7 @@ import 'package:echirp/screens/events/components/event_cerate_form.dart';
 import 'package:echirp/screens/events/components/upload_status.dart';
 import 'package:echirp/screens/events/create_event.dart';
 import 'package:echirp/screens/events/events.dart';
-import 'package:echirp/screens/group/components/group_createForm.dart';
-import 'package:echirp/screens/group/components/group_detail.dart';
+import 'package:echirp/screens/group/components/group_create_form.dart';
 import 'package:echirp/screens/group/groupInfo.dart';
 import 'package:echirp/screens/notification/notification.dart';
 import 'package:echirp/screens/profile/profile.dart';
@@ -13,6 +12,7 @@ import 'package:echirp/screens/search/search.dart';
 import 'package:flutter/material.dart';
 
 import '../screens/group/components/create_group.dart';
+import '../screens/group/components/group_detail.dart';
 import '../screens/home/home.dart';
 import '../screens/splash/splash.dart';
 
@@ -90,7 +90,7 @@ onGenerateRoute(RouteSettings routeSettings) {
 
       case GroupFormScreen.routeName:
       return MaterialPageRoute(
-        builder: (_) =>  GroupFormScreen(),
+        builder: (_) =>  const GroupFormScreen(),
       );
 
     default:

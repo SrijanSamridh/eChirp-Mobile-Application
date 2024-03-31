@@ -1,5 +1,4 @@
-import 'package:echirp/screens/events/components/event_cerate_form.dart';
-import 'package:echirp/screens/group/components/group_createForm.dart';
+import 'package:echirp/screens/group/components/group_create_form.dart';
 import 'package:flutter/material.dart';
 
 import '../../../components/custom_dropdown.dart';
@@ -148,7 +147,11 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => GroupFormScreen()));
+                          builder: (context) => GroupFormScreen(
+                                category: dropdownValue,
+                                subCategory: dropdownSubValue,
+                                subSubCategory: dropdownSubSubValue,
+                              )));
                 },
                 child: Container(
                   padding: const EdgeInsets.all(8.0),
