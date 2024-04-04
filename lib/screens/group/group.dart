@@ -7,7 +7,6 @@ import 'package:echirp/screens/group/groupInfo.dart';
 import 'package:flutter/material.dart';
 import 'package:echirp/API/controller/friend.controller.dart';
 import 'package:echirp/components/custom_app_bar.dart';
-import 'package:echirp/screens/friends/components/customTile.dart';
 
 import '../chat/chat.dart';
 import 'components/create_group.dart';
@@ -100,6 +99,7 @@ class _GroupScreenState extends State<GroupScreen> {
             return ListView.builder(
               itemCount: friends.length,
               itemBuilder: (context, index) {
+                // ignore: unused_local_variable
                 final friend = friends[index];
                 return GestureDetector(
                   onTap: (){

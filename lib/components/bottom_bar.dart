@@ -1,12 +1,7 @@
 import 'package:echirp/screens/events/events.dart';
-import 'package:echirp/screens/group/components/group_create_form.dart';
 import 'package:echirp/screens/group/group.dart';
-import 'package:echirp/screens/group/groupInfo.dart';
-import 'package:echirp/screens/profile/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:badges/badges.dart' as badges;
-import 'package:lottie/lottie.dart';
-import '../screens/chat/chat.dart';
 import '../screens/friends/friends.dart';
 import '../screens/home/home.dart';
 import '../screens/notification/notification.dart';

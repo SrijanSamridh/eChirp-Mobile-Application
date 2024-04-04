@@ -65,7 +65,7 @@ class GroupFormScreenState extends State<GroupFormScreen> {
         // ignore: use_build_context_synchronously
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(response["message"]),
+            content: Text(response.message!),
           ),
         );
         Navigator.pushNamedAndRemoveUntil(
