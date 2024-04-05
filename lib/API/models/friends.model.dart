@@ -8,12 +8,11 @@ class Friends {
     String? password;
     List<String>? friends;
     List<dynamic>? friendRequests;
-    int? numberOfFriends;
+    int? numberOfFriends; 
     List<String>? myCreatedEvents;
     List<String>? eventsAttended;
     DateTime? createdAt;
     DateTime? updatedAt;
-    int? v;
     String? bio;
     String? firstName;
     String? lastName;
@@ -32,7 +31,6 @@ class Friends {
         this.eventsAttended,
         this.createdAt,
         this.updatedAt,
-        this.v,
         this.bio,
         this.firstName,
         this.lastName,
@@ -56,7 +54,6 @@ class Friends {
         eventsAttended: json["eventsAttended"] == null ? [] : List<String>.from(json["eventsAttended"]!.map((x) => x)),
         createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
         updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
-        v: json["__v"],
         bio: json["bio"],
         firstName: json["firstName"],
         lastName: json["lastName"],
@@ -76,7 +73,6 @@ class Friends {
         "eventsAttended": eventsAttended == null ? [] : List<dynamic>.from(eventsAttended!.map((x) => x)),
         "createdAt": createdAt?.toIso8601String(),
         "updatedAt": updatedAt?.toIso8601String(),
-        "__v": v,
         "bio": bio,
         "firstName": firstName,
         "lastName": lastName,

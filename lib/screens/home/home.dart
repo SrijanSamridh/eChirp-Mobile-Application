@@ -1,5 +1,4 @@
 import 'package:echirp/components/bottom_bar.dart';
-import 'package:echirp/screens/auth/auth.dart';
 import 'package:echirp/screens/profile/profile.dart';
 import 'package:echirp/utils/global_variabes.dart';
 import 'package:flutter/material.dart';

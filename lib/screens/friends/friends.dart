@@ -1,37 +1,12 @@
 // ignore_for_file: prefer_typing_uninitialized_variables
 
+import 'package:echirp/utils/skeleton_loader.dart';
 import 'package:flutter/material.dart';
 import 'package:echirp/components/custom_app_bar.dart';
-import 'package:echirp/screens/friends/components/customTile.dart';
+import 'package:echirp/screens/friends/components/custom_tile.dart';
 import 'package:provider/provider.dart';
 
 import '../../API/provider/friend_provider.dart';
-
-class SkeletonLoader extends StatelessWidget {
-  final double width;
-  final double height;
-  final EdgeInsetsGeometry margin;
-
-  const SkeletonLoader({
-    Key? key,
-    this.width = double.infinity,
-    this.height = 16.0,
-    this.margin = EdgeInsets.zero,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: width,
-      height: height,
-      margin: margin,
-      decoration: BoxDecoration(
-        color: Colors.grey[300],
-        borderRadius: BorderRadius.circular(4.0),
-      ),
-    );
-  }
-}
 
 
 class FriendsScreen extends StatefulWidget {
@@ -78,7 +53,7 @@ class _FriendsScreenState extends State<FriendsScreen> {
       length: 3,
       child: Scaffold(
         appBar: PreferredSize(
-          preferredSize: const Size.fromHeight(200),
+          preferredSize: Size.fromHeight(size.height * 0.18),
           child: CustomAppBar(
             size: size,
             title: 'Find Friends',
@@ -146,13 +121,9 @@ class FriendsListSkeleton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      itemCount: 5, // Adjust as needed
+      itemCount: 10, // Adjust as needed
       itemBuilder: (context, index) {
-        return const ListTile(
-          leading: SkeletonLoader(width: 48.0, height: 48.0),
-          title: SkeletonLoader(width: 100.0),
-          subtitle: SkeletonLoader(width: 150.0),
-        );
+        return SkeletonLoaders.customTileSkeleton(context);
       },
     );
   }
@@ -164,17 +135,13 @@ class PotentialFriendsListSkeleton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      itemCount: 5, // Adjust as needed
+      itemCount: 10, // Adjust as needed
       itemBuilder: (context, index) {
-        return const ListTile(
-          leading: SkeletonLoader(width: 48.0, height: 48.0),
-          title: SkeletonLoader(width: 100.0),
-        );
+        return SkeletonLoaders.customTileSkeleton(context);
       },
     );
   }
 }
-
 
 class FriendsList extends StatelessWidget {
   const FriendsList({Key? key}) : super(key: key);
@@ -193,12 +160,12 @@ class FriendsList extends StatelessWidget {
                 itemBuilder: (context, index) {
                   final friend = friends[index];
                   return CustomTile(
-                    title: friend.username ?? '',
-                    subTitle: friend.bio ?? '',
-                    image: '',
+                    title: friend.username ?? 'Friend Name',
+                    subTitle: friend.bio ?? 'Friend Bio',
+                    image: "",
                     mutuals: friend.numberOfFriends.toString(),
                     myFriend: true,
-                    id: friend.id ?? '',
+                    id: friend.id ?? 'Friend ID',
                   );
                 },
               );
@@ -220,14 +187,14 @@ class PotentialFriendsList extends StatelessWidget {
             : ListView.builder(
                 itemCount: potentialFriends.length,
                 itemBuilder: (context, index) {
-                  final friend = potentialFriends[index].friend;
+                  final data = potentialFriends[index];
                   return CustomTile(
-                    title: friend.username ?? '',
-                    subTitle: '',
-                    image: '',
-                    mutuals: '',
+                    title: data.friend.username,
+                    subTitle: 'Potential Friend Subtitle',
+                    image: "",
+                    mutuals: data.count.toString(), // Dummy data
                     myFriend: false,
-                    id: friend.id ?? '',
+                    id: data.friend.id,
                   );
                 },
               );
@@ -251,13 +218,13 @@ class FriendRequestsList extends StatelessWidget {
                 itemBuilder: (context, index) {
                   final friend = friendRequests[index];
                   return CustomTile(
-                    title: friend.username ?? '',
-                    subTitle: friend.bio ?? '',
-                    image: '',
+                    title: friend.username ?? 'Friend Request Name',
+                    subTitle: friend.bio ?? 'Friend Request Bio',
+                    image: "",
                     mutuals: friend.numberOfFriends.toString(),
                     myFriend: true,
                     requests: true,
-                    id: friend.id ?? '',
+                    id: friend.id ?? 'Friend Request ID',
                   );
                 },
               );

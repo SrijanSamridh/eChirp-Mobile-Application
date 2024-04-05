@@ -24,14 +24,14 @@ class GroupTile extends StatelessWidget {
       child: Container(
                 height: size.height * 0.08,
                 decoration: BoxDecoration(
-                  color: Color(0xffF4F3F3),
+                  color: const Color(0xffF4F3F3),
                   borderRadius: BorderRadius.circular(18),
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Container(
+                    SizedBox(
                       width: 80,
                       child: CircleAvatar(
                         radius: 26,
@@ -46,11 +46,11 @@ class GroupTile extends StatelessWidget {
                               )
                             : Text(
                                 title.substring(0, 1).toUpperCase(),
-                                style: TextStyle(fontSize: 14),
+                                style: const TextStyle(fontSize: 14),
                               ),
                       ),
                     ),
-                    Container(
+                    SizedBox(
                       width: size.width * 0.66,
                       
                       child: Column(
@@ -63,7 +63,7 @@ class GroupTile extends StatelessWidget {
                               Text(
                                 title,
                                 overflow: TextOverflow.fade,
-                                style: TextStyle(
+                                style: const TextStyle(
                                   color: Color(0xff565656),
                                   fontWeight: FontWeight.w600,
                                   fontSize: 17,
@@ -72,7 +72,7 @@ class GroupTile extends StatelessWidget {
                               Text(
                                 "${totalMembers.toString()} members",
                                 //overflow: TextOverflow.fade,
-                                style: TextStyle(
+                                style: const TextStyle(
                                   color: Color(0xff948A8A),
                                   fontWeight: FontWeight.w500,
                                   fontSize: 14,
@@ -83,7 +83,7 @@ class GroupTile extends StatelessWidget {
                             Text(
                               "${senderName}: ${recentMessage}",
                               overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: 16,
                                 color: Color(0xff565656),
                               ),

@@ -3,13 +3,12 @@
 import 'dart:convert';
 import 'package:echirp/API/services/base_client.dart';
 import 'package:http/http.dart' as http;
-
 import '../models/group.models.dart';
 
 class GroupController {
+  final client = BaseClient();
 
-  Future<Groups> createGroup(
-    Map<String, dynamic> requestBody) async {
+  Future<Groups> createGroup(Map<String, dynamic> requestBody) async {
     // Get Token
     String token = await BaseClient().getToken();
 
@@ -52,6 +51,39 @@ class GroupController {
       // Handle errors
       print('Error creating group: $e');
       throw Exception('Error creating group: $e');
+    }
+  }
+
+  Future<Groups?> fetchGroups(String type) async {
+    try {
+      final response = await client.get("/groups?type=$type");
+
+      if (response == null || response.isEmpty) {
+        print('Unexpected response format: $response');
+        return null;
+      }
+
+      final decodedResponse = json.decode(response);
+
+      if (decodedResponse is! Map<String, dynamic>) {
+        print('Unexpected response format: $decodedResponse');
+        return null;
+      }
+
+      final groupsData = decodedResponse['groups'];
+
+      if (groupsData != null && groupsData is List) {
+        final groups = groupsData
+            .map<Group>((groupData) => Group.fromJson(groupData))
+            .toList();
+        return Groups(groups: groups);
+      } else {
+        print('Events data not found in response');
+        return null;
+      }
+    } catch (e) {
+      print('Error fetching groups: $e');
+      return null;
     }
   }
 }

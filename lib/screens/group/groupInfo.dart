@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 
 class GroupInfoScreen extends StatelessWidget {
   static const String routeName = "/groupInfo";
+
+  const GroupInfoScreen({super.key});
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -13,7 +15,7 @@ class GroupInfoScreen extends StatelessWidget {
           backgroundColor: Colors.transparent,
           leading: IconButton(
             onPressed: () => Navigator.pop(context),
-            icon: Icon(Icons.arrow_back,color: Colors.white, size: 30)),
+            icon: const Icon(Icons.arrow_back,color: Colors.white, size: 30)),
         ),
         body: Stack(
           children: [
@@ -32,7 +34,7 @@ class GroupInfoScreen extends StatelessWidget {
             SingleChildScrollView(
               child: Container(
                 height: size.height,
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(30),
                     topRight: Radius.circular(30),
@@ -41,7 +43,7 @@ class GroupInfoScreen extends StatelessWidget {
                 ),
                 margin: EdgeInsets.only(
                     top: MediaQuery.of(context).size.height * 0.32),
-                padding: EdgeInsets.all(16),
+                padding: const EdgeInsets.all(16),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -51,7 +53,7 @@ class GroupInfoScreen extends StatelessWidget {
                         Text('Created by:',
                             style: TextStyle(
                                 color: Colors.grey[700], fontSize: 12)),
-                        SizedBox(
+                        const SizedBox(
                           width: 5,
                         ),
                         Container(
@@ -77,7 +79,7 @@ class GroupInfoScreen extends StatelessWidget {
                                       fit: BoxFit.cover,
                                     ),
                                   )),
-                              Text(
+                              const Text(
                                 "Meg Johnson",
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold, fontSize: 12),
@@ -87,11 +89,11 @@ class GroupInfoScreen extends StatelessWidget {
                         )
                       ],
                     ),
-                    SizedBox(height: 16),
+                    const SizedBox(height: 16),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
+                        const Text(
                           'Foodie We',
                           style: TextStyle(
                               fontSize: 20, fontWeight: FontWeight.w800),
@@ -151,25 +153,92 @@ class GroupInfoScreen extends StatelessWidget {
                         ),
                       ],
                     ),
-                    SizedBox(height: 6),
+                    const SizedBox(height: 6),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
-                          '33 Mutual Friends',
-                          style: TextStyle(
-                              fontSize: 11, fontWeight: FontWeight.bold),
-                        ),
                         IconButton(
                           onPressed: () {},
-                          icon: Icon(
+                          icon: const Icon(
                             Icons.share,
                             color: GlobalVariables.kPrimaryColor,
                           ),
                         ),
+                        Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Stack(
+                        alignment: AlignmentDirectional.topCenter,
+                        children: [
+                          Container(
+                            height: 26.0,
+                            width: 26.0,
+                            margin: EdgeInsets.only(left: size.width * 0.18),
+                            decoration: BoxDecoration(
+                                gradient: GlobalVariables.kPrimaryGradientColor,
+                                borderRadius: const BorderRadius.all(
+                                    Radius.circular(50.0)),
+                                border: Border.all(
+                                    color: GlobalVariables.kPrimaryColor)),
+                            child: ClipRRect(
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(50.0)),
+                              child: Image.asset(
+                                'assets/images/goupPP.png',
+                                height: 25.0,
+                              ),
+                            ),
+                          ),
+                          Container(
+                            height: 26.0,
+                            width: 26.0,
+                            margin: EdgeInsets.only(left: size.width * 0.1),
+                            decoration: BoxDecoration(
+                                gradient: GlobalVariables.kPrimaryGradientColor,
+                                borderRadius: const BorderRadius.all(
+                                    Radius.circular(50.0)),
+                                border: Border.all(
+                                    color: GlobalVariables.kPrimaryColor)),
+                            child: ClipRRect(
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(50.0)),
+                              child: Image.asset(
+                                'assets/images/goupPP.png',
+                                height: 25.0,
+                              ),
+                            ),
+                          ),
+                          Container(
+                            height: 26.0,
+                            width: 26.0,
+                            margin: EdgeInsets.only(left: size.width * 0.02),
+                            decoration: BoxDecoration(
+                                gradient: GlobalVariables.kPrimaryGradientColor,
+                                borderRadius: const BorderRadius.all(
+                                    Radius.circular(50.0)),
+                                border: Border.all(
+                                    color: GlobalVariables.kPrimaryColor)),
+                            child: ClipRRect(
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(50.0)),
+                              child: Image.asset(
+                                'assets/images/goupPP.png',
+                                height: 25.0,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(width: 8.0),
+                      const Text(
+                        '33 Known friends',
+                        style: TextStyle(color: Color.fromARGB(255, 0, 0, 0)),
+                      )
+                    ],
+                  ),
                       ],
                     ),
-                    SizedBox(height: 14),
+                    const SizedBox(height: 14),
                     Center(
                       child: Container(
                         width: size.width * 0.6,
@@ -179,21 +248,21 @@ class GroupInfoScreen extends StatelessWidget {
                             borderRadius: BorderRadius.circular(25)),
                         child: TextButton(
                           onPressed: () {},
-                          child: Text(
+                          child: const Text(
                             'Request to Join Now',
                             style: TextStyle(color: Colors.white),
                           ),
                         ),
                       ),
                     ),
-                    SizedBox(height: 14),
-                    Text(
+                    const SizedBox(height: 14),
+                    const Text(
                       'All Groups',
                       style:
                           TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
-                    SizedBox(height: 8),
-                    Container(
+                    const SizedBox(height: 8),
+                    SizedBox(
                       height: 100,
                       child: ListView.builder(
                           scrollDirection: Axis.horizontal,

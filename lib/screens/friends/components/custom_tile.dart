@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'package:echirp/API/controller/friend.controller.dart';
 import 'package:echirp/screens/profile/profile.dart';
 import 'package:echirp/utils/global_variabes.dart';
 
@@ -31,7 +30,7 @@ class CustomTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 6.0, horizontal: 24),
+      padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16),
       child: GestureDetector(
         onTap: () {
           Navigator.push(
@@ -45,7 +44,7 @@ class CustomTile extends StatelessWidget {
           );
         },
         child: Container(
-          height: size.height / 8,
+          height: size.height * 0.1,
           decoration: BoxDecoration(
             color: const Color(0xffF4F3F3),
             borderRadius: BorderRadius.circular(18),
@@ -55,15 +54,15 @@ class CustomTile extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               SizedBox(
-                width: 80,
+                width: size.width * 0.2,
                 child: CircleAvatar(
-                  radius: 70,
+                  radius: 28,
                   child: image.isNotEmpty
                       ? ClipOval(
                           child: Image.network(
                             image,
-                            height: 32,
-                            width: 32,
+                            height: 56,
+                            width: 56,
                             fit: BoxFit.cover,
                           ),
                         )
@@ -74,7 +73,7 @@ class CustomTile extends StatelessWidget {
                 ),
               ),
               SizedBox(
-                width: 150,
+                width: size.width * 0.45,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -100,30 +99,42 @@ class CustomTile extends StatelessWidget {
                 ),
               ),
               requests == false
-                  ? Container(
-                      height: 35,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(12),
-                        gradient: GlobalVariables.kPrimaryGradientColor,
-                      ),
-                      child: TextButton(
-                        onPressed: () {
-                          myFriend
-                              ? Provider.of<FriendProvider>(context,
-                                      listen: false)
-                                  .removeFriend(context, id)
-                              : Provider.of<FriendProvider>(context,
-                                      listen: false)
-                                  .sendFriendRequest(context, id);
-                        },
-                        child: Text(
-                          myFriend ? 'remove' : 'Add',
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w600,
+                  ? Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        myFriend == false && requests == false
+                            ? Text(
+                                mutuals == '1' ? "$mutuals mutual" : "$mutuals mutuals",
+                                overflow: TextOverflow.ellipsis,
+                                style: const TextStyle(
+                                  fontSize: 14,
+                                  color: Color(0xff565656),
+                                ),
+                              )
+                            : const SizedBox(),
+                        Container(
+                          height: 35,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12),
+                            gradient: GlobalVariables.kPrimaryGradientColor,
+                          ),
+                          child: IconButton(
+                            onPressed: () {
+                              myFriend
+                                  ? Provider.of<FriendProvider>(context,
+                                          listen: false)
+                                      .removeFriend(context, id)
+                                  : Provider.of<FriendProvider>(context,
+                                          listen: false)
+                                      .sendFriendRequest(context, id);
+                            },
+                            icon: Icon(
+                              myFriend ? Icons.remove : Icons.add,
+                              color: Colors.white,
+                            ),
                           ),
                         ),
-                      ),
+                      ],
                     )
                   : Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -134,18 +145,15 @@ class CustomTile extends StatelessWidget {
                             borderRadius: BorderRadius.circular(12),
                             gradient: GlobalVariables.kPrimaryGradientColor,
                           ),
-                          child: TextButton(
+                          child: IconButton(
                             onPressed: () {
                               Provider.of<FriendProvider>(context,
                                       listen: false)
                                   .acceptFriendRequest(context, id);
                             },
-                            child: const Text(
-                              'accept',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w600,
-                              ),
+                            icon: const Icon(
+                              Icons.check,
+                              color: Colors.white,
                             ),
                           ),
                         ),
@@ -155,14 +163,11 @@ class CustomTile extends StatelessWidget {
                             borderRadius: BorderRadius.circular(12),
                             gradient: GlobalVariables.kPrimaryGradientColor,
                           ),
-                          child: TextButton(
+                          child: IconButton(
                             onPressed: () {},
-                            child: const Text(
-                              'decline',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w600,
-                              ),
+                            icon: const Icon(
+                              Icons.close,
+                              color: Colors.white,
                             ),
                           ),
                         ),

@@ -6,36 +6,42 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
+import 'API/provider/group_provider.dart';
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
   ]);
-  runApp(MultiProvider(providers: [
-    ChangeNotifierProvider(
-      create: (context) => FriendProvider(),
-    ),
-  ], child: const MyApp()));
+  runApp(MultiProvider(
+    providers: [
+      ChangeNotifierProvider<FriendProvider>(
+        create: (context) => FriendProvider(),
+      ),
+      ChangeNotifierProvider<GroupProvider>(
+        create: (context) => GroupProvider(),
+      ),
+    ],
+    child: const MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-  
-  // This widget is the root of your application.
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'eChirp',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: GlobalVariables.kPrimaryColor),
+        colorScheme:
+            ColorScheme.fromSeed(seedColor: GlobalVariables.kPrimaryColor),
         useMaterial3: true,
       ),
       onGenerateRoute: (routeSettings) => onGenerateRoute(routeSettings),
       initialRoute: SplashScreen.routeName,
       debugShowCheckedModeBanner: false,
-
     );
   }
 }
-
 
