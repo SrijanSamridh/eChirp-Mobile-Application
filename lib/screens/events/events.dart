@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:echirp/API/controller/event.controller.dart';
 import 'package:echirp/screens/events/create_event.dart';
-import '../../API/models/event.models.dart';
+import '../../API/provider/event_provider.dart';
 import '../../components/custom_app_bar.dart';
 import 'components/join_section_card.dart';
 import 'components/join_via_link.dart';
@@ -9,33 +10,20 @@ import 'components/my_event_card.dart';
 
 class EventsScreen extends StatefulWidget {
   static const String routeName = '/events';
-
-  const EventsScreen({Key? key}) : super(key: key);
+  const EventsScreen({super.key});
 
   @override
-  State<EventsScreen> createState() => _EventsScreenState();
+  State<EventsScreen> createState() => EventsScreenState();
 }
 
-class _EventsScreenState extends State<EventsScreen> {
-  late Future<Events?> _myEvents;
-  late Future<Events?> _allEvents;
-  late Future<Events?> _upcomingEvents;
-  final eventsFuture = EventController();
+class EventsScreenState extends State<EventsScreen> {
+  late EventsProvider _eventsProvider;
 
   @override
   void initState() {
     super.initState();
-    _initEvents();
-  }
-
-  Future<void> _initEvents() async {
-    try {
-      _allEvents = eventsFuture.fetchEvents('/');
-      _myEvents = eventsFuture.fetchEvents('/created');
-      _upcomingEvents = eventsFuture.fetchEvents('/upcoming');
-    } catch (e) {
-      debugPrint('Error initializing events: $e');
-    }
+    _eventsProvider = Provider.of<EventsProvider>(context, listen: false);
+    _eventsProvider.fetchEvents();
   }
 
   @override
@@ -76,7 +64,7 @@ class _EventsScreenState extends State<EventsScreen> {
             _buildJoinSection(size),
             _buildMyEvents(size),
             _buildUpcomingEvents(size),
-            JoinViaLink(size: size, eventController: eventsFuture,),
+            JoinViaLink(size: size, eventController: EventController()),
           ],
         ),
       ),
@@ -84,19 +72,17 @@ class _EventsScreenState extends State<EventsScreen> {
   }
 
   Widget _buildJoinSection(Size size) {
-    return FutureBuilder<Events?>(
-      future: _allEvents,
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
+    return Consumer<EventsProvider>(
+      builder: (context, eventsProvider, child) {
+        if (eventsProvider.allEvents == null) {
           return const Center(child: CircularProgressIndicator());
-        } else if (snapshot.hasError) {
-          return Center(child: Text('Error: ${snapshot.error}'));
-        } else if (snapshot.hasData) {
-          final events = snapshot.data!.events;
+        } else if (eventsProvider.allEvents!.events!.isEmpty) {
+          return const Center(child: Text('No events available'));
+        } else {
           return ListView.builder(
-            itemCount: events?.length,
+            itemCount: eventsProvider.allEvents!.events?.length,
             itemBuilder: (context, index) {
-              final event = events?[index];
+              final event = eventsProvider.allEvents!.events?[index];
               return JoinSectionCard(
                 size: size,
                 imgUrl: 'assets/images/dummy_event.png',
@@ -106,82 +92,77 @@ class _EventsScreenState extends State<EventsScreen> {
                 date: event?.dateOfEvent,
                 time: event?.startTime ?? 'Unknown Time',
                 location: event?.location ?? 'Unknown Location',
-                onPressed: () {},
+                onPressed: () =>
+                    _eventsProvider.joinEvent(context, event?.id ?? ""),
               );
             },
           );
-        } else {
-          return const Center(child: Text('No events available'));
         }
       },
     );
   }
 
   Widget _buildMyEvents(Size size) {
-    return FutureBuilder<Events?>(
-      future: _myEvents,
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
+    return Consumer<EventsProvider>(
+      builder: (context, eventsProvider, child) {
+        if (eventsProvider.myEvents == null) {
           return const Center(child: CircularProgressIndicator());
-        } else if (snapshot.hasError) {
-          return Center(child: Text('Error: ${snapshot.error}'));
-        } else if (snapshot.hasData) {
-          final events = snapshot.data!.events;
+        } else if (eventsProvider.myEvents!.events!.isEmpty) {
+          return const Center(child: Text('No events available'));
+        } else {
           return ListView.builder(
-            itemCount: events?.length,
+            itemCount: eventsProvider.myEvents!.events?.length,
             itemBuilder: (context, index) {
-              final event = events?[index];
+              final event = eventsProvider.myEvents!.events?[index];
               return MyEventCard(
                 size: size,
-                imgUrl: 'assets/images/dummy_event.png',
-                date: event?.dateOfEvent.toString() ??'23 Dec 2023',
-                time: event?.startTime ??'10:00 am',
+                imgUrl: index % 3 == 0
+                    ? 'https://media.istockphoto.com/id/974238866/photo/audience-listens-to-the-lecturer-at-the-conference.jpg?s=612x612&w=0&k=20&c=p_BQCJWRQQtZYnQlOtZMzTjeB_csic8OofTCAKLwT0M='
+                    : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ3sKxhHQxlr47NLHnZNosULQPikM25ziU0UQ&s",
+                date: event?.dateOfEvent?.toString() ?? '23 Dec 2023',
+                time: event?.startTime ?? '10:00 am',
                 typeOfEvent: event?.subCategory ?? 'Poetry Event',
-                location: event?.location ??'Mumbai, Maharashtra, India',
+                location: event?.location ?? 'Mumbai, Maharashtra, India',
                 about: event?.eventDescription ??
                     'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
                 visibility: event?.eventMode ?? 'Public',
-                guest: event?.participants?.length ??100,
+                guest: event?.participants?.length ?? 100,
               );
             },
           );
-        } else {
-          return const Center(child: Text('No events available'));
         }
       },
     );
   }
 
   Widget _buildUpcomingEvents(Size size) {
-    return FutureBuilder<Events?>(
-      future: _upcomingEvents,
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
+    return Consumer<EventsProvider>(
+      builder: (context, eventsProvider, child) {
+        if (eventsProvider.upcomingEvents == null) {
           return const Center(child: CircularProgressIndicator());
-        } else if (snapshot.hasError) {
-          return Center(child: Text('Error: ${snapshot.error}'));
-        } else if (snapshot.hasData) {
-          final events = snapshot.data!.events;
+        } else if (eventsProvider.upcomingEvents!.events!.isEmpty) {
+          return const Center(child: Text('No events available'));
+        } else {
           return ListView.builder(
-            itemCount: events?.length,
+            itemCount: eventsProvider.upcomingEvents!.events?.length,
             itemBuilder: (context, index) {
-              final event = events?[index];
+              final event = eventsProvider.upcomingEvents!.events?[index];
               return MyEventCard(
                 size: size,
-                imgUrl: 'assets/images/dummy_event.png',
-                date: event?.dateOfEvent.toString() ??'23 Dec 2023',
-                time: event?.startTime ??'10:00 am',
+                imgUrl: index % 3 == 0
+                    ? 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ7eOdNf1G2L2Vq0-nOe5WO895a_74WPa6deQ&s'
+                    : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSYix8GPPtyZMoceX0KmOkytUK4PGvKddwLPg&s",
+                date: event?.dateOfEvent?.toString() ?? '23 Dec 2023',
+                time: event?.startTime ?? '10:00 am',
                 typeOfEvent: event?.subCategory ?? 'Poetry Event',
-                location: event?.location ??'Mumbai, Maharashtra, India',
+                location: event?.location ?? 'Mumbai, Maharashtra, India',
                 about: event?.eventDescription ??
                     'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
                 visibility: event?.eventMode ?? 'Public',
-                guest: event?.participants?.length ??100,
+                guest: event?.participants?.length ?? 100,
               );
             },
           );
-        } else {
-          return const Center(child: Text('No events available'));
         }
       },
     );

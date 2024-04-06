@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import '../../API/controller/friend.controller.dart';
 import '../../API/models/friends.model.dart';
 import '../../utils/global_variabes.dart';
+import '../friends/components/custom_tile.dart';
 
 class SearchScreen extends StatefulWidget {
   static const String routeName = "/search";
@@ -34,25 +36,26 @@ class _SearchScreenState extends State<SearchScreen> {
 
   @override
   Widget build(BuildContext context) {
-     Size size = MediaQuery.of(context).size;
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
-        title: Text('Find People', style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: size.height * 0.02),
-                  ),
-                  centerTitle: false,
-      ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal:16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            _buildSearchBar(),
-            const SizedBox(height: 16),
-            _buildSearchResults(),
-          ],
+        title: Text(
+          'Find People',
+          style: TextStyle(
+              fontWeight: FontWeight.bold, fontSize: size.height * 0.02),
         ),
+        centerTitle: false,
+      ),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: _buildSearchBar(),
+          ),
+          const SizedBox(height: 16),
+          _buildSearchResults(),
+        ],
       ),
     );
   }
@@ -66,55 +69,54 @@ class _SearchScreenState extends State<SearchScreen> {
         children: [
           Expanded(
             child: TextFormField(
-              onFieldSubmitted: (value) => {
-                _searchUsers(_searchController.text)
-        },
+              onFieldSubmitted: (value) =>
+                  {_searchUsers(_searchController.text)},
               controller: _searchController,
-              style: TextStyle(
-          color: Colors.black,
-        ),
-        cursorColor: GlobalVariables.kPrimaryColor,
-        decoration: InputDecoration(
-          prefixIcon: Padding(
-            padding: const EdgeInsets.only(left: 6),
-            child: Icon(
-              Icons.search,
-              color: GlobalVariables.kPrimaryColor,
-              size: 18,
-            ),
-          ),
-          filled: true,
-          fillColor: Colors.white,
-          contentPadding: const EdgeInsets.only(top: 10),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(18),
-            borderSide: BorderSide.none,
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(18),
-            borderSide: const BorderSide(
-              color: GlobalVariables.kPrimaryColor,
-              width: 1,
-            ),
-          ),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(18),
-            borderSide: const BorderSide(
-              color: Colors.transparent,
-              width: 0,
-            ),
-          ),
-          hintText: 'Search for Users',
-          hintStyle: TextStyle(
-            fontWeight: FontWeight.w500,
-            color: const Color.fromARGB(255, 158, 158, 158),
-            fontSize: 15,
-          ),
-        ),
+              style: const TextStyle(
+                color: Colors.black,
+              ),
+              cursorColor: GlobalVariables.kPrimaryColor,
+              decoration: InputDecoration(
+                prefixIcon: const Padding(
+                  padding: EdgeInsets.only(left: 6),
+                  child: Icon(
+                    Icons.search,
+                    color: GlobalVariables.kPrimaryColor,
+                    size: 18,
+                  ),
+                ),
+                filled: true,
+                fillColor: Colors.white,
+                contentPadding: const EdgeInsets.only(top: 10),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(18),
+                  borderSide: BorderSide.none,
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(18),
+                  borderSide: const BorderSide(
+                    color: GlobalVariables.kPrimaryColor,
+                    width: 1,
+                  ),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(18),
+                  borderSide: const BorderSide(
+                    color: Colors.transparent,
+                    width: 0,
+                  ),
+                ),
+                hintText: 'Search for Users',
+                hintStyle: const TextStyle(
+                  fontWeight: FontWeight.w500,
+                  color: Color.fromARGB(255, 158, 158, 158),
+                  fontSize: 15,
+                ),
+              ),
               onChanged: _onSearchTextChanged,
             ),
           ),
-          
+
           // IconButton(
           //   icon: const Icon(Icons.search),
           //   onPressed: () {
@@ -143,6 +145,7 @@ class _SearchScreenState extends State<SearchScreen> {
   }
 
   Widget _buildSearchResults() {
+    Size size = MediaQuery.of(context).size;
     return Expanded(
       child: FutureBuilder<List<Friends>?>(
         future: _searchResults,
@@ -156,15 +159,27 @@ class _SearchScreenState extends State<SearchScreen> {
             return ListView.builder(
               itemCount: searchResults.length,
               itemBuilder: (context, index) {
-                return ListTile(
-                  title: Text(searchResults[index].username ?? ''),
-                  subtitle: Text(searchResults[index].bio ?? ''),
-                  // Add onTap functionality as needed
+                final data = searchResults[index];
+                return CustomTile(
+                  title: data.username!,
+                  subTitle: 'Potential Friend Subtitle',
+                  image: "",
+                  mutuals: "1", // Dummy data
+                  myFriend: false,
+                  id: data.id!,
                 );
               },
             );
           } else {
-            return const Center(child: Text('No search results'));
+            return Center(
+                child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Lottie.asset('assets/animations/Animation - 1712302998944.json',
+                    height: size.height * 0.35),
+                const Text("Opps! No result Found."),
+              ],
+            ));
           }
         },
       ),

@@ -1,5 +1,6 @@
+// ignore_for_file: library_private_types_in_public_api
+
 import 'package:echirp/screens/group/components/group_detail.dart';
-import 'package:echirp/screens/group/groupInfo.dart';
 import 'package:echirp/utils/global_variabes.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -8,15 +9,16 @@ class ChatScreen extends StatefulWidget {
   final String title;
   final String image;
 
-  const ChatScreen({Key? key, required this.title, required this.image}) : super(key: key);
+  const ChatScreen({Key? key, required this.title, required this.image})
+      : super(key: key);
   @override
   _ChatScreenState createState() => _ChatScreenState();
 }
-
+ 
 class _ChatScreenState extends State<ChatScreen> {
   final List<Message> _messages = [];
 
-  TextEditingController _controller = TextEditingController();
+  final TextEditingController _controller = TextEditingController();
 
   void _sendMessage(String message) {
     setState(() {
@@ -32,27 +34,25 @@ class _ChatScreenState extends State<ChatScreen> {
       appBar: AppBar(
         leading: IconButton(
             onPressed: () => Navigator.pop(context),
-            icon: Icon(Icons.arrow_back,color: Colors.white, size: 30)),
+            icon: const Icon(Icons.arrow_back, color: Colors.white, size: 30)),
         title: GestureDetector(
-          onTap: () =>  Navigator.of(context)
-              .pushNamed(
-                GroupDetailsPage.routeName),
+          onTap: () =>
+              Navigator.of(context).pushNamed(GroupDetailsPage.routeName),
           child: Row(
             children: [
-              CircleAvatar(
+              const CircleAvatar(
                 backgroundImage: AssetImage('assets/images/dummyDP.png'),
               ),
-              SizedBox(width: 8),
+              const SizedBox(width: 8),
               Text(
                 widget.title,
-                style:
-                    TextStyle(color: Colors.white,
-                    fontWeight: FontWeight.w500),
+                style: const TextStyle(
+                    color: Colors.white, fontWeight: FontWeight.w500),
               ),
             ],
           ),
         ),
-        backgroundColor: Color(0xffFEA865),
+        backgroundColor: const Color(0xffFEA865),
         centerTitle: false,
       ),
       body: Column(
@@ -73,7 +73,7 @@ class _ChatScreenState extends State<ChatScreen> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  CircleAvatar(
+                  const CircleAvatar(
                     backgroundImage: AssetImage('assets/images/dummyDP.png'),
                   ),
                   Expanded(
@@ -81,59 +81,48 @@ class _ChatScreenState extends State<ChatScreen> {
                       padding: const EdgeInsets.symmetric(horizontal: 10.0),
                       child: TextFormField(
                         controller: _controller,
-              
-                      
                         onFieldSubmitted: (value) => {
-                          if (_controller.text.isNotEmpty) {
-                          _sendMessage(_controller.text)
-                        }
-                              },
-                      
-                        style: TextStyle(
-                                color: Colors.black,
-                              ),
-                              cursorColor: GlobalVariables.kPrimaryColor,
-                              decoration: InputDecoration(
-                                suffixIcon: Icon(CupertinoIcons.photo,color: Colors.grey[700]),
-                                filled: true,
-                                fillColor: Colors.white,
-                                contentPadding: const EdgeInsets.only(top: 10),
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(18),
-                                  borderSide: BorderSide.none,
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(18),
-                                  borderSide: const BorderSide(
-                                    color: GlobalVariables.kPrimaryColor,
-                                    width: 1,
-                                  ),
-                                ),
-                                enabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(18),
-                                  borderSide: const BorderSide(
-                                    color: GlobalVariables.kPrimaryColor,
-                                    width: 0,
-                                  ),
-                                ),
-                                hintText: '    Type something...',
-                                hintStyle: TextStyle(
-                                  fontWeight: FontWeight.w500,
-                                  color: const Color.fromARGB(255, 158, 158, 158),
-                                  fontSize: 15,
-                                ),
-                      
-                      
-                      
-                      
-                      
-                      
-                      
-                      
-                      
+                          if (_controller.text.isNotEmpty)
+                            {_sendMessage(_controller.text)}
+                        },
+                        style: const TextStyle(
+                          color: Colors.black,
+                        ),
+                        cursorColor: GlobalVariables.kPrimaryColor,
+                        decoration: InputDecoration(
+                          suffixIcon: Icon(CupertinoIcons.photo,
+                              color: Colors.grey[700]),
+                          filled: true,
+                          fillColor: Colors.white,
+                          contentPadding: const EdgeInsets.only(top: 10),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(18),
+                            borderSide: BorderSide.none,
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(18),
+                            borderSide: const BorderSide(
+                              color: GlobalVariables.kPrimaryColor,
+                              width: 1,
+                            ),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(18),
+                            borderSide: const BorderSide(
+                              color: GlobalVariables.kPrimaryColor,
+                              width: 0,
+                            ),
+                          ),
+                          hintText: '    Type something...',
+                          hintStyle: const TextStyle(
+                            fontWeight: FontWeight.w500,
+                            color: Color.fromARGB(255, 158, 158, 158),
+                            fontSize: 15,
+                          ),
+                        ),
                       ),
-                                      ),
-                    ),),
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -153,8 +142,8 @@ class _ChatScreenState extends State<ChatScreen> {
           child: ConstrainedBox(
             constraints: BoxConstraints(maxWidth: size.width * 0.6),
             child: Container(
-              margin: EdgeInsets.all(4.0),
-              padding: EdgeInsets.all(8.0),
+              margin: const EdgeInsets.all(4.0),
+              padding: const EdgeInsets.all(8.0),
               decoration: BoxDecoration(
                 color: message.isMe
                     ? GlobalVariables.chatBubbleColor
@@ -163,12 +152,12 @@ class _ChatScreenState extends State<ChatScreen> {
               ),
               child: Text(
                 message.text,
-                style: TextStyle(color: Colors.black),
+                style: const TextStyle(color: Colors.black),
               ),
             ),
           ),
         ),
-        SizedBox(width: 8.0),
+        const SizedBox(width: 8.0),
         CircleAvatar(
           backgroundImage: AssetImage(message.isMe
               ? 'assets/images/dummyDP.png'

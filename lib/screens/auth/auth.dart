@@ -7,7 +7,6 @@ import 'package:echirp/utils/global_variabes.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../components/bottom_bar.dart';
-// import 'package:http/http.dart' as http;
 
 enum AuthMode {
   signUp,
@@ -33,7 +32,7 @@ class _AuthScreenState extends State<AuthScreen> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
     User? user = await authController.signIn(
-      _usernameController.text.trim(),
+      _usernameController.text.trim().toLowerCase(),
       _passwordController.text.trim(),
     );
 
@@ -41,6 +40,7 @@ class _AuthScreenState extends State<AuthScreen> {
       String? token = user.user!.token;
       prefs.setString("x-auth-token", token!);
       prefs.setString("username", user.user!.username!);
+      prefs.setString("_id", user.user!.id!);
 
       debugPrint(
         "User : ${prefs.getString('username')}, \nlocal Storage : ${prefs.getString('x-auth-token')},",
@@ -70,9 +70,9 @@ class _AuthScreenState extends State<AuthScreen> {
   void signUp() async {
     // ignore: no_leading_underscores_for_local_identifiers
     var _payload = {
-      'username': _usernameController.text.trim(),
+      'username': _usernameController.text.trim().toLowerCase(),
       'password': _passwordController.text.trim(),
-      'email': _emailController.text.trim()
+      'email': _emailController.text.trim().toLowerCase()
     };
 
     var user = await authController.signUp(context, _payload);
@@ -205,7 +205,7 @@ class _AuthScreenState extends State<AuthScreen> {
                             color: Colors.grey,
                           ),
                           SizedBox(
-                            height: size.height * 0.1,
+                            height: size.height * 0.08,
                           ),
                           CustomBtn(
                             text: 'Sign In ',
@@ -221,6 +221,38 @@ class _AuthScreenState extends State<AuthScreen> {
                               color: Colors.grey,
                             ),
                           ),
+                          SizedBox(
+                            height: size.height * 0.02,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              ClipRRect(
+                                  borderRadius: BorderRadius.circular(50),
+                                  child: Image.network(
+                                    "https://i.pinimg.com/564x/a7/26/b7/a726b78996d835c9b913932ad2a67059.jpg",
+                                    height: 50,
+                                  )),
+                              ClipRRect(
+                                  borderRadius: BorderRadius.circular(50),
+                                  child: Image.network(
+                                    "https://i.pinimg.com/originals/8f/8f/b4/8f8fb43ce828a22c91c0b59f55fb91b3.png",
+                                    height: 50,
+                                  )),
+                              ClipRRect(
+                                  borderRadius: BorderRadius.circular(50),
+                                  child: Image.network(
+                                    "https://imagedelivery.net/5MYSbk45M80qAwecrlKzdQ/598987ea-291d-4bdc-374b-61e9ff996800/thumbnail?v=2024022113",
+                                    height: 50,
+                                  )),
+                              ClipRRect(
+                                  borderRadius: BorderRadius.circular(50),
+                                  child: Image.network(
+                                    "https://mir-s3-cdn-cf.behance.net/project_modules/hd/d2abd662597191.5a9589b09ddf5.jpg",
+                                    height: 50,
+                                  )),
+                            ],
+                          )
                         ],
                       )
                     : Column(
@@ -261,7 +293,7 @@ class _AuthScreenState extends State<AuthScreen> {
                             color: Colors.grey,
                           ),
                           SizedBox(
-                            height: size.height * 0.05,
+                            height: size.height * 0.04,
                           ),
                           CustomBtn(
                             text: 'Sign Up',
@@ -277,6 +309,38 @@ class _AuthScreenState extends State<AuthScreen> {
                               color: Colors.grey,
                             ),
                           ),
+                          SizedBox(
+                            height: size.height * 0.02,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              ClipRRect(
+                                  borderRadius: BorderRadius.circular(50),
+                                  child: Image.network(
+                                    "https://i.pinimg.com/564x/a7/26/b7/a726b78996d835c9b913932ad2a67059.jpg",
+                                    height: 50,
+                                  )),
+                              ClipRRect(
+                                  borderRadius: BorderRadius.circular(50),
+                                  child: Image.network(
+                                    "https://i.pinimg.com/originals/8f/8f/b4/8f8fb43ce828a22c91c0b59f55fb91b3.png",
+                                    height: 50,
+                                  )),
+                              ClipRRect(
+                                  borderRadius: BorderRadius.circular(50),
+                                  child: Image.network(
+                                    "https://imagedelivery.net/5MYSbk45M80qAwecrlKzdQ/598987ea-291d-4bdc-374b-61e9ff996800/thumbnail?v=2024022113",
+                                    height: 50,
+                                  )),
+                              ClipRRect(
+                                  borderRadius: BorderRadius.circular(50),
+                                  child: Image.network(
+                                    "https://mir-s3-cdn-cf.behance.net/project_modules/hd/d2abd662597191.5a9589b09ddf5.jpg",
+                                    height: 50,
+                                  )),
+                            ],
+                          )
                         ],
                       ),
               ),

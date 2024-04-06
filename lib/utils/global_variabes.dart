@@ -15,7 +15,8 @@ class ColorSchema {
       LinearGradient(colors: [Colors.white, Colors.white]);
 }
 
-enum EventType { private, public }
+// ignore: constant_identifier_names
+enum EventType { PRIVATE, PUBLIC }
 
 enum Gender { male, female, others }
 

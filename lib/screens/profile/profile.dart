@@ -1,17 +1,15 @@
 import 'package:dotted_line/dotted_line.dart';
-import 'package:echirp/API/controller/event.controller.dart';
-import 'package:echirp/API/controller/friend.controller.dart';
-import 'package:echirp/API/controller/userData.controller.dart';
-import 'package:echirp/API/models/potentialFriends.dart';
 import 'package:echirp/screens/auth/auth.dart';
 import 'package:echirp/screens/home/components/event_brief_card.dart';
 import 'package:echirp/screens/profile/components/createdEventTile.dart';
 import 'package:echirp/utils/global_variabes.dart';
 import 'package:flutter/material.dart';
+// ignore: depend_on_referenced_packages
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../API/models/event.models.dart';
 import '../../API/models/userData.model.dart';
+import '../../API/provider/user_provider.dart';
 
 class ProfileScreen extends StatefulWidget {
   static const String routeName = '/profile';
@@ -19,36 +17,22 @@ class ProfileScreen extends StatefulWidget {
   final String id;
   final bool loggedUser;
 
-  const ProfileScreen({this.loggedUser = true, this.id = ''});
+  const ProfileScreen({super.key, this.loggedUser = true, this.id = ''});
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  late Future<Events?> _eventsAttended;
-  late Future<Events?> _eventsCreated;
-  late Future<UserData?> _profileData;
-  final eventsFuture = EventController();
-  final profileFuture = UserDataController();
-  final friendFuture = FriendController();
+  final UserProvider _userProvider = UserProvider();
 
   @override
   void initState() {
     super.initState();
-    _initEvents();
+    _initProfileData();
   }
 
-  Future<void> _initEvents() async {
-    try {
-      _eventsAttended = eventsFuture.fetchEvents('/attended');
-      _eventsCreated = eventsFuture.fetchEvents('/created');
-
-      _profileData = widget.loggedUser
-          ? profileFuture.fetchUserData()
-          : friendFuture.fetchFriendProfile('/${widget.id}');
-    } catch (e) {
-      debugPrint('Error initializing events: $e');
-    }
+  Future<void> _initProfileData() async {
+    await _userProvider.fetchUserData(widget.id, widget.loggedUser);
   }
 
   @override
@@ -79,7 +63,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
       body: SingleChildScrollView(
         child: FutureBuilder<UserData?>(
-          future: _profileData,
+          future: _userProvider.profileData,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(child: CircularProgressIndicator());
@@ -146,7 +130,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 20.0),
                       child: Text(
-                        userData.bio ?? '',
+                        userData.bio,
                         textAlign: TextAlign.start,
                         style: const TextStyle(
                             fontSize: 14, color: Colors.black87),
@@ -156,7 +140,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 12.0),
                       child: Container(
-                        height: 95,
+                        height: 85,
                         decoration: BoxDecoration(
                             color: Colors.black,
                             borderRadius: BorderRadius.circular(20)),
@@ -168,8 +152,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
-                                  userData.myCreatedEvents.length.toString() ??
-                                      'N/A', // Replace with actual number of events created
+                                  userData.myCreatedEvents.length
+                                      .toString(), // Replace with actual number of events created
                                   style: const TextStyle(
                                       color: Colors.white,
                                       fontWeight: FontWeight.bold,
@@ -196,8 +180,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
-                                  userData.numberOfFriends.toString() ??
-                                      'N/A', // Replace with actual number of events created
+                                  userData.numberOfFriends
+                                      .toString(), // Replace with actual number of events created
                                   style: const TextStyle(
                                       color: Colors.white,
                                       fontWeight: FontWeight.bold,
@@ -245,18 +229,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                     ),
                     const SizedBox(height: 20),
-                    const Text(
-                      'My Created Events',
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 8.0),
+                      child: Text(
+                        'My Created Events',
+                        style:
+                            TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                      ),
                     ),
-                    Container(height: 250, child: _buildEventsCreated(size)),
-                    const Text(
-                      'Events Attended',
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    SizedBox(height: 250, child: _buildEventsCreated(size)),
+                    const Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Text(
+                        'Events Attended',
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.bold),
+                      ),
                     ),
-                    Container(height: 200, child: _buildEventsAttended(size)),
+                    SizedBox(height: 200, child: _buildEventsAttended(size)),
                   ],
                 ),
               );
@@ -271,7 +261,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Widget _buildEventsAttended(Size size) {
     return FutureBuilder<Events?>(
-      future: _eventsAttended,
+      future: _userProvider.eventsAttended,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
@@ -282,22 +272,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
           if (events == null || events.isEmpty) {
             return const Center(child: Text('No events available'));
           }
-          return ListView.builder(
-            scrollDirection: Axis.horizontal,
-            itemCount: events.length,
-            itemBuilder: (context, index) {
-              final event = events[index];
-              return EventBriefCard(
-                size: size,
-                imageUrl: 'assets/images/dummy_event.png',
-                profileImg: 'assets/images/dummyDP.png',
-                userName: "By Meg Rigden",
-                dateTime:
-                    "${formatDate(event.dateOfEvent.toString(), false)} at ${formatTime(event.startTime.toString())}",
-                location: '${event.location}, ${event.address}',
-              );
-            },
-          );
+          return events.isNotEmpty
+              ? ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: snapshot.data!.events!.isNotEmpty ? 3 : 0,
+                  itemBuilder: (context, index) {
+                    final event = events[index];
+                    return EventBriefCard(
+                      size: size,
+                      imageUrl: 'assets/images/dummy_event.png',
+                      profileImg: 'assets/images/dummyDP.png',
+                      userName: "By Meg Rigden",
+                      dateTime:
+                          "${formatDate(event.dateOfEvent.toString(), false)} at ${formatTime(event.startTime.toString())}",
+                      location: '${event.location}, ${event.address}',
+                    );
+                  },
+                )
+              : const Center(child: Text('No events available'));
         } else {
           return const Center(child: Text('No events available'));
         }
@@ -307,7 +299,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Widget _buildEventsCreated(Size size) {
     return FutureBuilder<Events?>(
-      future: _eventsCreated,
+      future: _userProvider.eventsCreated,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
@@ -315,13 +307,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
           return Center(child: Text('Error: ${snapshot.error}'));
         } else if (snapshot.hasData) {
           final events = snapshot.data!.events;
-          if (events == null || events.isEmpty) {
-            return const Center(child: Text('No events available'));
-          }
           return ListView.builder(
-            itemCount: events.length,
+            itemCount: events?.length ?? 0,
             itemBuilder: (context, index) {
-              final event = events[index];
+              final event = events![index];
               return EventTile(
                 category: event.mainCategory.toString(),
                 title: event.eventDescription.toString(),
@@ -339,19 +328,29 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   String formatDate(String dateString, bool created) {
-    DateTime date = DateTime.parse(dateString);
-    String formattedDate;
+    try {
+      DateTime date = DateTime.parse(dateString);
+      String formattedDate;
 
-    created
-        ? formattedDate = DateFormat('dd MMM yyyy').format(date)
-        : formattedDate = DateFormat('dd MMM').format(date);
+      created
+          ? formattedDate = DateFormat('dd MMM yyyy').format(date)
+          : formattedDate = DateFormat('dd MMM').format(date);
 
-    return formattedDate;
+      return formattedDate;
+    } catch (e) {
+      debugPrint(e.toString());
+      return "";
+    }
   }
 
   String formatTime(String timeString) {
-    DateTime dateTime = DateTime.parse('2022-01-01 $timeString');
-    String formattedTime = DateFormat('h:mm a').format(dateTime);
-    return formattedTime;
+    try {
+      DateTime dateTime = DateTime.parse('2022-01-01 $timeString');
+      String formattedTime = DateFormat('h:mm a').format(dateTime);
+      return formattedTime;
+    } catch (e) {
+      debugPrint(e.toString());
+      return "${e.toString().split(" ")[4]} ${e.toString().split(" ")[5]}";
+    }
   }
 }

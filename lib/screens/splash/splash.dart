@@ -1,10 +1,13 @@
 import 'dart:async';
 
+import 'package:echirp/API/provider/user_provider.dart';
 import 'package:echirp/components/bottom_bar.dart';
 import 'package:echirp/screens/auth/auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../API/provider/friend_provider.dart';
 import '../../components/custom_btn.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -24,9 +27,13 @@ class _SplashScreenState extends State<SplashScreen> {
       () async {
         final prefs = await SharedPreferences.getInstance();
         if (prefs.containsKey('x-auth-token')) {
+          _initProfileData();
           Navigator.pushNamedAndRemoveUntil(
               // ignore: use_build_context_synchronously
-              context, BottomBar.routeName, arguments: 0, (route) => false);
+              context,
+              BottomBar.routeName,
+              arguments: 0,
+              (route) => false);
         } else {
           setState(() {
             loader = true;
@@ -39,7 +46,20 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
+    _initPotentialFriendList();
     checkAuth();
+  }
+
+  Future<void> _initPotentialFriendList() async {
+    await Provider.of<FriendProvider>(context, listen: false)
+        .fetchPotentialFriends();
+  }
+
+  Future<void> _initProfileData() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    // ignore: use_build_context_synchronously
+    await Provider.of<UserProvider>(context, listen: false)
+        .fetchUserData(pref.getString("_id")!, true);
   }
 
   @override

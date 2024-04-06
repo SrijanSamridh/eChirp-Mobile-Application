@@ -122,7 +122,7 @@ class JoinSectionCard extends StatelessWidget {
                           Column(
                             children: [
                               Text(
-                                '$date at $time',
+                                '${date.toString().split(' ')[0]} at $time',
                                 style: const TextStyle(
                                   color: Colors.white,
                                   fontSize: 12,

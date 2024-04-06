@@ -1,9 +1,11 @@
+// ignore_for_file: avoid_print, use_build_context_synchronously
+
 import 'dart:convert';
 
 import 'package:echirp/API/models/event.models.dart';
 import 'package:echirp/API/services/base_client.dart';
 import 'package:flutter/material.dart';
-
+import 'package:http/http.dart' as http;
 
 class EventController {
   final client = BaseClient();
@@ -41,39 +43,51 @@ class EventController {
     }
   }
 
-  Future<dynamic> postEvent(String code) async {
+  Future<dynamic> postEvent(BuildContext context, String code) async {
     try {
       debugPrint("Posting event...");
 
-      final response = await client.postJoinEvent(code);
+      final response = await client.post('/events/join', {"eventID": code});
 
-      if (response != null && response.isNotEmpty) {
-        final decodedResponse = json.decode(response as String);
-        return decodedResponse;
+      if (response.isNotEmpty) {
+        var message = response['message'];
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(message),
+          ),
+        );
+        return response;
       } else {
         debugPrint('Empty or null response received');
-        return null;
+        return http.Response('', 204); // Return an empty response with status code 204
       }
     } catch (e) {
       debugPrint('Error posting event: $e');
-      return null;
+      rethrow; // Rethrow the error for handling in the calling code
     }
   }
 
-  Future<Event?> createEvent(dynamic body) async {
-  try {
-    var response = await BaseClient().post('/events', body);
-    
-    if (response != null && response.isNotEmpty) {
-      return Event.fromJson(response);
-    } else {
-      debugPrint('Empty or null response received');
-      return null;
-    }
-  } catch (e) {
-    debugPrint('Error creating event: $e');
-    return null;
-  }
-}
+  Future<dynamic> createEvent(dynamic body) async {
+    // Get Token
+    String token = await BaseClient().getToken();
 
+    // Header Config
+    var headers = <String, String>{
+      'Content-Type': 'application/json',
+      'x-auth-token': token,
+    };
+
+    try {
+      final http.Response response = await http.post(
+        Uri.parse("https://e-chirp-server.vercel.app/api/events"),
+        headers: headers,
+        body: jsonEncode(body),
+      );
+
+      return response;
+    } catch (e) {
+      debugPrint('Error creating event: $e');
+      rethrow; // Rethrow the error for handling in the calling code
+    }
+  }
 }

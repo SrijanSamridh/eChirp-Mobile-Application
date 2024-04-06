@@ -4,10 +4,10 @@ import 'package:echirp/utils/skeleton_loader.dart';
 import 'package:flutter/material.dart';
 import 'package:echirp/components/custom_app_bar.dart';
 import 'package:echirp/screens/friends/components/custom_tile.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
 import '../../API/provider/friend_provider.dart';
-
 
 class FriendsScreen extends StatefulWidget {
   static const String routeName = '/friends';
@@ -206,13 +206,24 @@ class FriendRequestsList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     final friendProvider = Provider.of<FriendProvider>(context);
     final friendRequests = friendProvider.friendRequests;
 
     return friendRequests == null
         ? const Center(child: CircularProgressIndicator())
         : friendRequests.isEmpty
-            ? const Center(child: Text('No friend requests available'))
+            ? Center(
+                child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Lottie.asset('assets/animations/under-development.json',
+                      height: size.height * 0.35),
+                  const Text(
+                      "Hey! No Request Available, Why don't you request?"),
+                ],
+              ))
             : ListView.builder(
                 itemCount: friendRequests.length,
                 itemBuilder: (context, index) {

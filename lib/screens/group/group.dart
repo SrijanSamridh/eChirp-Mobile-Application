@@ -1,5 +1,6 @@
 import 'package:echirp/utils/skeleton_loader.dart';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:echirp/screens/group/components/group_tile.dart';
 import 'package:echirp/screens/group/groupInfo.dart';
@@ -96,13 +97,22 @@ class _GroupScreenState extends State<GroupScreen> {
   Widget _buildMyGroupsList() {
     final groupProvider = Provider.of<GroupProvider>(context);
     final myGroups = groupProvider.myGroups;
+    Size size = MediaQuery.of(context).size;
 
     if (myGroups == null) {
       return _buildSkeletonLoader();
     }
 
     if (myGroups.isEmpty && _dataLoaded) {
-      return const Center(child: Text("No Data Found"));
+      return Center(
+          child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Lottie.asset('assets/animations/under-development.json',
+              height: size.height * 0.35),
+          const Text("Opps! No Data Available, create a group today."),
+        ],
+      ));
     }
 
     return ListView.builder(
@@ -113,8 +123,8 @@ class _GroupScreenState extends State<GroupScreen> {
           onTap: () => Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => const ChatScreen(
-                        title: 'Poker mates',
+                  builder: (context) => ChatScreen(
+                        title: group.name.toString(),
                         image: '',
                       ))),
           child: GroupTile(
@@ -130,6 +140,7 @@ class _GroupScreenState extends State<GroupScreen> {
   }
 
   Widget _buildJoinedGroupsList() {
+    Size size = MediaQuery.of(context).size;
     final groupProvider = Provider.of<GroupProvider>(context);
     final joinedGroups = groupProvider.joinedGroups;
 
@@ -138,7 +149,15 @@ class _GroupScreenState extends State<GroupScreen> {
     }
 
     if (joinedGroups.isEmpty && _dataLoaded) {
-      return const Center(child: Text("No Data Found"));
+      return Center(
+          child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Lottie.asset('assets/animations/under-development.json',
+              height: size.height * 0.35),
+          const Text("Opps! No Data Available, Join a group today Swipe right."),
+        ],
+      ));
     }
 
     return ListView.builder(
@@ -157,6 +176,7 @@ class _GroupScreenState extends State<GroupScreen> {
   }
 
   Widget _buildAllGroupsList() {
+    Size size = MediaQuery.of(context).size;
     final groupProvider = Provider.of<GroupProvider>(context);
     final allGroups = groupProvider.allGroups;
 
@@ -165,7 +185,15 @@ class _GroupScreenState extends State<GroupScreen> {
     }
 
     if (allGroups.isEmpty && _dataLoaded) {
-      return const Center(child: Text("No Data Found"));
+      return Center(
+          child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Lottie.asset('assets/animations/under-development.json',
+              height: size.height * 0.35),
+          const Text("Opps! No Data Available, Create your own Group."),
+        ],
+      ));
     }
 
     return ListView.builder(
