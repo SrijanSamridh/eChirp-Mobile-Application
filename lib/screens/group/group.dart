@@ -125,7 +125,7 @@ class _GroupScreenState extends State<GroupScreen> {
               MaterialPageRoute(
                   builder: (context) => ChatScreen(
                         title: group.name.toString(),
-                        image: '',
+                        image: '', id: group.groupId.toString(), participants: group.participants,
                       ))),
           child: GroupTile(
             image: group.imageUrl ?? '',

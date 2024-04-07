@@ -17,7 +17,6 @@ class UserProvider extends ChangeNotifier {
 
   Future<void> fetchUserData(String id, bool loggedUser) async {
     try {
-      
       _eventsAttended = EventController().fetchEvents('/attended');
       _eventsCreated = EventController().fetchEvents('/created');
 
@@ -30,5 +29,10 @@ class UserProvider extends ChangeNotifier {
     } catch (e) {
       debugPrint('Error fetching profile data: $e');
     }
+  }
+
+  Future<UserData?> fetchUserId() {
+    _profileData = UserDataController().fetchUserData();
+    return _profileData;
   }
 }

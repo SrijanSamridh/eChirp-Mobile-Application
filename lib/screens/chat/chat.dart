@@ -1,30 +1,102 @@
-// ignore_for_file: library_private_types_in_public_api
+// ignore_for_file: avoid_print
 
+import 'dart:convert';
+
+import 'package:echirp/API/models/message.models.dart';
+import 'package:echirp/API/services/base_client.dart';
 import 'package:echirp/screens/group/components/group_detail.dart';
 import 'package:echirp/utils/global_variabes.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../API/models/group.models.dart';
+import '../../API/services/socket_connection.dart';
 
 class ChatScreen extends StatefulWidget {
+  final String id;
   final String title;
   final String image;
+  final List<Participant>? participants;
 
-  const ChatScreen({Key? key, required this.title, required this.image})
+  const ChatScreen(
+      {Key? key,
+      required this.title,
+      required this.image,
+      required this.id,
+      required this.participants})
       : super(key: key);
   @override
   _ChatScreenState createState() => _ChatScreenState();
 }
- 
+
 class _ChatScreenState extends State<ChatScreen> {
-  final List<Message> _messages = [];
+  late List<MessageElement> _messages = [];
+  String userId = "";
 
   final TextEditingController _controller = TextEditingController();
 
-  void _sendMessage(String message) {
+  Future<void> _sendMessage(String message) async {
+    var body = {"groupId": widget.id, "message": message};
+
+    var response = await BaseClient().post('/message', body);
+    var result = response['message'];
+    print("result : $result");
+    result["participants"] = widget.participants;
+    SocketConnection.socket.emit(
+      "new-message", result
+    );
     setState(() {
-      _messages.add(Message(text: message, isMe: true));
+      _messages.add(MessageElement.fromJson(result));
     });
     _controller.clear();
+  }
+
+  Future<dynamic> fetchMessages(String groupId) async {
+    try {
+      var response = await BaseClient().get('/message/$groupId');
+      final decodedResponse = json.decode(response);
+
+      if (decodedResponse is! Map<String, dynamic>) {
+        debugPrint('Unexpected response format: $decodedResponse');
+        return null;
+      }
+      final messagesData = decodedResponse['messages'];
+      print("List of Messages : $messagesData");
+
+      if (messagesData != null && messagesData is List) {
+        final messages = messagesData
+            .map<MessageElement>(
+                (messageData) => MessageElement.fromJson(messageData))
+            .toList();
+        return messages;
+      } else {
+        debugPrint('Events data not found in response');
+        return null;
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getuserId();
+    print(userId);
+    getMessages();
+  }
+
+  Future<void> getMessages() async {
+    var data = await fetchMessages(widget.id);
+    setState(() {
+      _messages = data;
+    });
+  }
+
+  Future<void> getuserId() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    userId = prefs.getString('_id')!;
   }
 
   @override
@@ -132,11 +204,10 @@ class _ChatScreenState extends State<ChatScreen> {
     );
   }
 
-  Widget _buildMessage(Message message) {
+  Widget _buildMessage(MessageElement message) {
     Size size = MediaQuery.of(context).size;
     return Row(
-      mainAxisAlignment:
-          message.isMe ? MainAxisAlignment.end : MainAxisAlignment.start,
+      mainAxisAlignment: true ? MainAxisAlignment.end : MainAxisAlignment.start,
       children: [
         Flexible(
           child: ConstrainedBox(
@@ -145,32 +216,35 @@ class _ChatScreenState extends State<ChatScreen> {
               margin: const EdgeInsets.all(4.0),
               padding: const EdgeInsets.all(8.0),
               decoration: BoxDecoration(
-                color: message.isMe
-                    ? GlobalVariables.chatBubbleColor
-                    : Colors.grey[300],
+                color:
+                    true ? GlobalVariables.chatBubbleColor : Colors.grey[300],
                 borderRadius: BorderRadius.circular(20),
               ),
               child: Text(
-                message.text,
+                message.message.toString(),
                 style: const TextStyle(color: Colors.black),
               ),
             ),
           ),
         ),
         const SizedBox(width: 8.0),
-        CircleAvatar(
-          backgroundImage: AssetImage(message.isMe
-              ? 'assets/images/dummyDP.png'
-              : 'assets/other_user_photo.jpg'),
-        ),
+        true
+            ? CircleAvatar(
+                backgroundImage: AssetImage(true
+                    ? 'assets/images/dummyDP.png'
+                    : 'assets/other_user_photo.jpg'),
+              )
+            : Container(),
       ],
     );
   }
 }
 
 class Message {
-  final String text;
-  final bool isMe;
+  final String groupId;
+  final String message;
+  final bool sendByMe;
 
-  Message({required this.text, required this.isMe});
+  Message(
+      {required this.groupId, required this.message, required this.sendByMe});
 }

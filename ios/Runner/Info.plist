@@ -47,5 +47,7 @@
 	<string>Need access to your photos for uploading product images!</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>com.apple.security.network.client</key>
+	<true/>
 </dict>
 </plist>

@@ -17,9 +17,9 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         surfaceTintColor: Colors.transparent,
-        actions: [
+        actions: const [
           Padding(
-            padding: const EdgeInsets.only(right: 20.0),
+            padding: EdgeInsets.only(right: 20.0),
             child: Text(
               'Edit',
               style: TextStyle(
@@ -37,38 +37,38 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Container(
-                height: size.height * 0.32,
+                height: size.height * 0.28,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(30),
                   color: GlobalVariables.chatBubbleColor,
                 ),
-                padding: EdgeInsets.all(20.0),
+                padding: const EdgeInsets.all(20.0),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    SizedBox(
+                    const SizedBox(
                       height: 15,
                     ),
-                    CircleAvatar(
+                    const CircleAvatar(
                       radius: 50,
                       backgroundColor: Colors.white,
                     ),
-                    SizedBox(height: 10.0),
+                    const SizedBox(height: 10.0),
                     Text(
-                      'Football Lovers',
+                      'Football Lovers'.toUpperCase(),
                       style: TextStyle(
-                        fontSize: 36.0,
+                        fontSize: size.height * 0.03,
                         fontWeight: FontWeight.w500,
                       ),
                     ),
                     Text(
                       'Group: 22.3k members',
-                      style: TextStyle(fontSize: 13),
+                      style: TextStyle(fontSize: size.height * 0.015),
                     ),
                   ],
                 ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               Container(
                 height: 250,
                 decoration: BoxDecoration(
@@ -79,10 +79,10 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SizedBox(height: 10.0),
+                    const SizedBox(height: 10.0),
                     Row(
                       children: [
-                        SizedBox(
+                        const SizedBox(
                           width: 10,
                         ),
                         Container(
@@ -92,21 +92,20 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
                                 borderRadius: BorderRadius.circular(50),
                                 //shape: BoxShape.circle,
                                 color: Colors.grey[300]),
-                            child: Center(
+                            child: const Center(
                                 child: Icon(Icons.people_rounded,
                                     color: GlobalVariables.kPrimaryColor))),
-                        SizedBox(
+                        const SizedBox(
                           width: 10,
                         ),
-                        Text("Add People to Group",
+                        const Text("Add People to Group",
                             style: TextStyle(
                                 color: GlobalVariables.kPrimaryColor,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 16))
                       ],
                     ),
-                    Divider(),
-                    SizedBox(height: 10.0),
+                    const Divider(),
                     Expanded(
                       child: ListView.builder(
                         itemCount: 5,
@@ -115,31 +114,32 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
                         },
                       ),
                     ),
+                    const SizedBox(height: 10.0),
                   ],
                 ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(30),
                   color: Colors.white,
                 ),
-                padding: EdgeInsets.all(10.0),
+                padding: const EdgeInsets.all(10.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SizedBox(height: 10.0),
+                    const SizedBox(height: 10.0),
                     _buildActionTile('Clear Chat'),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 18.0),
+                    const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 18.0),
                       child: Divider(
                         color: Colors.grey,
                         height: 0,
                       ),
                     ),
                     _buildActionTile('Exit Group'),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 18.0),
+                    const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 18.0),
                       child: Divider(
                         color: Colors.grey,
                         height: 0,
@@ -150,7 +150,7 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
                 ),
               ),
               Container(
-                padding: EdgeInsets.all(20.0),
+                padding: const EdgeInsets.all(20.0),
                 alignment: Alignment.bottomLeft,
                 child: Text(
                   'Created 13 June 2023',
@@ -168,25 +168,25 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
     return Column(
       children: [
         Container(
-          margin: EdgeInsets.symmetric(vertical: 10.0),
+          margin: const EdgeInsets.symmetric(vertical: 10.0),
           child: Row(
             children: [
-              SizedBox(
+              const SizedBox(
                 width: 10,
               ),
-              CircleAvatar(
+              const CircleAvatar(
                 backgroundColor: Colors.black,
               ),
-              SizedBox(width: 10.0),
+              const SizedBox(width: 10.0),
               Column(
                 children: [
                   Text(
                     title,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 16.0,
                     ),
                   ),
-                  Divider(
+                  const Divider(
                     color: Colors.grey,
                     height: 1.0,
                   ),
@@ -204,7 +204,7 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
       child: ListTile(
         title: Text(
           title,
-          style: TextStyle(color: Colors.red, fontSize: 16),
+          style: const TextStyle(color: Colors.red, fontSize: 16),
         ),
         onTap: () {
           // Handle tile tap

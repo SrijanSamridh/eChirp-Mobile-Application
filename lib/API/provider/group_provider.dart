@@ -19,7 +19,7 @@ class GroupProvider extends ChangeNotifier {
     try {
       final myGroupsResponse = await _groupController.fetchGroups("owned");
       _myGroups = myGroupsResponse?.groups;
-      print(_myGroups?.first.participants!.length);
+      print(_myGroups?.first.groupId);
 
       final joinedGroupsResponse = await _groupController.fetchGroups("joined");
       _joinedGroups = joinedGroupsResponse?.groups;
