@@ -164,12 +164,21 @@ class _GroupScreenState extends State<GroupScreen> {
       itemCount: joinedGroups.length,
       itemBuilder: (context, index) {
         final group = joinedGroups[index];
-        return GroupTile(
-          image: group.imageUrl ?? '',
-          title: group.name ?? '',
-          recentMessage: 'Are we playing today?',
-          senderName: 'John Doe',
-          totalMembers: group.participants?.length ?? 0,
+        return GestureDetector(
+          onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => ChatScreen(
+                        title: group.name.toString(),
+                        image: '', id: group.groupId.toString(), participants: group.participants,
+                      ))),
+          child: GroupTile(
+            image: group.imageUrl ?? '',
+            title: group.name ?? '',
+            recentMessage: 'Are we playing today?',
+            senderName: 'John Doe',
+            totalMembers: group.participants?.length ?? 0,
+          ),
         );
       },
     );
