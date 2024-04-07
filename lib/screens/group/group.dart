@@ -155,7 +155,7 @@ class _GroupScreenState extends State<GroupScreen> {
         children: [
           Lottie.asset('assets/animations/under-development.json',
               height: size.height * 0.35),
-          const Text("Opps! No Data Available, Join a group today Swipe right."),
+          const Text("Join a group today Swipe right."),
         ],
       ));
     }

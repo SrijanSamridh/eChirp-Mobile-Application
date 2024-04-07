@@ -1,6 +1,7 @@
 import 'package:echirp/components/bottom_bar.dart';
 import 'package:echirp/screens/profile/profile.dart';
 import 'package:echirp/utils/global_variabes.dart';
+import 'package:echirp/utils/skeleton_loader.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -309,7 +310,7 @@ class _WidgetPotentialFriends extends StatelessWidget {
     final potentialFriends = friendProvider.potentialFriends?.potentialFriends;
 
     return potentialFriends == null
-        ? const Center(child: CircularProgressIndicator())
+        ? SkeletonLoaders.buildSkeletonLoader(context)
         : SizedBox(
             height: size.height * 0.20, // Set a fixed height for the ListView
             child: ListView.builder(

@@ -27,6 +27,7 @@ class _AuthScreenState extends State<AuthScreen> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  bool? showPasswordCheck = false;
 
   Future<void> signIn() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -91,6 +92,12 @@ class _AuthScreenState extends State<AuthScreen> {
     _emailController.dispose();
     _passwordController.dispose();
   }
+
+  // void showPassword(bool value){
+  //   if(value == true && showPasswordCheck == false){
+  //     showPasswordCheck =
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -195,6 +202,9 @@ class _AuthScreenState extends State<AuthScreen> {
                             color: Colors.grey,
                           ),
                           TextField(
+                            obscureText: !showPasswordCheck!,
+                            enableSuggestions: false,
+                            autocorrect: false,
                             controller: _passwordController,
                             decoration: const InputDecoration(
                               hintText: 'Password',
@@ -204,8 +214,23 @@ class _AuthScreenState extends State<AuthScreen> {
                           const Divider(
                             color: Colors.grey,
                           ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              const Text("Show Password "),
+                              Checkbox(
+                                checkColor: Colors.white,
+                                value: showPasswordCheck,
+                                onChanged: (bool? value) {
+                                  setState(() {
+                                    showPasswordCheck = value;
+                                  });
+                                },
+                              ),
+                            ],
+                          ),
                           SizedBox(
-                            height: size.height * 0.08,
+                            height: size.height * 0.02,
                           ),
                           CustomBtn(
                             text: 'Sign In ',
@@ -229,26 +254,26 @@ class _AuthScreenState extends State<AuthScreen> {
                             children: [
                               ClipRRect(
                                   borderRadius: BorderRadius.circular(50),
-                                  child: Image.network(
-                                    "https://i.pinimg.com/564x/a7/26/b7/a726b78996d835c9b913932ad2a67059.jpg",
+                                  child: Image.asset(
+                                    "assets/icons/facbook-logo.jpg",
                                     height: 50,
                                   )),
                               ClipRRect(
                                   borderRadius: BorderRadius.circular(50),
-                                  child: Image.network(
-                                    "https://i.pinimg.com/originals/8f/8f/b4/8f8fb43ce828a22c91c0b59f55fb91b3.png",
+                                  child: Image.asset(
+                                    "assets/icons/google-logo.jpg",
                                     height: 50,
                                   )),
                               ClipRRect(
                                   borderRadius: BorderRadius.circular(50),
-                                  child: Image.network(
-                                    "https://imagedelivery.net/5MYSbk45M80qAwecrlKzdQ/598987ea-291d-4bdc-374b-61e9ff996800/thumbnail?v=2024022113",
+                                  child: Image.asset(
+                                    "assets/icons/instagram-logo.png",
                                     height: 50,
                                   )),
                               ClipRRect(
                                   borderRadius: BorderRadius.circular(50),
-                                  child: Image.network(
-                                    "https://mir-s3-cdn-cf.behance.net/project_modules/hd/d2abd662597191.5a9589b09ddf5.jpg",
+                                  child: Image.asset(
+                                    "assets/icons/twiter-log.jpeg",
                                     height: 50,
                                   )),
                             ],
@@ -260,7 +285,7 @@ class _AuthScreenState extends State<AuthScreen> {
                           const Text(
                               'Register Today, Celebrate Tomorrow: Start Now!'),
                           SizedBox(
-                            height: size.height * 0.05,
+                            height: size.height * 0.03,
                           ),
                           TextField(
                             controller: _usernameController,
@@ -283,6 +308,9 @@ class _AuthScreenState extends State<AuthScreen> {
                             color: Colors.grey,
                           ),
                           TextField(
+                            obscureText: !showPasswordCheck!,
+                            enableSuggestions: false,
+                            autocorrect: false,
                             controller: _passwordController,
                             decoration: const InputDecoration(
                               hintText: 'Password',
@@ -292,8 +320,23 @@ class _AuthScreenState extends State<AuthScreen> {
                           const Divider(
                             color: Colors.grey,
                           ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              const Text("Show Password "),
+                              Checkbox(
+                                checkColor: Colors.white,
+                                value: showPasswordCheck,
+                                onChanged: (bool? value) {
+                                  setState(() {
+                                    showPasswordCheck = value;
+                                  });
+                                },
+                              ),
+                            ],
+                          ),
                           SizedBox(
-                            height: size.height * 0.04,
+                            height: size.height * 0.00,
                           ),
                           CustomBtn(
                             text: 'Sign Up',
@@ -317,26 +360,26 @@ class _AuthScreenState extends State<AuthScreen> {
                             children: [
                               ClipRRect(
                                   borderRadius: BorderRadius.circular(50),
-                                  child: Image.network(
-                                    "https://i.pinimg.com/564x/a7/26/b7/a726b78996d835c9b913932ad2a67059.jpg",
+                                  child: Image.asset(
+                                    "assets/icons/facbook-logo.jpg",
                                     height: 50,
                                   )),
                               ClipRRect(
                                   borderRadius: BorderRadius.circular(50),
-                                  child: Image.network(
-                                    "https://i.pinimg.com/originals/8f/8f/b4/8f8fb43ce828a22c91c0b59f55fb91b3.png",
+                                  child: Image.asset(
+                                    "assets/icons/google-logo.jpg",
                                     height: 50,
                                   )),
                               ClipRRect(
                                   borderRadius: BorderRadius.circular(50),
-                                  child: Image.network(
-                                    "https://imagedelivery.net/5MYSbk45M80qAwecrlKzdQ/598987ea-291d-4bdc-374b-61e9ff996800/thumbnail?v=2024022113",
+                                  child: Image.asset(
+                                    "assets/icons/instagram-logo.png",
                                     height: 50,
                                   )),
                               ClipRRect(
                                   borderRadius: BorderRadius.circular(50),
-                                  child: Image.network(
-                                    "https://mir-s3-cdn-cf.behance.net/project_modules/hd/d2abd662597191.5a9589b09ddf5.jpg",
+                                  child: Image.asset(
+                                    "assets/icons/twiter-log.jpeg",
                                     height: 50,
                                   )),
                             ],

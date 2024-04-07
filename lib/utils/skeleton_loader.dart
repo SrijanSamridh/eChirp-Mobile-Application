@@ -142,4 +142,30 @@ class SkeletonLoaders {
       ),
     );
   }
+
+  static Widget buildSkeletonLoader(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+    return SizedBox(
+      height: size.height * 0.18,
+      // width: size.width * 0.36,
+      child: Shimmer.fromColors(
+        baseColor: Colors.grey[300]!,
+        highlightColor: Colors.grey[100]!,
+        child: ListView.builder(
+          scrollDirection: Axis.horizontal,
+          itemCount: 3, // Placeholder for 3 skeleton cards
+          itemBuilder: (context, index) {
+            return Container(
+              margin: const EdgeInsets.symmetric(horizontal: 8.0),
+              width: size.width * 0.35,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(15),
+                color: Colors.grey[300],
+              ),
+            );
+          },
+        ),
+      ),
+    );
+  }
 }
