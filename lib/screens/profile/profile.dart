@@ -51,6 +51,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     SharedPreferences pref =
                         await SharedPreferences.getInstance();
                     pref.remove('x-auth-token');
+                    pref.remove('_id');
                     Navigator.pushNamedAndRemoveUntil(
                         // ignore: use_build_context_synchronously
                         context,
@@ -233,8 +234,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       padding: EdgeInsets.symmetric(horizontal: 8.0),
                       child: Text(
                         'My Created Events',
-                        style:
-                            TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.bold),
                       ),
                     ),
                     SizedBox(height: 250, child: _buildEventsCreated(size)),
