@@ -22,7 +22,7 @@ class Events {
 
 class Event {
     String? id;
-    String? createdBy;
+    CreatedBy? createdBy;
     String? mainCategory;
     String? subCategory;
     String? subSubCategory;
@@ -33,10 +33,13 @@ class Event {
     String? nameOfPlace;
     String? address;
     int? maxParticipants;
-    List<String>? participants;
+    List<Participant>? participants;
     String? eventMode;
+    String? ageRange;
+    String? gender;
     int? femaleCount;
     int? maleCount;
+    String? occupation;
     String? eventTitle;
     String? eventDescription;
     String? coverImgUrl;
@@ -62,8 +65,11 @@ class Event {
         this.maxParticipants,
         this.participants,
         this.eventMode,
+        this.ageRange,
+        this.gender,
         this.femaleCount,
         this.maleCount,
+        this.occupation,
         this.eventTitle,
         this.eventDescription,
         this.coverImgUrl,
@@ -81,7 +87,7 @@ class Event {
 
     factory Event.fromJson(Map<String, dynamic> json) => Event(
         id: json["_id"],
-        createdBy: json["createdBy"],
+        createdBy: json["createdBy"] == null ? null : CreatedBy.fromJson(json["createdBy"]),
         mainCategory: json["mainCategory"],
         subCategory: json["subCategory"],
         subSubCategory: json["subSubCategory"],
@@ -92,10 +98,13 @@ class Event {
         nameOfPlace: json["nameOfPlace"],
         address: json["address"],
         maxParticipants: json["maxParticipants"],
-        participants: json["participants"] == null ? [] : List<String>.from(json["participants"]!.map((x) => x)),
+        participants: json["participants"] == null ? [] : List<Participant>.from(json["participants"]!.map((x) => participantValues.map[x]!)),
         eventMode: json["eventMode"],
+        ageRange: json["ageRange"],
+        gender: json["gender"],
         femaleCount: json["femaleCount"],
         maleCount: json["maleCount"],
+        occupation: json["occupation"],
         eventTitle: json["eventTitle"],
         eventDescription: json["eventDescription"],
         coverImgUrl: json["coverImgUrl"],
@@ -109,7 +118,7 @@ class Event {
 
     Map<String, dynamic> toJson() => {
         "_id": id,
-        "createdBy": createdBy,
+        "createdBy": createdBy?.toJson(),
         "mainCategory": mainCategory,
         "subCategory": subCategory,
         "subSubCategory": subSubCategory,
@@ -120,10 +129,13 @@ class Event {
         "nameOfPlace": nameOfPlace,
         "address": address,
         "maxParticipants": maxParticipants,
-        "participants": participants == null ? [] : List<dynamic>.from(participants!.map((x) => x)),
+        "participants": participants == null ? [] : List<dynamic>.from(participants!.map((x) => participantValues.reverse[x])),
         "eventMode": eventMode,
+        "ageRange": ageRange,
+        "gender": gender,
         "femaleCount": femaleCount,
         "maleCount": maleCount,
+        "occupation": occupation,
         "eventTitle": eventTitle,
         "eventDescription": eventDescription,
         "coverImgUrl": coverImgUrl,
@@ -134,4 +146,56 @@ class Event {
         "createdAt": createdAt?.toIso8601String(),
         "updatedAt": updatedAt?.toIso8601String(),
     };
+}
+
+class CreatedBy {
+    String? id;
+    String? username;
+    String? email;
+
+    CreatedBy({
+        this.id,
+        this.username,
+        this.email,
+    });
+
+    factory CreatedBy.fromRawJson(String str) => CreatedBy.fromJson(json.decode(str));
+
+    String toRawJson() => json.encode(toJson());
+
+    factory CreatedBy.fromJson(Map<String, dynamic> json) => CreatedBy(
+        id: json["_id"],
+        username: json["username"],
+        email: json["email"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "_id": id,
+        "username": username,
+        "email": email,
+    };
+}
+
+enum Participant {
+    THE_660_F8_FEDD1981_FF70_FF6_B920,
+    THE_660_F908852_FAF823234_BAF1_B,
+    THE_66110285_EB88_C7798_FE635_F5
+}
+
+final participantValues = EnumValues({
+    "660f8fedd1981ff70ff6b920": Participant.THE_660_F8_FEDD1981_FF70_FF6_B920,
+    "660f908852faf823234baf1b": Participant.THE_660_F908852_FAF823234_BAF1_B,
+    "66110285eb88c7798fe635f5": Participant.THE_66110285_EB88_C7798_FE635_F5
+});
+
+class EnumValues<T> {
+    Map<String, T> map;
+    late Map<T, String> reverseMap;
+
+    EnumValues(this.map);
+
+    Map<T, String> get reverse {
+        reverseMap = map.map((k, v) => MapEntry(v, k));
+        return reverseMap;
+    }
 }
