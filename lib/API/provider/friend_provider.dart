@@ -36,6 +36,9 @@ class FriendProvider extends ChangeNotifier {
     try {
       _potentialFriends =
           await friendController.fetchPotentialFriends('/potential');
+      for (int i = 0; i < _potentialFriends!.potentialFriends.length; i++) {
+        print("${_potentialFriends?.potentialFriends[i].friend.username} : ${_potentialFriends?.potentialFriends[i].count} mutual");
+      }
     } catch (e) {
       print('Error fetching potential friends: $e');
     }

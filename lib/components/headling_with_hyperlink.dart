@@ -17,7 +17,7 @@ class HeadlineWithHyperLink extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(
         horizontal: 12.0,
-        vertical: 8.0,
+        vertical: 1.5,
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,

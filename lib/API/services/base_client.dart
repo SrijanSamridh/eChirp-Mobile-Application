@@ -1,13 +1,13 @@
-// ignore_for_file: no_leading_underscores_for_local_identifiers
+// ignore_for_file: no_leading_underscores_for_local_identifiers, avoid_print
 
 import 'dart:convert';
 
-import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
-const String baseUrl = 'https://e-chirp-server.vercel.app/api';
+// const String baseUrl = 'https://e-chirp-server.vercel.app/api';
 // const String baseUrl = 'https://api.eventchirp.com/api';
+const String baseUrl = 'http://localhost:8080/api';
 
 class BaseClient {
   var client = http.Client();
@@ -29,50 +29,56 @@ class BaseClient {
         'x-auth-token': token,
       };
       var response = await client.get(url, headers: _headers);
-      // debugPrint('Response of BaseClient for $route: ${response.body}');
+      // print('Response of BaseClient for $route: ${response.body}');
       if (response.statusCode == 200) {
         return response.body;
       } else {
         return null;
       }
     } catch (e) {
-      debugPrint('Error in get request: $e');
+      print('Error in get request: $e');
       return null;
     }
   }
 
   Future<Map<String, dynamic>> post(String route, dynamic object) async {
-
-    debugPrint("Procssing BaseClient with:\n $object");
-
-    var url = Uri.parse(baseUrl + route);
-    var _payload = jsonEncode(object);
+    print("Procssing BaseClient with:\n $object");
 
     // Get Token
     var token = await getToken();
-
-    debugPrint("$_payload, Url : $url, \nToken : $token");
-    
+    // Parsing URL
+    var url = Uri.parse(baseUrl + route);
     // Header Config
-    var _headers = {
+    var _headers = <String, String>{
       'Content-Type': 'application/json',
       'x-auth-token': token,
     };
+    var _payload = jsonEncode(object);
 
+    print("$_payload, Url : $url, \nToken : $token");
+
+    // Make the POST Request
     try {
-      var response = await http.post(url, body: _payload, headers: _headers);
-      debugPrint("Response from BaseClient : ${response.body}");
+      final http.Response response = await http.post(
+        url,
+        body: _payload,
+        headers: _headers,
+      );
 
-      if (response.statusCode == 200 || response.statusCode == 201) {
+      print("Response from BaseClient : ${response.body}");
+
+      // Check if the request was successful (status code 2xx)
+      if (response.statusCode >= 200 && response.statusCode < 300) {
+        // Parse the response body
         return jsonDecode(response.body);
       } else {
-        var errorJson = json.decode(response.body);
+        var errorJson = jsonDecode(response.body);
         var errorMessage = errorJson["message"] ?? "Error";
-        debugPrint('Error: ${response.statusCode}, $errorMessage');
+        print('Error: ${response.statusCode}, $errorMessage');
         throw Exception(errorMessage);
       }
     } catch (error) {
-      debugPrint('Error: $error');
+      print('Error: $error');
       throw Exception('Internal server error');
     }
   }
@@ -109,18 +115,18 @@ class BaseClient {
     };
     try {
       var response = await client.delete(url, headers: _headers);
-      debugPrint("Response from BaseClient : ${response.body}");
+      print("Response from BaseClient : ${response.body}");
 
       if (response.statusCode == 200) {
         return json.decode(response.body);
       } else {
         var errorJson = json.decode(response.body);
         var errorMessage = errorJson["message"] ?? "Error";
-        debugPrint('Error: ${response.statusCode}, $errorMessage');
+        print('Error: ${response.statusCode}, $errorMessage');
         throw Exception(errorMessage);
       }
     } catch (error) {
-      debugPrint('Error: $error');
+      print('Error: $error');
       throw Exception('Internal server error');
     }
   }

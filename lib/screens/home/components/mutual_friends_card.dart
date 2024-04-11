@@ -22,11 +22,11 @@ class MutualFriendCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.symmetric(
-        horizontal: size.width * 0.025,
+        horizontal: size.width * 0.02,
         vertical: size.height * 0.01,
       ),
-      height: size.height * 0.18,
-      width: size.width * 0.38,
+      height: size.height * 0.1,
+      width: size.width * 0.36,
       padding: EdgeInsets.symmetric(
           horizontal: size.width * 0.02, vertical: size.height * 0.015),
       decoration: BoxDecoration(
@@ -41,9 +41,11 @@ class MutualFriendCard extends StatelessWidget {
           ),
         ],
       ),
-      child: Column(children: [
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
         CircleAvatar(
-          radius: size.height * 0.04,
+          radius: size.height * 0.035,
           child: ClipRRect(
               borderRadius: BorderRadius.circular(50.0),
               child: Image(
@@ -58,6 +60,7 @@ class MutualFriendCard extends StatelessWidget {
               color: textColor,
               fontWeight: FontWeight.bold,
               fontSize: size.height * 0.018),
+          overflow: TextOverflow.ellipsis,
         ),
         Text(
           "$mutualCount mutual friend",

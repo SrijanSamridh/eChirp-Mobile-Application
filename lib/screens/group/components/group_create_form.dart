@@ -60,12 +60,13 @@ class GroupFormScreenState extends State<GroupFormScreen> {
       };
 
       var response = await GroupController().createGroup(requestBody);
+      // ignore: unnecessary_null_comparison
       if (response != null) {
         // Show SnackBar with the response message
         // ignore: use_build_context_synchronously
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(response["message"]),
+            content: Text(response.message!),
           ),
         );
         Navigator.pushNamedAndRemoveUntil(

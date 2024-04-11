@@ -33,7 +33,7 @@ class JoinViaLink extends StatelessWidget {
 
   Future<void> _joinEvent(BuildContext context) async {
     try {
-      var response = await eventController.postEvent(_codeController.text);
+      var response = await eventController.postEvent(context ,_codeController.text);
       if (response != null) {
         debugPrint('Response from server: $response');
       }

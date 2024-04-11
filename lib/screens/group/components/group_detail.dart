@@ -17,9 +17,9 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         surfaceTintColor: Colors.transparent,
-        actions: [
+        actions: const [
           Padding(
-            padding: const EdgeInsets.only(right: 20.0),
+            padding: EdgeInsets.only(right: 20.0),
             child: Text(
               'Edit',
               style: TextStyle(
@@ -30,183 +30,187 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
           )
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 100),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Container(
-              height: size.height * 0.28,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(30),
-                color: GlobalVariables.chatBubbleColor,
-              ),
-              padding: EdgeInsets.all(20.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  SizedBox(
-                    height: 15,
-                  ),
-                  CircleAvatar(
-                    radius: size.width * 0.12,
-                    backgroundColor: Colors.white,
-                  ),
-                  SizedBox(height: 10.0),
-                  Text(
-                    'Football Lovers',
-                    style: TextStyle(
-                      fontSize: 34.0,
-                      fontWeight: FontWeight.w500,
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 120),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Container(
+                height: size.height * 0.28,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(30),
+                  color: GlobalVariables.chatBubbleColor,
+                ),
+                padding: const EdgeInsets.all(20.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    const SizedBox(
+                      height: 15,
                     ),
-                  ),
-                  Text(
-                    'Group: 22.3k members',
-                    style: TextStyle(fontSize: 13),
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(height: 10),
-            Container(
-              height: size.height * 0.28,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(30),
-                color: Colors.white,
-              ),
-              //padding: EdgeInsets.all(20.0)
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(height: 10.0),
-                  Row(
-                    children: [
-                      SizedBox(
-                        width: 10,
+                    const CircleAvatar(
+                      radius: 50,
+                      backgroundColor: Colors.white,
+                    ),
+                    const SizedBox(height: 10.0),
+                    Text(
+                      'Football Lovers'.toUpperCase(),
+                      style: TextStyle(
+                        fontSize: size.height * 0.03,
+                        fontWeight: FontWeight.w500,
                       ),
-                      Container(
-                          width: 40,
-                          height: 40,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(50),
-                              //shape: BoxShape.circle,
-                              color: Colors.grey[300]),
-                          child: Center(
-                              child: Icon(Icons.people_rounded,
-                                  color: GlobalVariables.kPrimaryColor))),
-                      SizedBox(
-                        width: 10,
+                    ),
+                    Text(
+                      'Group: 22.3k members',
+                      style: TextStyle(fontSize: size.height * 0.015),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 20),
+              Container(
+                height: 250,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(30),
+                  color: Colors.white,
+                ),
+                //padding: EdgeInsets.all(20.0)
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: 10.0),
+                    Row(
+                      children: [
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        Container(
+                            width: 40,
+                            height: 40,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(50),
+                                //shape: BoxShape.circle,
+                                color: Colors.grey[300]),
+                            child: const Center(
+                                child: Icon(Icons.people_rounded,
+                                    color: GlobalVariables.kPrimaryColor))),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        const Text("Add People to Group",
+                            style: TextStyle(
+                                color: GlobalVariables.kPrimaryColor,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16))
+                      ],
+                    ),
+                    const Divider(),
+                    Expanded(
+                      child: ListView.builder(
+                        itemCount: 5,
+                        itemBuilder: (context, index) {
+                          return _buildMemberTile("Richard james");
+                        },
                       ),
-                      Text("Add People to Group",
-                          style: TextStyle(
-                              color: GlobalVariables.kPrimaryColor,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16))
-                    ],
-                  ),
-                  Divider(),
-                  SizedBox(height: 10.0),
-                  Expanded(
-                    child: ListView.builder(
-                      itemCount: 10,
-                      itemBuilder: (context, index) {
-                        return _buildMemberTile("Richard james");
-                      },
                     ),
-                  ),
-                ],
+                    const SizedBox(height: 10.0),
+                  ],
+                ),
               ),
-            ),
-            SizedBox(height: 10),
-            Container(
-              height: size.height * 0.2,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(30),
-                color: Colors.white,
-              ),
-              padding: EdgeInsets.all(10.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(height: 5.0),
-                  _buildActionTile('Clear Chat'),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 18.0),
-                    child: Divider(
-                      color: Colors.grey,
-                      height: 0,
+              const SizedBox(height: 20),
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(30),
+                  color: Colors.white,
+                ),
+                padding: const EdgeInsets.all(10.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: 10.0),
+                    _buildActionTile('Clear Chat'),
+                    const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 18.0),
+                      child: Divider(
+                        color: Colors.grey,
+                        height: 0,
+                      ),
                     ),
-                  ),
-                  _buildActionTile('Exit Group'),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 18.0),
-                    child: Divider(
-                      color: Colors.grey,
-                      height: 0,
+                    _buildActionTile('Exit Group'),
+                    const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 18.0),
+                      child: Divider(
+                        color: Colors.grey,
+                        height: 0,
+                      ),
                     ),
-                  ),
-                  _buildActionTile('Report Group'),
-                ],
+                    _buildActionTile('Report Group'),
+                  ],
+                ),
               ),
-            ),
-            Container(
-              padding: EdgeInsets.all(20.0),
-              alignment: Alignment.bottomLeft,
-              child: Text(
-                'Created 13 June 2023',
-                style: TextStyle(fontSize: 14.0, color: Colors.grey[700]),
+              Container(
+                padding: const EdgeInsets.all(20.0),
+                alignment: Alignment.bottomLeft,
+                child: Text(
+                  'Created 13 June 2023',
+                  style: TextStyle(fontSize: 14.0, color: Colors.grey[700]),
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
   }
 
   Widget _buildMemberTile(String title) {
-    return ListTile(
-      leading: CircleAvatar(
-        backgroundColor: Colors.black,
-      ),
-      title: Text(
-        title,
-        style: TextStyle(
-          fontSize: 16.0,
+    return Column(
+      children: [
+        Container(
+          margin: const EdgeInsets.symmetric(vertical: 10.0),
+          child: Row(
+            children: [
+              const SizedBox(
+                width: 10,
+              ),
+              const CircleAvatar(
+                backgroundColor: Colors.black,
+              ),
+              const SizedBox(width: 10.0),
+              Column(
+                children: [
+                  Text(
+                    title,
+                    style: const TextStyle(
+                      fontSize: 16.0,
+                    ),
+                  ),
+                  const Divider(
+                    color: Colors.grey,
+                    height: 1.0,
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
-      ),
+      ],
     );
-    // Container(
-    //   margin: EdgeInsets.symmetric(vertical: 10.0),
-    //   child: Row(
-    //     children: [
-    //       SizedBox(
-    //         width: 10,
-    //       ),
-    //       CircleAvatar(
-    //         backgroundColor: Colors.black,
-    //       ),
-    //       SizedBox(width: 10.0),
-    //       Text(
-    //         title,
-    //         style: TextStyle(
-    //           fontSize: 16.0,
-    //         ),
-    //       ),
-    //     ],
-    //   ),
-    // );
   }
 
   Widget _buildActionTile(String title) {
-    return ListTile(
-      title: Text(
-        title,
-        style: TextStyle(color: Colors.red, fontSize: 16),
+    return Container(
+      child: ListTile(
+        title: Text(
+          title,
+          style: const TextStyle(color: Colors.red, fontSize: 16),
+        ),
+        onTap: () {
+          // Handle tile tap
+        },
+        dense: true,
       ),
-      onTap: () {
-        // Handle tile tap
-      },
-      dense: true,
     );
   }
 }

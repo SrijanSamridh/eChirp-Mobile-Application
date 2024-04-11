@@ -1,10 +1,12 @@
 import 'package:echirp/components/bottom_bar.dart';
-import 'package:echirp/screens/auth/auth.dart';
 import 'package:echirp/screens/profile/profile.dart';
 import 'package:echirp/utils/global_variabes.dart';
+import 'package:echirp/utils/skeleton_loader.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../API/provider/friend_provider.dart';
 import '../../components/custom_clipper.dart';
 import '../../components/custom_search_bar.dart';
 import '../../components/headling_with_hyperlink.dart';
@@ -21,17 +23,19 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   String username = "";
-  Future<void> getUsername() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    setState(() {
-      username = prefs.getString("username")!;
-    });
-  }
 
   @override
   void initState() {
     super.initState();
     getUsername();
+  }
+
+  
+  Future<void> getUsername() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      username = prefs.getString("username")!;
+    });
   }
 
   @override
@@ -46,12 +50,15 @@ class _HomeScreenState extends State<HomeScreen> {
               // ? Header section
               ClipPath(
                 clipper: MyCustomClipper(),
-                child: const Image(
-                  image: AssetImage('assets/images/coverImg.png'),
+                child: Image(
+                  image: const AssetImage('assets/images/coverImg.png'),
+                  height: size.height * 0.3,
+                  fit: BoxFit.cover,
                 ),
               ),
               SafeArea(
                 child: Container(
+                  margin: EdgeInsets.only(top: size.width * 0.04),
                   padding: EdgeInsets.symmetric(horizontal: size.width * 0.08),
                   child: Column(
                     children: [
@@ -69,7 +76,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                             const Spacer(),
                             GestureDetector(
-                              onTap: (){
+                              onTap: () {
                                 // SharedPreferences prefs =
                                 //     await SharedPreferences.getInstance();
                                 // prefs.remove('x-auth-token');
@@ -78,12 +85,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                 // Navigator.of(context).pushNamedAndRemoveUntil(
                                 //     AuthScreen.routeName, (route) => false);
 
-
-                                Navigator.of(context).pushNamed(
-                                    ProfileScreen.routeName);
-
-
-
+                                Navigator.of(context)
+                                    .pushNamed(ProfileScreen.routeName);
                               },
                               child: CircleAvatar(
                                 child: ClipRRect(
@@ -104,8 +107,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       const CustomSearchBar(
                         // onPressed: () {},
                         searchFor: 'events',
-                        backgroundColor:
-                            Color.fromARGB(64, 255, 255, 255),
+                        backgroundColor: Color.fromARGB(64, 255, 255, 255),
                         fillColor: Color.fromARGB(90, 50, 50, 50),
                         iconColor: Color.fromARGB(255, 239, 239, 239),
                       ),
@@ -162,38 +164,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 Navigator.of(context).pushNamedAndRemoveUntil(
                     BottomBar.routeName, arguments: 2, (route) => false);
               }),
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                MutualFriendCard(
-                  size: size,
-                  profileImg: 'assets/images/dummyDP.png',
-                  userName: 'Meg Rigden',
-                  mutualCount: 1,
-                  selectedColor: GlobalVariables.kPrimaryGradientColor,
-                  textColor: Colors.white,
-                ),
-                MutualFriendCard(
-                  size: size,
-                  profileImg: 'assets/images/dummyDP.png',
-                  userName: 'Meg Rigden',
-                  mutualCount: 1,
-                  selectedColor: GlobalVariables.kUnselectedCardGradientColor,
-                  textColor: Colors.black,
-                ),
-                MutualFriendCard(
-                  size: size,
-                  profileImg: 'assets/images/dummyDP.png',
-                  userName: 'Meg Rigden',
-                  mutualCount: 1,
-                  selectedColor: GlobalVariables.kUnselectedCardGradientColor,
-                  textColor: Colors.black,
-                ),
-              ],
-            ),
-          ),
+          _WidgetPotentialFriends(size: size),
           HeadlineWithHyperLink(
               headingText: "Groups",
               onPressed: () {
@@ -325,3 +296,85 @@ class _HomeScreenState extends State<HomeScreen> {
     ));
   }
 }
+
+class _WidgetPotentialFriends extends StatelessWidget {
+  const _WidgetPotentialFriends({
+    required this.size,
+  });
+
+  final Size size;
+
+  @override
+  Widget build(BuildContext context) {
+    final friendProvider = Provider.of<FriendProvider>(context);
+    final potentialFriends = friendProvider.potentialFriends?.potentialFriends;
+
+    return potentialFriends == null
+        ? SkeletonLoaders.buildSkeletonLoader(context)
+        : SizedBox(
+            height: size.height * 0.20, // Set a fixed height for the ListView
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: potentialFriends.length, // Use the actual length of potentialFriends
+              itemBuilder: (context, index) {
+                final data = potentialFriends[index];
+                return MutualFriendCard(
+                  size: size,
+                  profileImg: 'assets/images/dummyDP.png',
+                  userName: data.friend.username,
+                  mutualCount: data.count,
+                  selectedColor: index == 0
+                      ? GlobalVariables.kPrimaryGradientColor
+                      : GlobalVariables.kUnselectedCardGradientColor,
+                  textColor: index == 0 ? Colors.white : Colors.black,
+                );
+              },
+            ),
+          );
+  }
+}
+
+
+
+/*
+
+: potentialFriends == null
+            ? const Center(child: CircularProgressIndicator())
+            : potentialFriends.isEmpty
+                ? SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        MutualFriendCard(
+                          size: size,
+                          profileImg: 'assets/images/dummyDP.png',
+                          userName: 'Meg Rigden',
+                          mutualCount: 1,
+                          selectedColor: GlobalVariables.kPrimaryGradientColor,
+                          textColor: Colors.white,
+                        ),
+                        MutualFriendCard(
+                          size: size,
+                          profileImg: 'assets/images/dummyDP.png',
+                          userName: 'Meg Rigden',
+                          mutualCount: 1,
+                          selectedColor:
+                              GlobalVariables.kUnselectedCardGradientColor,
+                          textColor: Colors.black,
+                        ),
+                        MutualFriendCard(
+                          size: size,
+                          profileImg: 'assets/images/dummyDP.png',
+                          userName: 'Meg Rigden',
+                          mutualCount: 1,
+                          selectedColor:
+                              GlobalVariables.kUnselectedCardGradientColor,
+                          textColor: Colors.black,
+                        ),
+                      ],
+                    ),
+                  )
+
+
+ */

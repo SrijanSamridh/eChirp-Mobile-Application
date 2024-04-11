@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:io';
 
 import 'package:dotted_border/dotted_border.dart';
@@ -45,7 +47,7 @@ class _EventCreateFromState extends State<EventCreateFrom> {
   TextEditingController maleCntController = TextEditingController();
   TextEditingController eventTitleController = TextEditingController();
   TextEditingController eventDescriptionController = TextEditingController();
-  EventType? _type = EventType.public;
+  EventType? _type = EventType.PUBLIC;
   Gender? _gender;
   File? image1;
   Color borderColor = GlobalVariables.kPrimaryColor;
@@ -91,51 +93,77 @@ class _EventCreateFromState extends State<EventCreateFrom> {
   }
 
   void _handleSubmitButton() async {
-    // Validate returns true if the form is valid, or false otherwise.
-    if (image1?.path == null && !_formKey.currentState!.validate()) {
+    // Validate the form
+    if (!_formKey.currentState!.validate()) {
+      // If the form is not valid, set border color to red
       setState(() {
         borderColor = Colors.red;
         stroke = 2;
       });
-    } else {
-      // If the form is valid, display a snackbar. In the real world,
-      // you'd often call a server or save the information in a database.
-      Map<String, dynamic> dataMap = {
-        'mainCategory': widget.category,
-        'subCategory': widget.subCategory,
-        'subSubCategory': widget.subSubCategory,
-        'dateOfEvent': dateController.text,
-        'startTime': startTimeController.text,
-        'endTime': endTimeController.text,
-        'location': locationController.text,
-        'address': addressController.text,
-        'maxParticipants': int.tryParse(maxMemberController.text) ?? 0,
-        'eventMode': _type,
-        'femaleCount': int.tryParse(femaleCntController.text) ?? 0,
-        'maleCount': int.tryParse(maleCntController.text) ?? 0,
-        'eventTitle': eventTitleController.text,
-        'eventDescription': eventDescriptionController.text,
-        'coverImgUrl': image1?.path ?? 'Not provided',
-        'img1Url': image2?.path ?? 'Not provided',
-        'img2Url': image3?.path ?? 'Not provided',
-        'img3Url': image4?.path ?? 'Not provided',
-        'img4Url': image5?.path ?? 'Not provided',
-      };
+      return; // Exit the method
+    }
 
-      // Print the map
-      debugPrint(dataMap.toString());
+    // Prepare data for API
+    Map<String, dynamic> dataMap = {
+      "mainCategory": widget.category,
+      "subCategory": widget.subCategory,
+      "subSubCategory": widget.subSubCategory ?? "",
+      "dateOfEvent": dateController.text,
+      "startTime": startTimeController.text,
+      "endTime": endTimeController.text,
+      "location": locationController.text,
+      "nameOfPlace": nameOfPlaceController.text,
+      "address": addressController.text,
+      "maxParticipants": 20,
+      "eventMode": _type.toString().split('.')[1],      //! error on server
+      "ageRange": "18-40",
+      "gender": "Any",
+      "occupation": occupationValue,
+      "eventTitle": eventTitleController.text,
+      "eventDescription": eventDescriptionController.text,
+      "coverImgUrl":image1?.path ??
+          "https://media.istockphoto.com/id/1913125761/photo/silhouettes-of-people-dancing-and-rising-hands-at-open-air-summer-festival.webp?b=1&s=170667a&w=0&k=20&c=50RtfZ05NSgpYdSgWpOf5ePkp5yRwVdb2atxzqmRKY4=",
+      "Img1Url": "https://example.com/image1.jpg",
+      "Img2Url": "https://example.com/image2.jpg",
+      "Img3Url": "https://example.com/image3.jpg",
+      "Img4Url": "https://example.com/image4.jpg"
+    };
+    // print and check whats the out put of the _type
+    print(_type);
+    try {
+      // Make API call to create event
       var response = await EventController().createEvent(dataMap);
-      debugPrint(response.toString());
 
-      // ignore: use_build_context_synchronously
-      Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(
-          builder: (context) => UploadStatusScreen(
-            eventType: _type.toString(),
+      // Check if API call was successful
+      if (response.statusCode == 201) {
+        // If event creation is successful, navigate to UploadStatusScreen
+        Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(
+            builder: (context) => UploadStatusScreen(
+              eventType: _type.toString(),
+            ),
           ),
+          (route) => false,
+        );
+      } else {
+        // ignore: avoid_print
+        print('status: ${response.statusCode}, ${response.body}');
+        // If API call fails, show error message to the user
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+                'Failed to create event. Please try again. \nError: ${response.body}'),
+          ),
+        );
+      }
+    } catch (e) {
+      // If an error occurs during API call, show error message to the user
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('An error occurred while creating event.'),
         ),
-        (route) => false,
       );
+      debugPrint('Error creating event: $e');
     }
   }
 
@@ -303,7 +331,7 @@ class _EventCreateFromState extends State<EventCreateFrom> {
             Row(
               children: [
                 Radio<EventType>(
-                  value: EventType.public,
+                  value: EventType.PUBLIC,
                   groupValue: _type,
                   onChanged: (EventType? value) {
                     setState(() {
@@ -317,7 +345,7 @@ class _EventCreateFromState extends State<EventCreateFrom> {
             Row(
               children: [
                 Radio<EventType>(
-                  value: EventType.private,
+                  value: EventType.PRIVATE,
                   groupValue: _type,
                   onChanged: (EventType? value) {
                     setState(() {

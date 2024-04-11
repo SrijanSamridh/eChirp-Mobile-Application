@@ -1,16 +1,14 @@
-// ignore_for_file: avoid_print
-
-import 'package:echirp/API/models/friends.model.dart';
-import 'package:echirp/API/models/potentialFriends.dart';
-import 'package:echirp/screens/group/components/groupTile.dart';
-import 'package:echirp/screens/group/groupInfo.dart';
+import 'package:echirp/utils/skeleton_loader.dart';
 import 'package:flutter/material.dart';
-import 'package:echirp/API/controller/friend.controller.dart';
+import 'package:lottie/lottie.dart';
+import 'package:provider/provider.dart';
+import 'package:echirp/screens/group/components/group_tile.dart';
+import 'package:echirp/screens/group/groupInfo.dart';
 import 'package:echirp/components/custom_app_bar.dart';
-import 'package:echirp/screens/friends/components/customTile.dart';
+import 'package:echirp/screens/group/components/create_group.dart';
 
+import '../../API/provider/group_provider.dart';
 import '../chat/chat.dart';
-import 'components/create_group.dart';
 
 class GroupScreen extends StatefulWidget {
   static const String routeName = '/group';
@@ -22,168 +20,220 @@ class GroupScreen extends StatefulWidget {
 }
 
 class _GroupScreenState extends State<GroupScreen> {
-  late Future<List<Friends>?> _myFriends;
-  late Future<PotentialFriends?> _potentialFriends;
-  final friendFuture = FriendController();
+  late bool _dataLoaded = false;
 
   @override
   void initState() {
+    Provider.of<GroupProvider>(context, listen: false).fetchGroups().then((_) {
+      // Set a delay to show "No Data Found" after 3 seconds
+      Future.delayed(const Duration(seconds: 3), () {
+        if (!_dataLoaded) {
+          setState(() {
+            _dataLoaded = true;
+          });
+        }
+      });
+    });
     super.initState();
-    _myFriends = _initFriends();
-    _initPotentialFriends();
-  }
-
-  Future<List<Friends>?> _initFriends() async {
-    try {
-      return friendFuture.fetchMyFriends('/friends');
-    } catch (e) {
-      debugPrint('Error initializing friends: $e');
-      return null;
-    }
-  }
-
-  Future<void> _initPotentialFriends() async {
-    try {
-      _potentialFriends = friendFuture.fetchPotentialFriends('/potential');
-    } catch (e) {
-      debugPrint('Error initializing potentialFriends: $e');
-    }
   }
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return DefaultTabController(
-        initialIndex: 0,
-        length: 3,
-        child: Scaffold(
-          appBar: PreferredSize(
-              preferredSize: Size.fromHeight(size.height * 0.18),
-              child: CustomAppBar(
-                size: size,
-                title: 'Groups',
-                showCreate: true,
-                tabs: const <Widget>[
-                  Tab(
-                    text: "My Groups",
-                  ),
-                  Tab(
-                    text: "Joined Groups",
-                  ),
-                  Tab(
-                    text: "All Groups",
-                  ),
-                ],
-                searchfor: 'Groups',
-                onPressed: () {
+      initialIndex: 0,
+      length: 3,
+      child: Scaffold(
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(size.height * 0.18),
+          child: CustomAppBar(
+            size: size,
+            title: 'Groups',
+            showCreate: true,
+            tabs: const <Widget>[
+              Tab(
+                text: "My Groups",
+              ),
+              Tab(
+                text: "Joined Groups",
+              ),
+              Tab(
+                text: "All Groups",
+              ),
+            ],
+            searchfor: 'Groups',
+            onPressed: () {
               Navigator.of(context).pushNamed(CreateGroupScreen.routeName);
             },
-                showGroup: true,
-              )),
-          body: TabBarView(
-              children: <Widget>[_myGroupsList(), _joinedGroupsList(),
-              _allGroupsList(),
-              const Center(child: Text("All Groups"))]),
-        ));
+            showGroup: true,
+          ),
+        ),
+        body: TabBarView(
+          children: <Widget>[
+            RefreshIndicator(
+                onRefresh: () async {
+                  await Provider.of<GroupProvider>(context, listen: false)
+                      .fetchGroups();
+                },
+                child: _buildMyGroupsList()),
+            RefreshIndicator(
+                onRefresh: () async {
+                  await Provider.of<GroupProvider>(context, listen: false)
+                      .fetchGroups();
+                },
+                child: _buildJoinedGroupsList()),
+            RefreshIndicator(
+                onRefresh: () async {
+                  await Provider.of<GroupProvider>(context, listen: false)
+                      .fetchGroups();
+                },
+                child: _buildAllGroupsList()),
+          ],
+        ),
+      ),
+    );
   }
 
-  Widget _myGroupsList() {
-    return FutureBuilder<List<Friends>?>(
-        future: _myFriends,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            return Center(child: Text('Error: ${snapshot.error}'));
-          } else if (snapshot.hasData) {
-            final friends = snapshot.data!;
-            return ListView.builder(
-              itemCount: friends.length,
-              itemBuilder: (context, index) {
-                final friend = friends[index];
-                return GestureDetector(
-                  onTap: (){
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const ChatScreen(title: 'Poker mates',image: '',)));
-                  },
-                  child: const GroupTile(
-                    image: 'https://blog.photofeeler.com/wp-content/uploads/2017/09/instagram-profile-picture-maker.jpg',
-                      title: 'Poker Mates',
-                      recentMessage: 'Are we playing today?',
-                      senderName: 'John Doe',
-                      totalMembers: 10,
-                  ),
-                );
-              },
-            );
-          } else {
-            return const Center(child: Text('No friends available'));
-          }
-        });
+  Widget _buildMyGroupsList() {
+    final groupProvider = Provider.of<GroupProvider>(context);
+    final myGroups = groupProvider.myGroups;
+    Size size = MediaQuery.of(context).size;
+
+    if (myGroups == null) {
+      return _buildSkeletonLoader();
+    }
+
+    if (myGroups.isEmpty && _dataLoaded) {
+      return Center(
+          child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Lottie.asset('assets/animations/under-development.json',
+              height: size.height * 0.35),
+          const Text("Opps! No Data Available, create a group today."),
+        ],
+      ));
+    }
+
+    return ListView.builder(
+      itemCount: myGroups.length,
+      itemBuilder: (context, index) {
+        final group = myGroups[index];
+        return GestureDetector(
+          onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => ChatScreen(
+                        title: group.name.toString(),
+                        image: '', id: group.groupId.toString(), participants: group.participants,
+                      ))),
+          child: GroupTile(
+            image: group.imageUrl ?? '',
+            title: group.name ?? '',
+            recentMessage: 'Are we playing today?',
+            senderName: 'John Doe',
+            totalMembers: group.participants?.length ?? 0,
+          ),
+        );
+      },
+    );
   }
 
-  Widget _joinedGroupsList() {
-    return FutureBuilder<PotentialFriends?>(
-        future: _potentialFriends,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            return Center(child: Text('Error: ${snapshot.error}'));
-          } else if (snapshot.hasData) {
-            final potentialFriends = snapshot.data!.potentialFriends;
-            return ListView.builder(
-              itemCount: potentialFriends.length,
-              itemBuilder: (context, index) {
-                final friend = potentialFriends[index];
-                print('iddddd: ${friend.friend.id}');
-                return const GroupTile(
-                  image: 'https://blog.photofeeler.com/wp-content/uploads/2017/09/instagram-profile-picture-maker.jpg',
-                  title: 'Poker mates',
-                  recentMessage: 'Are we playing today?',
-                  senderName: 'John Doe',
-                  totalMembers: 10,
-                );
-              },
-            );
-          } else {
-            return const Center(child: Text('No Groups available'));
-          }
-        });
+  Widget _buildJoinedGroupsList() {
+    Size size = MediaQuery.of(context).size;
+    final groupProvider = Provider.of<GroupProvider>(context);
+    final joinedGroups = groupProvider.joinedGroups;
+
+    if (joinedGroups == null) {
+      return _buildSkeletonLoader();
+    }
+
+    if (joinedGroups.isEmpty && _dataLoaded) {
+      return Center(
+          child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Lottie.asset('assets/animations/under-development.json',
+              height: size.height * 0.35),
+          const Text("Join a group today Swipe right."),
+        ],
+      ));
+    }
+
+    return ListView.builder(
+      itemCount: joinedGroups.length,
+      itemBuilder: (context, index) {
+        final group = joinedGroups[index];
+        return GestureDetector(
+          onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => ChatScreen(
+                        title: group.name.toString(),
+                        image: '', id: group.groupId.toString(), participants: group.participants,
+                      ))),
+          child: GroupTile(
+            image: group.imageUrl ?? '',
+            title: group.name ?? '',
+            recentMessage: 'Are we playing today?',
+            senderName: 'John Doe',
+            totalMembers: group.participants?.length ?? 0,
+          ),
+        );
+      },
+    );
   }
 
-  Widget _allGroupsList() {
-    return FutureBuilder<PotentialFriends?>(
-        future: _potentialFriends,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            return Center(child: Text('Error: ${snapshot.error}'));
-          } else if (snapshot.hasData) {
-            final potentialFriends = snapshot.data!.potentialFriends;
-            return ListView.builder(
-              itemCount: potentialFriends.length,
-              itemBuilder: (context, index) {
-                final friend = potentialFriends[index];
-                print('iddddd: ${friend.friend.id}');
-                return GestureDetector(
-                  onTap: () => Navigator.pushNamed(context, GroupInfoScreen.routeName),
-                  child: const GroupTile(
-                    image: 'https://blog.photofeeler.com/wp-content/uploads/2017/09/instagram-profile-picture-maker.jpg',
-                    title: 'Poker mates',
-                    recentMessage: 'Are we playing today?',
-                    senderName: 'John Doe',
-                    totalMembers: 10,
-                  ),
-                );
-              },
+  Widget _buildAllGroupsList() {
+    Size size = MediaQuery.of(context).size;
+    final groupProvider = Provider.of<GroupProvider>(context);
+    final allGroups = groupProvider.allGroups;
+
+    if (allGroups == null) {
+      return _buildSkeletonLoader();
+    }
+
+    if (allGroups.isEmpty && _dataLoaded) {
+      return Center(
+          child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Lottie.asset('assets/animations/under-development.json',
+              height: size.height * 0.35),
+          const Text("Opps! No Data Available, Create your own Group."),
+        ],
+      ));
+    }
+
+    return ListView.builder(
+      itemCount: allGroups.length,
+      itemBuilder: (context, index) {
+        final group = allGroups[index];
+        return GestureDetector(
+          onTap: () {
+            Navigator.pushNamed(
+              context,
+              GroupInfoScreen.routeName,
             );
-          } else {
-            return const Center(child: Text('No Groups available'));
-          }
-        });
+          },
+          child: GroupTile(
+            image: group.imageUrl ?? '',
+            title: group.name ?? '',
+            recentMessage: 'Are we playing today?',
+            senderName: 'John Doe',
+            totalMembers: group.participants?.length ?? 0,
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildSkeletonLoader() {
+    return ListView.builder(
+      itemCount: 10,
+      itemBuilder: (context, index) {
+        return SkeletonLoaders.groupTileSkeleton(context);
+      },
+    );
   }
 }

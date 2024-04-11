@@ -7,7 +7,6 @@ import 'package:echirp/utils/global_variabes.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../components/bottom_bar.dart';
-// import 'package:http/http.dart' as http;
 
 enum AuthMode {
   signUp,
@@ -28,12 +27,13 @@ class _AuthScreenState extends State<AuthScreen> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  bool? showPasswordCheck = false;
 
   Future<void> signIn() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
     User? user = await authController.signIn(
-      _usernameController.text.trim(),
+      _usernameController.text.trim().toLowerCase(),
       _passwordController.text.trim(),
     );
 
@@ -41,6 +41,7 @@ class _AuthScreenState extends State<AuthScreen> {
       String? token = user.user!.token;
       prefs.setString("x-auth-token", token!);
       prefs.setString("username", user.user!.username!);
+      prefs.setString("_id", user.user!.id!);
 
       debugPrint(
         "User : ${prefs.getString('username')}, \nlocal Storage : ${prefs.getString('x-auth-token')},",
@@ -70,9 +71,9 @@ class _AuthScreenState extends State<AuthScreen> {
   void signUp() async {
     // ignore: no_leading_underscores_for_local_identifiers
     var _payload = {
-      'username': _usernameController.text.trim(),
+      'username': _usernameController.text.trim().toLowerCase(),
       'password': _passwordController.text.trim(),
-      'email': _emailController.text.trim()
+      'email': _emailController.text.trim().toLowerCase()
     };
 
     var user = await authController.signUp(context, _payload);
@@ -91,6 +92,12 @@ class _AuthScreenState extends State<AuthScreen> {
     _emailController.dispose();
     _passwordController.dispose();
   }
+
+  // void showPassword(bool value){
+  //   if(value == true && showPasswordCheck == false){
+  //     showPasswordCheck =
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -195,6 +202,9 @@ class _AuthScreenState extends State<AuthScreen> {
                             color: Colors.grey,
                           ),
                           TextField(
+                            obscureText: !showPasswordCheck!,
+                            enableSuggestions: false,
+                            autocorrect: false,
                             controller: _passwordController,
                             decoration: const InputDecoration(
                               hintText: 'Password',
@@ -204,8 +214,23 @@ class _AuthScreenState extends State<AuthScreen> {
                           const Divider(
                             color: Colors.grey,
                           ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              const Text("Show Password "),
+                              Checkbox(
+                                checkColor: Colors.white,
+                                value: showPasswordCheck,
+                                onChanged: (bool? value) {
+                                  setState(() {
+                                    showPasswordCheck = value;
+                                  });
+                                },
+                              ),
+                            ],
+                          ),
                           SizedBox(
-                            height: size.height * 0.1,
+                            height: size.height * 0.02,
                           ),
                           CustomBtn(
                             text: 'Sign In ',
@@ -221,6 +246,38 @@ class _AuthScreenState extends State<AuthScreen> {
                               color: Colors.grey,
                             ),
                           ),
+                          SizedBox(
+                            height: size.height * 0.02,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              ClipRRect(
+                                  borderRadius: BorderRadius.circular(50),
+                                  child: Image.asset(
+                                    "assets/icons/facbook-logo.jpg",
+                                    height: 50,
+                                  )),
+                              ClipRRect(
+                                  borderRadius: BorderRadius.circular(50),
+                                  child: Image.asset(
+                                    "assets/icons/google-logo.jpg",
+                                    height: 50,
+                                  )),
+                              ClipRRect(
+                                  borderRadius: BorderRadius.circular(50),
+                                  child: Image.asset(
+                                    "assets/icons/instagram-logo.png",
+                                    height: 50,
+                                  )),
+                              ClipRRect(
+                                  borderRadius: BorderRadius.circular(50),
+                                  child: Image.asset(
+                                    "assets/icons/twiter-log.jpeg",
+                                    height: 50,
+                                  )),
+                            ],
+                          )
                         ],
                       )
                     : Column(
@@ -228,7 +285,7 @@ class _AuthScreenState extends State<AuthScreen> {
                           const Text(
                               'Register Today, Celebrate Tomorrow: Start Now!'),
                           SizedBox(
-                            height: size.height * 0.05,
+                            height: size.height * 0.03,
                           ),
                           TextField(
                             controller: _usernameController,
@@ -251,6 +308,9 @@ class _AuthScreenState extends State<AuthScreen> {
                             color: Colors.grey,
                           ),
                           TextField(
+                            obscureText: !showPasswordCheck!,
+                            enableSuggestions: false,
+                            autocorrect: false,
                             controller: _passwordController,
                             decoration: const InputDecoration(
                               hintText: 'Password',
@@ -260,8 +320,23 @@ class _AuthScreenState extends State<AuthScreen> {
                           const Divider(
                             color: Colors.grey,
                           ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              const Text("Show Password "),
+                              Checkbox(
+                                checkColor: Colors.white,
+                                value: showPasswordCheck,
+                                onChanged: (bool? value) {
+                                  setState(() {
+                                    showPasswordCheck = value;
+                                  });
+                                },
+                              ),
+                            ],
+                          ),
                           SizedBox(
-                            height: size.height * 0.05,
+                            height: size.height * 0.00,
                           ),
                           CustomBtn(
                             text: 'Sign Up',
@@ -277,6 +352,38 @@ class _AuthScreenState extends State<AuthScreen> {
                               color: Colors.grey,
                             ),
                           ),
+                          SizedBox(
+                            height: size.height * 0.02,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              ClipRRect(
+                                  borderRadius: BorderRadius.circular(50),
+                                  child: Image.asset(
+                                    "assets/icons/facbook-logo.jpg",
+                                    height: 50,
+                                  )),
+                              ClipRRect(
+                                  borderRadius: BorderRadius.circular(50),
+                                  child: Image.asset(
+                                    "assets/icons/google-logo.jpg",
+                                    height: 50,
+                                  )),
+                              ClipRRect(
+                                  borderRadius: BorderRadius.circular(50),
+                                  child: Image.asset(
+                                    "assets/icons/instagram-logo.png",
+                                    height: 50,
+                                  )),
+                              ClipRRect(
+                                  borderRadius: BorderRadius.circular(50),
+                                  child: Image.asset(
+                                    "assets/icons/twiter-log.jpeg",
+                                    height: 50,
+                                  )),
+                            ],
+                          )
                         ],
                       ),
               ),

@@ -1,32 +1,28 @@
 // ignore_for_file: avoid_print
 
 import 'dart:convert';
-
+import 'package:echirp/API/services/base_client.dart';
 import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
+import '../models/group.models.dart';
 
 class GroupController {
-  Future<String> getToken() async {
-    SharedPreferences pref = await SharedPreferences.getInstance();
-    String? token = pref.getString('x-auth-token');
-    return token ?? '';
-  }
+  final client = BaseClient();
 
-  Future<Map<String, dynamic>> createGroup(Map<String, dynamic> requestBody) async {
-    // Define the API endpoint URL
-    const String apiUrl = 'https://e-chirp-server.vercel.app/api/groups';
-
+  Future<Groups> createGroup(Map<String, dynamic> requestBody) async {
     // Get Token
-    String token = await getToken();
+    String token = await BaseClient().getToken();
+
+    // Header Config
+    var headers = <String, String>{
+      'Content-Type': 'application/json',
+      'x-auth-token': token,
+    };
 
     // Make the POST request
     try {
       final http.Response response = await http.post(
-        Uri.parse(apiUrl),
-        headers: <String, String>{
-          'Content-Type': 'application/json',
-          'x-auth-token': token,
-        },
+        Uri.parse("https://e-chirp-server.vercel.app/api/groups"),
+        headers: headers,
         body: jsonEncode(requestBody),
       );
 
@@ -39,19 +35,55 @@ class GroupController {
         String message = responseData['message'];
         Map<String, dynamic> groupData = responseData['group'];
 
-        // Print or handle the response data
-        print('Message: $message');
-        print('Group ID: ${groupData['groupId']}');
-        return {'message': message, 'groupData': groupData};
+        // Create Group instance
+        Group group = Group.fromJson(groupData);
+
+        // Create Groups instance
+        Groups groups = Groups(message: message, group: group);
+
+        return groups;
       } else {
         // Handle non-successful status codes
         print('Failed with status code ${response.statusCode}');
-        return {'error': 'Failed with status code ${response.statusCode}'};
+        throw Exception('Failed with status code ${response.statusCode}');
       }
     } catch (e) {
       // Handle errors
       print('Error creating group: $e');
-      return {'error': 'Error creating group: $e'};
+      throw Exception('Error creating group: $e');
+    }
+  }
+
+  Future<Groups?> fetchGroups(String type) async {
+    try {
+      final response = await client.get("/groups?type=$type");
+
+      if (response == null || response.isEmpty) {
+        print('Unexpected response format: $response');
+        return null;
+      }
+
+      final decodedResponse = json.decode(response);
+
+      if (decodedResponse is! Map<String, dynamic>) {
+        print('Unexpected response format: $decodedResponse');
+        return null;
+      }
+
+      final groupsData = decodedResponse['groups'];
+
+      if (groupsData != null && groupsData is List) {
+        final groups = groupsData
+            .map<Group>((groupData) => Group.fromJson(groupData))
+            .toList();
+        return Groups(groups: groups);
+      } else {
+        print('Events data not found in response');
+        return null;
+      }
+    } catch (e) {
+      print('Error fetching groups: $e');
+      return null;
     }
   }
 }

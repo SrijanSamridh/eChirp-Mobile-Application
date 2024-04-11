@@ -45,6 +45,9 @@ dependencies:
   shared_preferences: ^2.2.2
   dotted_line: ^3.2.2
   provider: ^6.1.2
+  flutter_spinkit: ^5.2.1
+  shimmer: ^3.0.0
+  socket_io_client: ^3.0.0-beta.2
 
 dev_dependencies:
   flutter_test:
@@ -61,7 +64,7 @@ dev_dependencies:
 flutter_launcher_icons:
   android: "launcher_icon"
   ios: true
-  image_path: "assets/icons/logo-bg.png"
+  image_path: "assets/icons/echirp_logo.jpeg"
   min_sdk_android: 21 # android min sdk min:16, default 21
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
