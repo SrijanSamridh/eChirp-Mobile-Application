@@ -1,9 +1,22 @@
+import 'package:echirp/API/provider/event_provider.dart';
 import 'package:echirp/utils/global_variabes.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../../API/provider/friend_provider.dart';
 
 class EventDetail extends StatelessWidget {
+  static const String routeName = '/event-detail';
+
+  int index;
+
+  EventDetail({
+    Key? key,
+    required this.index,
+  }) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    final event = Provider.of<EventsProvider>(context, listen: false).allEvents?.events;
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(backgroundColor: Colors.transparent,),
@@ -128,7 +141,7 @@ class EventDetail extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          'Meg Rigden',
+                          event?[index].createdBy?.username ?? '',
                           style: TextStyle(
                               color: Colors.white,
                               fontSize: 16,

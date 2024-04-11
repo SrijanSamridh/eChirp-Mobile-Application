@@ -3,6 +3,7 @@ import 'package:echirp/screens/auth/auth.dart';
 import 'package:echirp/screens/events/components/event_cerate_form.dart';
 import 'package:echirp/screens/events/components/upload_status.dart';
 import 'package:echirp/screens/events/create_event.dart';
+import 'package:echirp/screens/events/event_detail.dart';
 import 'package:echirp/screens/events/events.dart';
 import 'package:echirp/screens/group/components/group_create_form.dart';
 import 'package:echirp/screens/group/groupInfo.dart';
@@ -91,6 +92,11 @@ onGenerateRoute(RouteSettings routeSettings) {
       case GroupFormScreen.routeName:
       return MaterialPageRoute(
         builder: (_) =>  const GroupFormScreen(),
+      );
+      case EventDetail.routeName:
+      int index = routeSettings.arguments as int;
+      return MaterialPageRoute(
+        builder: (_) =>   EventDetail(index: index),
       );
 
     default:
