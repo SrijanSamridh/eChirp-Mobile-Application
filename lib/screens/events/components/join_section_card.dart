@@ -91,7 +91,7 @@ class JoinSectionCard extends StatelessWidget {
                                 ),
                                 const SizedBox(width: 10.0),
                                 Text(
-                                  username,
+                                  "By $username",
                                   style: const TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.bold,
