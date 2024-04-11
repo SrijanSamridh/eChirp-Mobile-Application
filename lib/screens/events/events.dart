@@ -1,3 +1,4 @@
+import 'package:echirp/screens/events/event_detail.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:echirp/API/controller/event.controller.dart';
@@ -83,17 +84,22 @@ class EventsScreenState extends State<EventsScreen> {
             itemCount: eventsProvider.allEvents!.events?.length,
             itemBuilder: (context, index) {
               final event = eventsProvider.allEvents!.events?[index];
-              return JoinSectionCard(
-                size: size,
-                imgUrl: 'assets/images/dummy_event.png',
-                profileImg: 'assets/images/dummyDP.png',
-                username: event!.createdBy?.username ?? 'By Unknown User',
-                typeOfEvent: event.eventMode ?? 'Unknown Event Type',
-                date: event.dateOfEvent,
-                time: event.startTime ?? 'Unknown Time',
-                location: event.location ?? 'Unknown Location',
-                onPressed: () =>
-                    _eventsProvider.joinEvent(context, event.id ?? ""),
+              return GestureDetector(
+                onTap: () {
+                  Navigator.pushNamed(context, EventDetail.routeName, arguments: index);
+                },
+                child: JoinSectionCard(
+                  size: size,
+                  imgUrl: 'assets/images/dummy_event.png',
+                  profileImg: 'assets/images/dummyDP.png',
+                  username: event!.createdBy?.username ?? 'By Unknown User',
+                  typeOfEvent: event.eventMode ?? 'Unknown Event Type',
+                  date: event.dateOfEvent,
+                  time: event.startTime ?? 'Unknown Time',
+                  location: event.location ?? 'Unknown Location',
+                  onPressed: () =>
+                      _eventsProvider.joinEvent(context, event.id ?? ""),
+                ),
               );
             },
           );
