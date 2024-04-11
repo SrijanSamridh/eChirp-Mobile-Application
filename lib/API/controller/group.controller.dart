@@ -56,8 +56,13 @@ class GroupController {
 
   Future<Groups?> fetchGroups(String type) async {
     try {
-      final response = await client.get("/groups?type=$type");
-
+      var response;
+      if (type == "all") {
+        response = await client.get("/groups/$type");
+      } else {
+        response = await client.get("/groups?type=$type");
+      }
+      print("\n\n\n$type :: ${response.toString()}");
       if (response == null || response.isEmpty) {
         print('Unexpected response format: $response');
         return null;

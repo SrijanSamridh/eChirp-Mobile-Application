@@ -6,6 +6,7 @@ import 'package:echirp/components/custom_btn.dart';
 import 'package:echirp/utils/global_variabes.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../API/services/socket_connection.dart';
 import '../../components/bottom_bar.dart';
 
 enum AuthMode {
@@ -46,6 +47,7 @@ class _AuthScreenState extends State<AuthScreen> {
       debugPrint(
         "User : ${prefs.getString('username')}, \nlocal Storage : ${prefs.getString('x-auth-token')},",
       );
+      SocketConnection().listenToSocketEvents(); // socket connection
 
       Navigator.of(context)
           .pushReplacementNamed(BottomBar.routeName, arguments: 0);

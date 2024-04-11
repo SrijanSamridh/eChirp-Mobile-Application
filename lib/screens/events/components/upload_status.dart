@@ -48,7 +48,7 @@ class _UploadState extends State<UploadStatusScreen> {
             height: size.height * 0.125,
             child: Text(
               widget.eventType != null && widget.eventType!.contains('.')
-                  ? 'Congratulations!\nYour${widget.eventType?.split('.')[1] == "PRIVATE" ? "private" : ""} event has been created \nsuccessfully.'
+                  ? 'Congratulations!\nYour${widget.eventType?.split('.')[1] == "PRIVATE" ? " private" : ""} event has been created \nsuccessfully.'
                   : 'Congratulations!\nYour event has been created \nsuccessfully.',
               style: TextStyle(fontSize: size.height * 0.02),
               textAlign: TextAlign.center,
@@ -102,7 +102,7 @@ class _UploadState extends State<UploadStatusScreen> {
                   ),
                   child: Text(inviteCode),
                 ),
-          widget.eventType?.split('.')[1] == "private"
+          widget.eventType?.split('.')[1] == "PRIVATE"
               ? CustomBtn(
                   text: "Copy Code",
                   size: size,
@@ -120,7 +120,7 @@ class _UploadState extends State<UploadStatusScreen> {
                   width: size.width * 0.08,
                 )
               : Container(),
-          Text(widget.eventType?.split('.')[1] == "private"
+          Text(widget.eventType?.split('.')[1] == "PRIVATE"
               ? 'Copy your private event code'
               : ''),
           SizedBox(

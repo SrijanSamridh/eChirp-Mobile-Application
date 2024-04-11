@@ -1,5 +1,6 @@
 // ignore_for_file: avoid_print
 
+import 'package:echirp/API/provider/chat_provider.dart';
 import 'package:echirp/API/provider/friend_provider.dart';
 import 'package:echirp/API/provider/user_provider.dart';
 import 'package:echirp/API/services/socket_connection.dart';
@@ -13,7 +14,6 @@ import 'API/provider/event_provider.dart';
 import 'API/provider/group_provider.dart';
 
 Future<void> main() async {
-  SocketConnection.establishConnection(); // socket connection
   WidgetsFlutterBinding.ensureInitialized();
   await SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
@@ -32,9 +32,13 @@ Future<void> main() async {
       ChangeNotifierProvider<UserProvider>(
         create: (context) => UserProvider(),
       ),
+      ChangeNotifierProvider<ChatProvider>(
+        create: (context) => ChatProvider(),
+      )
     ],
     child: const MyApp(),
   ));
+  SocketConnection.establishConnection(); // socket connection
 }
 
 class MyApp extends StatelessWidget {
