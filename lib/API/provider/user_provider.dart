@@ -4,13 +4,16 @@ import '../controller/event.controller.dart';
 import '../controller/friend.controller.dart';
 import '../controller/userData.controller.dart';
 import '../models/event.models.dart';
+import '../models/user.models.dart';
 import '../models/userData.model.dart';
 
 class UserProvider extends ChangeNotifier {
+  User? _userData;
   late Future<UserData?> _profileData;
   late Future<Events?> _eventsAttended;
   late Future<Events?> _eventsCreated;
 
+  User? get userData => _userData;
   Future<UserData?> get profileData => _profileData;
   Future<Events?> get eventsAttended => _eventsAttended;
   Future<Events?> get eventsCreated => _eventsCreated;
@@ -31,8 +34,8 @@ class UserProvider extends ChangeNotifier {
     }
   }
 
-  Future<UserData?> fetchUserId() {
-    _profileData = UserDataController().fetchUserData();
-    return _profileData;
+  void setUserData(User userData) {
+    _userData = userData;
+    notifyListeners();
   }
 }

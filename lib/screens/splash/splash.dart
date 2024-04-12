@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:echirp/API/models/user.models.dart';
 import 'package:echirp/API/provider/user_provider.dart';
 import 'package:echirp/components/bottom_bar.dart';
 import 'package:echirp/screens/auth/auth.dart';
@@ -58,8 +59,13 @@ class _SplashScreenState extends State<SplashScreen> {
   Future<void> _initProfileData() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     // ignore: use_build_context_synchronously
-    await Provider.of<UserProvider>(context, listen: false)
-        .fetchUserData(pref.getString("_id")!, true);
+    var userProvider = Provider.of<UserProvider>(context, listen: false);
+    userProvider.fetchUserData(pref.getString("_id")!, true);
+    User userData = User(
+        message: "data feteced from the local storage",
+        user: UserClass(
+            id: pref.getString('_id'), username: pref.getString("username")));
+    userProvider.setUserData(userData);
   }
 
   @override
