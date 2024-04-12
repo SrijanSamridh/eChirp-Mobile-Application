@@ -2,10 +2,14 @@
 
 import 'package:echirp/API/controller/auth.controller.dart';
 import 'package:echirp/API/models/user.models.dart';
+import 'package:echirp/API/provider/user_provider.dart';
 import 'package:echirp/components/custom_btn.dart';
 import 'package:echirp/utils/global_variabes.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../API/models/userData.model.dart';
+import '../../API/provider/friend_provider.dart';
 import '../../API/services/socket_connection.dart';
 import '../../components/bottom_bar.dart';
 
@@ -43,11 +47,12 @@ class _AuthScreenState extends State<AuthScreen> {
       prefs.setString("x-auth-token", token!);
       prefs.setString("username", user.user!.username!);
       prefs.setString("_id", user.user!.id!);
-
+      var userProvider = Provider.of<UserProvider>(context, listen: false);
+      userProvider.setUserData(user);
       debugPrint(
-        "User : ${prefs.getString('username')}, \nlocal Storage : ${prefs.getString('x-auth-token')},",
+        "User : ${prefs.getString('username')}, From Provider:${userProvider.userData!.user?.username} \nlocal Storage : ${prefs.getString('x-auth-token')},",
       );
-      SocketConnection().listenToSocketEvents(); // socket connection
+      SocketConnection().listenToSocketEvents(context); // socket connection
 
       Navigator.of(context)
           .pushReplacementNamed(BottomBar.routeName, arguments: 0);

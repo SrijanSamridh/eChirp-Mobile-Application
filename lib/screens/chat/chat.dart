@@ -5,6 +5,7 @@ import '../../API/models/message.models.dart';
 import '../../API/provider/chat_provider.dart';
 import 'package:echirp/utils/global_variabes.dart';
 import '../../API/models/group.models.dart';
+import '../../API/provider/user_provider.dart';
 import '../../screens/group/components/group_detail.dart';
 
 class ChatScreen extends StatelessWidget {
@@ -183,8 +184,9 @@ class __ChatScreenContentState extends State<_ChatScreenContent> {
   }
 
   Widget _buildMessage(MessageElement message) {
-    checkSender =  true;
-    print("$checkSender <-- ${message.user!.username} : $userId");
+    var userProvider = Provider.of<UserProvider>(context, listen: false).userData;
+    checkSender =  message.user!.username == userProvider?.user?.username;
+    debugPrint("Message From Provider: ${userProvider?.message}\n$checkSender <-- ${message.user!.userId} : ${userProvider?.user?.id}");
     Size size = MediaQuery.of(context).size;
     return Row(
       mainAxisAlignment:

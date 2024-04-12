@@ -19,6 +19,7 @@ class ChatProvider extends ChangeNotifier {
     var result = response['message'];
     result["participants"] = participants;
     SocketConnection.socket.emit("new-message", result);
+    // ignore: avoid_print
     print("result: $result");
     _messages.add(MessageElement.fromJson(result));
     notifyListeners();
