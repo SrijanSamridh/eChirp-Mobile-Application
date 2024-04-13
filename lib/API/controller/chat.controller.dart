@@ -1,25 +1,27 @@
+// ignore_for_file: avoid_print
+
+import 'dart:convert';
+
+import 'package:flutter/material.dart';
+
+import '../models/group.models.dart';
+import '../models/message.models.dart';
 import '../services/base_client.dart';
 import '../services/socket_connection.dart';
 
-class ChatController{
-  Future<void> sendMessage(String message) async {
-    var body = {"groupId": widget.id, "message": message};
+class ChatController {
+  Future<void> sendMessage(String message, String groupId, List<Participant>? participants) async {
+    var body = {"groupId": groupId, "message": message};
 
     var response = await BaseClient().post('/message', body);
     var result = response['message'];
     print("result : $result");
-    result["participants"] = widget.participants;
-    SocketConnection.socket.emit(
-      "new-message", result
-    );
-    setState(() {
-      _messages.add(MessageElement.fromJson(result));
-    });
-    _controller.clear();
+    result["participants"] = participants;
+    SocketConnection.socket.emit("new-message", result);
+    // No setState() method is available here. You need to handle state changes in the widget tree.
   }
 
-
-  Future<dynamic> fetchMessages(String groupId) async {
+  Future<List<MessageElement>?> fetchMessages(String groupId) async {
     try {
       var response = await BaseClient().get('/message/$groupId');
       final decodedResponse = json.decode(response);
@@ -33,8 +35,7 @@ class ChatController{
 
       if (messagesData != null && messagesData is List) {
         final messages = messagesData
-            .map<MessageElement>(
-                (messageData) => MessageElement.fromJson(messageData))
+            .map<MessageElement>((messageData) => MessageElement.fromJson(messageData))
             .toList();
         return messages;
       } else {
@@ -43,12 +44,16 @@ class ChatController{
       }
     } catch (e) {
       debugPrint(e.toString());
+      return null;
     }
   }
 
-  Future<void> getMessages() async {
-    var data = await fetchMessages(widget.id);
-    setState(() {
-      _messages = data;
-    });
+  // You can't use setState() method directly in the controller.
+  // You should handle state changes in the widget tree where you call this method.
+  // Future<void> getMessages() async {
+  //   var data = await fetchMessages(widget.id);
+  //   setState(() {
+  //     _messages = data;
+  //   });
+  // }
 }

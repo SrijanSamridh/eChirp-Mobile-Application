@@ -129,6 +129,7 @@ class _EventCreateFromState extends State<EventCreateFrom> {
       "Img4Url": "https://example.com/image4.jpg"
     };
     // print and check whats the out put of the _type
+    // ignore: avoid_print
     print(_type);
     try {
       // Make API call to create event
