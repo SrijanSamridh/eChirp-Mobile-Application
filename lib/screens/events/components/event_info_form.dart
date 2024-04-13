@@ -1,7 +1,9 @@
 import 'package:echirp/components/custom_fields.dart';
 import 'package:flutter/material.dart';
 
-class EventInfoForm extends StatelessWidget {
+import '../../../utils/global_variabes.dart';
+
+class EventInfoForm extends StatefulWidget {
   const EventInfoForm({
     super.key,
     required this.size,
@@ -11,7 +13,6 @@ class EventInfoForm extends StatelessWidget {
     required this.locationController,
     required this.nameOfPlaceController,
     required this.addressController,
-    required this.maxMemberController,
   });
 
   final Size size;
@@ -21,50 +22,48 @@ class EventInfoForm extends StatelessWidget {
   final TextEditingController locationController;
   final TextEditingController nameOfPlaceController;
   final TextEditingController addressController;
-  final TextEditingController maxMemberController;
+
+  @override
+  State<EventInfoForm> createState() => _EventInfoFormState();
+}
+
+class _EventInfoFormState extends State<EventInfoForm> {
+  String max = GlobalVariables.kOccupations[0];
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         // date
-        CustomFields().customLabel(size, context,
+        CustomFields().customLabel(widget.size, context,
             'assets/icons/lets-icons_date-today-duotone.png', "Date"),
-        CustomFields().customDatePickerField(size, context, dateController),
+        CustomFields().customDatePickerField(widget.size, context, widget.dateController),
 
         // time
         CustomFields()
-            .customLabel(size, context, 'assets/icons/uiw_time.png', "Time"),
+            .customLabel(widget.size, context, 'assets/icons/uiw_time.png', "Time"),
         CustomFields().customTimePickerField(
-            size, context, startTimeController, endTimeController),
+            widget.size, context, widget.startTimeController, widget.endTimeController),
 
         // location
         CustomFields().customLabel(
-            size, context, 'assets/icons/ion_location.png', 'Location'),
-        CustomFields().customTextFormField(size, context, locationController,
+            widget.size, context, 'assets/icons/ion_location.png', 'Location'),
+        CustomFields().customTextFormField(widget.size, context, widget.locationController,
             "Location", TextInputType.streetAddress),
 
         // Name of the place
-        CustomFields().customLabel(size, context,
+        CustomFields().customLabel(widget.size, context,
             'assets/icons/mingcute_building-2-fill.png', 'Name of the place'),
-        CustomFields().customTextFormField(size, context, nameOfPlaceController,
+        CustomFields().customTextFormField(widget.size, context, widget.nameOfPlaceController,
             "Name of the place", TextInputType.name),
 
         // Address
         CustomFields()
-            .customLabel(size, context, 'assets/icons/Vector.png', 'Address'),
-        CustomFields().customTextFormField(size, context, addressController,
+            .customLabel(widget.size, context, 'assets/icons/Vector.png', 'Address'),
+        CustomFields().customTextFormField(widget.size, context, widget.addressController,
             "Address", TextInputType.streetAddress),
 
-        // Max Member
-        CustomFields().customLabel(
-            size,
-            context,
-            'assets/icons/fluent_people-12-filled.png',
-            'Maximum number of people'),
-        CustomFields().customTextFormField(size, context, maxMemberController,
-            "i.e, 10", TextInputType.number),
-
+        
         // ElevatedButton(
         //   onPressed: () {
         //     // Validate returns true if the form is valid, or false otherwise.

@@ -42,7 +42,7 @@ class _EventCreateFromState extends State<EventCreateFrom> {
   TextEditingController locationController = TextEditingController();
   TextEditingController nameOfPlaceController = TextEditingController();
   TextEditingController addressController = TextEditingController();
-  TextEditingController maxMemberController = TextEditingController();
+  String maxMemberController = GlobalVariables.kMaxMemberCount[0];
   TextEditingController femaleCntController = TextEditingController();
   TextEditingController maleCntController = TextEditingController();
   TextEditingController eventTitleController = TextEditingController();
@@ -115,13 +115,13 @@ class _EventCreateFromState extends State<EventCreateFrom> {
       "nameOfPlace": nameOfPlaceController.text,
       "address": addressController.text,
       "maxParticipants": 20,
-      "eventMode": _type.toString().split('.')[1],      //! error on server
+      "eventMode": _type.toString().split('.')[1], //! error on server
       "ageRange": "18-40",
       "gender": "Any",
       "occupation": occupationValue,
       "eventTitle": eventTitleController.text,
       "eventDescription": eventDescriptionController.text,
-      "coverImgUrl":image1?.path ??
+      "coverImgUrl": image1?.path ??
           "https://media.istockphoto.com/id/1913125761/photo/silhouettes-of-people-dancing-and-rising-hands-at-open-air-summer-festival.webp?b=1&s=170667a&w=0&k=20&c=50RtfZ05NSgpYdSgWpOf5ePkp5yRwVdb2atxzqmRKY4=",
       "Img1Url": "https://example.com/image1.jpg",
       "Img2Url": "https://example.com/image2.jpg",
@@ -176,7 +176,7 @@ class _EventCreateFromState extends State<EventCreateFrom> {
     locationController.dispose();
     nameOfPlaceController.dispose();
     addressController.dispose();
-    maxMemberController.dispose();
+    // maxMemberController.dispose();
     femaleCntController.dispose();
     maleCntController.dispose();
     eventTitleController.dispose();
@@ -206,15 +206,47 @@ class _EventCreateFromState extends State<EventCreateFrom> {
                 Form(
                   key: _formKey,
                   child: currentIndex == 1
-                      ? EventInfoForm(
-                          size: size,
-                          dateController: dateController,
-                          startTimeController: startTimeController,
-                          endTimeController: endTimeController,
-                          locationController: locationController,
-                          nameOfPlaceController: nameOfPlaceController,
-                          addressController: addressController,
-                          maxMemberController: maxMemberController,
+                      ? Column(
+                          children: [
+                            EventInfoForm(
+                              size: size,
+                              dateController: dateController,
+                              startTimeController: startTimeController,
+                              endTimeController: endTimeController,
+                              locationController: locationController,
+                              nameOfPlaceController: nameOfPlaceController,
+                              addressController: addressController,
+                            ),
+                            // Max Member
+                            CustomFields().customLabel(
+                                size,
+                                context,
+                                'assets/icons/fluent_people-12-filled.png',
+                                'Maximum number of people'),
+                            // CustomFields().customTextFormField(size, context, maxMemberController,
+                            //     "i.e, 10", TextInputType.number)
+                            Row(
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: size.width * 0.08),
+                                  child: CustomDropdown(
+                                    dropdownValue: maxMemberController,
+                                    size: size,
+                                    onChanged: (String? value) {
+                                      // This is called when the user selects an item.
+                                      setState(
+                                        () {
+                                          maxMemberController = value!;
+                                        },
+                                      );
+                                    },
+                                    categories: GlobalVariables.kMaxMemberCount,
+                                  ),
+                                ),
+                              ],
+                            )
+                          ],
                         )
                       : currentIndex == 2
                           // From part 2

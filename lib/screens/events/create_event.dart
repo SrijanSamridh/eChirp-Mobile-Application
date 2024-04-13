@@ -54,10 +54,12 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                 'CREATE YOUR EVENT',
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
               ),
-              const Text(
+              Text(
                 textAlign: TextAlign.center,
-                'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla consequat odio in turpis tempor condimentum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. ',
-                style: TextStyle(),
+                "Let's start by selecting the category so people can identify and easily search your event. Select from the drop down list below. If it doesnt match any of the categories, choose other and detail it in \"event description\" please. You'll see it in the next few steps, don't fret!",
+                style: TextStyle(
+                  fontSize: size.height * 0.013
+                ),
               ),
 
               const Text(

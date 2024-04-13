@@ -2,17 +2,20 @@ import 'package:flutter/material.dart';
 
 import '../utils/global_variabes.dart';
 
+// ignore: must_be_immutable
 class CustomDropdown extends StatelessWidget {
-  final String dropdownValue;
+  final dynamic dropdownValue;
   final Size size;
   final ValueChanged<String?>? onChanged;
   final List<String> categories;
+  LinearGradient? backgroundColor; 
 
-  const CustomDropdown({super.key, 
+  CustomDropdown({super.key, 
     required this.dropdownValue,
     required this.size,
     required this.onChanged,
     required this.categories,
+    this.backgroundColor,
   });
 
   @override
@@ -21,7 +24,7 @@ class CustomDropdown extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 16),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(30),
-        gradient: GlobalVariables.kPrimaryGradientColor,
+        gradient: backgroundColor ?? GlobalVariables.kPrimaryGradientColor,
         border: Border.all(
           color: GlobalVariables.kPrimaryColor,
           width: 1,

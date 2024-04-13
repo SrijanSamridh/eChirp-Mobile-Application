@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:echirp/API/models/user.models.dart';
 import 'package:echirp/API/provider/user_provider.dart';
@@ -62,8 +61,6 @@ class _SplashScreenState extends State<SplashScreen> {
     // ignore: use_build_context_synchronously
     var userProvider = Provider.of<UserProvider>(context, listen: false);
     userProvider.fetchUserData(pref.getString("_id")!, true);
-    User user = jsonDecode(pref.getString('userData').toString());
-    print(user);
     User userData = User(
         message: "data feteced from the local storage",
         user: UserClass(
@@ -89,16 +86,13 @@ class _SplashScreenState extends State<SplashScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 SizedBox(height: size.height * 0.13),
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(50),
-                  child: Image(
-                    image: const AssetImage('assets/icons/echirp_logo.jpeg'),
-                    height: size.height * 0.12,
-                  ),
+                Image(
+                  image: const AssetImage('assets/icons/echirp-logo.png'),
+                  height: size.height * 0.12,
                 ),
                 const SizedBox(height: 16),
                 Text(
-                  'Welcome to eChirp',
+                  'Welcome to EventChirp!',
                   style: TextStyle(
                     fontSize: size.width * 0.045,
                     fontWeight: FontWeight.w500,
