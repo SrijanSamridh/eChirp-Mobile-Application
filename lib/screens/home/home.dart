@@ -159,7 +159,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
           // ? Mutual Friends section
           HeadlineWithHyperLink(
-              headingText: 'Mutual Friends',
+              headingText: 'Friends of Friends',
               onPressed: () {
                 Navigator.of(context).pushNamedAndRemoveUntil(
                     BottomBar.routeName, arguments: 2, (route) => false);

@@ -25,6 +25,7 @@ class User {
 }
 
 class UserClass {
+    int? numberOfEventsAttended;
     String? id;
     String? username;
     String? email;
@@ -32,13 +33,18 @@ class UserClass {
     List<String>? friends;
     List<dynamic>? friendRequests;
     int? numberOfFriends;
-    List<dynamic>? myCreatedEvents;
-    List<dynamic>? eventsAttended;
+    List<String>? myCreatedEvents;
+    List<String>? eventsAttended;
+    DateTime? createdAt;
+    DateTime? updatedAt;
+    String? bio;
+    String? firstName;
+    String? lastName;
     int? numberOfEventsCreated;
-    int? numberOfEventsAttended;
     String? token;
 
     UserClass({
+        this.numberOfEventsAttended,
         this.id,
         this.username,
         this.email,
@@ -48,8 +54,12 @@ class UserClass {
         this.numberOfFriends,
         this.myCreatedEvents,
         this.eventsAttended,
+        this.createdAt,
+        this.updatedAt,
+        this.bio,
+        this.firstName,
+        this.lastName,
         this.numberOfEventsCreated,
-        this.numberOfEventsAttended,
         this.token,
     });
 
@@ -58,6 +68,7 @@ class UserClass {
     String toRawJson() => json.encode(toJson());
 
     factory UserClass.fromJson(Map<String, dynamic> json) => UserClass(
+        numberOfEventsAttended: json["numberOfEventsAttended"],
         id: json["_id"],
         username: json["username"],
         email: json["email"],
@@ -65,25 +76,34 @@ class UserClass {
         friends: json["friends"] == null ? [] : List<String>.from(json["friends"]!.map((x) => x)),
         friendRequests: json["friendRequests"] == null ? [] : List<dynamic>.from(json["friendRequests"]!.map((x) => x)),
         numberOfFriends: json["numberOfFriends"],
-        myCreatedEvents: json["myCreatedEvents"] == null ? [] : List<dynamic>.from(json["myCreatedEvents"]!.map((x) => x)),
-        eventsAttended: json["eventsAttended"] == null ? [] : List<dynamic>.from(json["eventsAttended"]!.map((x) => x)),
+        myCreatedEvents: json["myCreatedEvents"] == null ? [] : List<String>.from(json["myCreatedEvents"]!.map((x) => x)),
+        eventsAttended: json["eventsAttended"] == null ? [] : List<String>.from(json["eventsAttended"]!.map((x) => x)),
+        createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
+        updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
+        bio: json["bio"],
+        firstName: json["firstName"],
+        lastName: json["lastName"],
         numberOfEventsCreated: json["numberOfEventsCreated"],
-        numberOfEventsAttended: json["numberOfEventsAttended"],
         token: json["token"],
     );
 
     Map<String, dynamic> toJson() => {
+        "numberOfEventsAttended": numberOfEventsAttended,
         "_id": id,
         "username": username,
         "email": email,
         "password": password,
-        "friends": friends == null ? [] : List<String>.from(friends!.map((x) => x)),
+        "friends": friends == null ? [] : List<dynamic>.from(friends!.map((x) => x)),
         "friendRequests": friendRequests == null ? [] : List<dynamic>.from(friendRequests!.map((x) => x)),
         "numberOfFriends": numberOfFriends,
         "myCreatedEvents": myCreatedEvents == null ? [] : List<dynamic>.from(myCreatedEvents!.map((x) => x)),
         "eventsAttended": eventsAttended == null ? [] : List<dynamic>.from(eventsAttended!.map((x) => x)),
+        "createdAt": createdAt?.toIso8601String(),
+        "updatedAt": updatedAt?.toIso8601String(),
+        "bio": bio,
+        "firstName": firstName,
+        "lastName": lastName,
         "numberOfEventsCreated": numberOfEventsCreated,
-        "numberOfEventsAttended": numberOfEventsAttended,
         "token": token,
     };
 }

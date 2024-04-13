@@ -100,6 +100,12 @@ class AuthController {
       } else {
         debugPrint(
             'Error: ${response.statusCode}, ${response.reasonPhrase}, $response');
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+                '${response.body.split('Path')[1].split('email')[0]} ${response.body.split('Path')[2].split('"')[0]}'),
+          ),
+        );
       }
     } catch (error) {
       debugPrint('Error: $error');

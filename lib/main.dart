@@ -46,6 +46,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SocketConnection().listenToSocketEvents(context); // socket connection
     return MaterialApp(
       title: 'eChirp',
       theme: ThemeData(

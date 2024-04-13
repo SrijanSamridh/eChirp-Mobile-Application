@@ -8,8 +8,6 @@ import 'package:echirp/utils/global_variabes.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../../API/models/userData.model.dart';
-import '../../API/provider/friend_provider.dart';
 import '../../API/services/socket_connection.dart';
 import '../../components/bottom_bar.dart';
 
@@ -33,6 +31,10 @@ class _AuthScreenState extends State<AuthScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   bool? showPasswordCheck = false;
+  // ignore: prefer_typing_uninitialized_variables
+  var _passwordError;
+  Color errorTextColor = Colors.red;
+  bool onLoad = false;
 
   Future<void> signIn() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -100,11 +102,19 @@ class _AuthScreenState extends State<AuthScreen> {
     _passwordController.dispose();
   }
 
-  // void showPassword(bool value){
-  //   if(value == true && showPasswordCheck == false){
-  //     showPasswordCheck =
-  //   }
-  // }
+  bool validatePassword(String password) {
+    // Please make sure you've a Strong password, includes Uppercase, Lowercase, Digits & special Characters.
+    final RegExp hasUppercase = RegExp(r'[A-Z]');
+    final RegExp hasLowercase = RegExp(r'[a-z]');
+    final RegExp hasDigit = RegExp(r'\d');
+    final RegExp hasSpecialChars = RegExp(r'[!@#$%^&*(),.?":{}|<>]');
+
+    return password.length >= 8 && // Minimum length
+        hasUppercase.hasMatch(password) && // At least one uppercase
+        hasLowercase.hasMatch(password) && // At least one lowercase
+        hasDigit.hasMatch(password) && // At least one digit
+        hasSpecialChars.hasMatch(password); // At least one special character
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -120,13 +130,16 @@ class _AuthScreenState extends State<AuthScreen> {
           ),
           Column(
             children: [
-              const Align(
+              Align(
                 alignment: Alignment.topCenter,
                 child: Padding(
-                  padding: EdgeInsets.only(top: 80),
-                  child: Image(
-                    image: AssetImage('assets/icons/echirp-logo.png'),
-                    height: 100,
+                  padding: const EdgeInsets.only(top: 80),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(50),
+                    child: const Image(
+                      image: AssetImage('assets/icons/echirp_logo.jpeg'),
+                      height: 100,
+                    ),
                   ),
                 ),
               ),
@@ -177,7 +190,7 @@ class _AuthScreenState extends State<AuthScreen> {
                 ),
               ),
               Container(
-                height: size.height * 0.55,
+                // height: size.height * 0.55,
                 margin: const EdgeInsets.all(26),
                 padding: const EdgeInsets.symmetric(
                   horizontal: 50,
@@ -194,9 +207,14 @@ class _AuthScreenState extends State<AuthScreen> {
                 child: _authMode == AuthMode.signIn
                     ? Column(
                         children: [
-                          const Text('Sign In and Dive into Event Magic!'),
+                          Text(
+                            ' Hello there, nice to see you...',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: size.height * 0.016),
+                          ),
                           SizedBox(
-                            height: size.height * 0.1,
+                            height: size.height * 0.08,
                           ),
                           TextField(
                             controller: _usernameController,
@@ -240,10 +258,15 @@ class _AuthScreenState extends State<AuthScreen> {
                             height: size.height * 0.02,
                           ),
                           CustomBtn(
-                            text: 'Sign In ',
+                            text: onLoad ? 'Loading...' :'Sign In ',
                             size: size,
                             width: size.width * 0.2,
-                            onPressed: signIn,
+                            onPressed: () {
+                              setState(() {
+                                onLoad = true;
+                              });
+                              signIn();
+                            },
                           ),
                           const Text(
                             'Forgot Password?',
@@ -256,43 +279,21 @@ class _AuthScreenState extends State<AuthScreen> {
                           SizedBox(
                             height: size.height * 0.02,
                           ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              ClipRRect(
-                                  borderRadius: BorderRadius.circular(50),
-                                  child: Image.asset(
-                                    "assets/icons/facbook-logo.jpg",
-                                    height: 50,
-                                  )),
-                              ClipRRect(
-                                  borderRadius: BorderRadius.circular(50),
-                                  child: Image.asset(
-                                    "assets/icons/google-logo.jpg",
-                                    height: 50,
-                                  )),
-                              ClipRRect(
-                                  borderRadius: BorderRadius.circular(50),
-                                  child: Image.asset(
-                                    "assets/icons/instagram-logo.png",
-                                    height: 50,
-                                  )),
-                              ClipRRect(
-                                  borderRadius: BorderRadius.circular(50),
-                                  child: Image.asset(
-                                    "assets/icons/twiter-log.jpeg",
-                                    height: 50,
-                                  )),
-                            ],
-                          )
+                          const LoginViaSocialMedia()
                         ],
                       )
                     : Column(
                         children: [
-                          const Text(
-                              'Register Today, Celebrate Tomorrow: Start Now!'),
+                          Text('New here?',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: size.height * 0.016)),
+                          Text(
+                              textAlign: TextAlign.center,
+                              'Sign up to make new friends & attend fun happenings!',
+                              style: TextStyle(fontSize: size.height * 0.012)),
                           SizedBox(
-                            height: size.height * 0.03,
+                            height: size.height * 0.008,
                           ),
                           TextField(
                             controller: _usernameController,
@@ -307,7 +308,7 @@ class _AuthScreenState extends State<AuthScreen> {
                           TextField(
                             controller: _emailController,
                             decoration: const InputDecoration(
-                              hintText: 'Email ID',
+                              hintText: 'email',
                               border: InputBorder.none,
                             ),
                           ),
@@ -323,10 +324,30 @@ class _AuthScreenState extends State<AuthScreen> {
                               hintText: 'Password',
                               border: InputBorder.none,
                             ),
+                            onChanged: (password) {
+                              final isValid = validatePassword(password);
+                              setState(() {
+                                _passwordError = isValid
+                                    ? "Hurrey! you Got a Strong password!"
+                                    : 'Please make sure you\'ve a 8 char Strong password, includes Uppercase, Lowercase, Digits & special Characters.';
+                                if (isValid) {
+                                  errorTextColor =
+                                      const Color.fromARGB(255, 0, 220, 8);
+                                } else {
+                                  errorTextColor = Colors.red;
+                                }
+                              });
+                            },
                           ),
                           const Divider(
                             color: Colors.grey,
                           ),
+                          if (_passwordError != null)
+                            Text(
+                              _passwordError!,
+                              style: TextStyle(
+                                  color: errorTextColor, fontSize: 12.0),
+                            ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
@@ -349,10 +370,24 @@ class _AuthScreenState extends State<AuthScreen> {
                             text: 'Sign Up',
                             size: size,
                             width: size.width * 0.2,
-                            onPressed: signUp,
+                            onPressed: () {
+                              if (validatePassword(_passwordController.text)) {
+                                signUp();
+                              } else {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text(
+                                        "Please make sure all the fields are filled and as per requirements!"),
+                                  ),
+                                );
+                              }
+                            },
+                          ),
+                          SizedBox(
+                            height: size.height * 0.01,
                           ),
                           const Text(
-                            'Forgot Password?',
+                            'or Sign Up Via',
                             style: TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.bold,
@@ -360,37 +395,9 @@ class _AuthScreenState extends State<AuthScreen> {
                             ),
                           ),
                           SizedBox(
-                            height: size.height * 0.02,
+                            height: size.height * 0.005,
                           ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              ClipRRect(
-                                  borderRadius: BorderRadius.circular(50),
-                                  child: Image.asset(
-                                    "assets/icons/facbook-logo.jpg",
-                                    height: 50,
-                                  )),
-                              ClipRRect(
-                                  borderRadius: BorderRadius.circular(50),
-                                  child: Image.asset(
-                                    "assets/icons/google-logo.jpg",
-                                    height: 50,
-                                  )),
-                              ClipRRect(
-                                  borderRadius: BorderRadius.circular(50),
-                                  child: Image.asset(
-                                    "assets/icons/instagram-logo.png",
-                                    height: 50,
-                                  )),
-                              ClipRRect(
-                                  borderRadius: BorderRadius.circular(50),
-                                  child: Image.asset(
-                                    "assets/icons/twiter-log.jpeg",
-                                    height: 50,
-                                  )),
-                            ],
-                          )
+                          const LoginViaSocialMedia()
                         ],
                       ),
               ),
@@ -399,6 +406,45 @@ class _AuthScreenState extends State<AuthScreen> {
           ),
         ],
       ),
+    );
+  }
+}
+
+class LoginViaSocialMedia extends StatelessWidget {
+  const LoginViaSocialMedia({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        ClipRRect(
+            borderRadius: BorderRadius.circular(50),
+            child: Image.asset(
+              "assets/icons/facebook.png",
+              height: 35,
+            )),
+        ClipRRect(
+            borderRadius: BorderRadius.circular(50),
+            child: Image.asset(
+              "assets/icons/google.png",
+              height: 50,
+            )),
+        ClipRRect(
+            borderRadius: BorderRadius.circular(50),
+            child: Image.asset(
+              "assets/icons/instagram.png",
+              height: 48,
+            )),
+        ClipRRect(
+            borderRadius: BorderRadius.circular(50),
+            child: Image.asset(
+              "assets/icons/apple.png",
+              height: 60,
+            )),
+      ],
     );
   }
 }
