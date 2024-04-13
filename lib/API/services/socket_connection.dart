@@ -10,8 +10,7 @@ import 'package:socket_io_client/socket_io_client.dart';
 // Dart client
 class SocketConnection {
   static IO.Socket socket = IO.io(
-      'http://localhost:8080',
-      // 'http://54.221.29.4:8080',
+      'http://23.23.60.2:8080',
       OptionBuilder().setTransports(['websocket']) // for Flutter or Dart VM
           .build());
 
@@ -28,11 +27,12 @@ class SocketConnection {
     var userId = pref.getString('_id');
     print("==============================================$userId");
     // ignore: use_build_context_synchronously
-    var chatProvider = Provider.of<ChatProvider>(context, listen: false);
+    var chatProvider = Provider.of<ChatProvider>(context);
     socket.on('$userId-new-message', (data) {
       print("Socket response: $data");
       chatProvider.listenToSocketEvents(data);
-
+      print("\n\n\n");
+      print(chatProvider.messages);
       return data;
     });
     // _messages.add(MessageElement.fromJson(data));

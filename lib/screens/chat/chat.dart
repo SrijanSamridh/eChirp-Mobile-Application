@@ -52,7 +52,7 @@ class _ChatScreenContent extends StatefulWidget {
 
 class __ChatScreenContentState extends State<_ChatScreenContent> {
   late TextEditingController _controller;
-  late ChatProvider _chatProvider;
+  late ChatProvider _chatProvider = ChatProvider();
   late bool checkSender;
   late String userId = "";
 
@@ -60,9 +60,6 @@ class __ChatScreenContentState extends State<_ChatScreenContent> {
   void initState() {
     super.initState();
     _controller = TextEditingController();
-    _chatProvider = Provider.of<ChatProvider>(context, listen: false);
-    // _chatProvider.listenToSocketEvents();
-    _chatProvider.fetchMessages(widget.id);
     setState(() {
       userId = getuserId();
     });
@@ -70,6 +67,8 @@ class __ChatScreenContentState extends State<_ChatScreenContent> {
 
   @override
   Widget build(BuildContext context) {
+    _chatProvider = Provider.of<ChatProvider>(context);
+    _chatProvider.fetchMessages(widget.id);
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
