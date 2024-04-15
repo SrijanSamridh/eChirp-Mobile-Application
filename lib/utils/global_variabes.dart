@@ -18,7 +18,7 @@ class ColorSchema {
 // ignore: constant_identifier_names
 enum EventType { PRIVATE, PUBLIC }
 
-enum Gender { male, female, others }
+enum Gender { male, female, undisclosed }
 
 class GlobalVariables {
   static const Color kPrimaryColor = ColorSchema._primary;

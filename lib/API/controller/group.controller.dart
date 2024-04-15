@@ -2,6 +2,7 @@
 
 import 'dart:convert';
 import 'package:echirp/API/services/base_client.dart';
+import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import '../models/group.models.dart';
 
@@ -76,6 +77,7 @@ class GroupController {
       }
 
       final groupsData = decodedResponse['groups'];
+      print(groupsData);
 
       if (groupsData != null && groupsData is List) {
         final groups = groupsData
@@ -87,8 +89,18 @@ class GroupController {
         return null;
       }
     } catch (e) {
-      print('Error fetching groups: $e');
+      print('Error fetching $type groups: $e');
       return null;
+    }
+  }
+
+  Future<void> sendRequest(String groupId) async {
+    try {
+      final response = await client.post('/notification', {"groupId": groupId});
+      var responseData = response['message'];
+      return responseData;
+    } catch (e) {
+      print(e.toString());
     }
   }
 }

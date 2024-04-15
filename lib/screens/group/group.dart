@@ -1,3 +1,4 @@
+import 'package:echirp/API/controller/group.controller.dart';
 import 'package:echirp/utils/skeleton_loader.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
@@ -125,7 +126,9 @@ class _GroupScreenState extends State<GroupScreen> {
               MaterialPageRoute(
                   builder: (context) => ChatScreen(
                         title: group.name.toString(),
-                        image: '', id: group.groupId.toString(), participants: group.participants,
+                        image: '',
+                        id: group.groupId.toString(),
+                        participants: group.participants,
                       ))),
           child: GroupTile(
             image: group.imageUrl ?? '',
@@ -170,7 +173,9 @@ class _GroupScreenState extends State<GroupScreen> {
               MaterialPageRoute(
                   builder: (context) => ChatScreen(
                         title: group.name.toString(),
-                        image: '', id: group.groupId.toString(), participants: group.participants,
+                        image: '',
+                        id: group.groupId.toString(),
+                        participants: group.participants,
                       ))),
           child: GroupTile(
             image: group.imageUrl ?? '',
@@ -211,10 +216,10 @@ class _GroupScreenState extends State<GroupScreen> {
         final group = allGroups[index];
         return GestureDetector(
           onTap: () {
-            Navigator.pushNamed(
-              context,
-              GroupInfoScreen.routeName,
-            );
+            Navigator.pushNamed(context, GroupInfoScreen.routeName,
+                arguments: () {
+              GroupController().sendRequest(group.groupId.toString());
+            });
           },
           child: GroupTile(
             image: group.imageUrl ?? '',

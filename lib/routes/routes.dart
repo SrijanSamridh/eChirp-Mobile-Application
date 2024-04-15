@@ -72,31 +72,32 @@ onGenerateRoute(RouteSettings routeSettings) {
 
     case ProfileScreen.routeName:
       return MaterialPageRoute(
-        builder: (_) =>  const ProfileScreen(),
+        builder: (_) => const ProfileScreen(),
       );
 
     case GroupInfoScreen.routeName:
+      var onPressed = routeSettings.arguments as VoidCallback;
       return MaterialPageRoute(
-        builder: (_) =>  GroupInfoScreen(),
+        builder: (_) => GroupInfoScreen(onPressed: onPressed),
       );
-      case GroupDetailsPage.routeName:
+    case GroupDetailsPage.routeName:
       return MaterialPageRoute(
-        builder: (_) =>  GroupDetailsPage(),
+        builder: (_) => GroupDetailsPage(),
       );
 
-      case CreateGroupScreen.routeName:
+    case CreateGroupScreen.routeName:
       return MaterialPageRoute(
         builder: (_) => const CreateGroupScreen(),
       );
 
-      case GroupFormScreen.routeName:
+    case GroupFormScreen.routeName:
       return MaterialPageRoute(
-        builder: (_) =>  const GroupFormScreen(),
+        builder: (_) => const GroupFormScreen(),
       );
-      case EventDetail.routeName:
+    case EventDetail.routeName:
       int index = routeSettings.arguments as int;
       return MaterialPageRoute(
-        builder: (_) =>   EventDetail(index: index),
+        builder: (_) => EventDetail(index: index),
       );
 
     default:

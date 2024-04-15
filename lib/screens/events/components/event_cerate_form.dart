@@ -450,7 +450,7 @@ class _EventCreateFromState extends State<EventCreateFrom> {
             Row(
               children: [
                 Radio<Gender>(
-                  value: Gender.others,
+                  value: Gender.undisclosed,
                   groupValue: _gender,
                   onChanged: (Gender? value) {
                     setState(() {

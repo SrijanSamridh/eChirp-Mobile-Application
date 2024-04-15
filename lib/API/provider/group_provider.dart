@@ -32,6 +32,4 @@ class GroupProvider extends ChangeNotifier {
       print('Error fetching groups: $e');
     }
   }
-
-  
 }

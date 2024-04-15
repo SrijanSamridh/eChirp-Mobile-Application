@@ -38,7 +38,7 @@ class AuthController {
             user: UserClass(
               id: userData['_id'],
               username: userData['username'],
-              email: userData['email'],
+              providerId: userData['providerId'],
               token: userData['token'],
             ),
           );
@@ -88,7 +88,7 @@ class AuthController {
             user: UserClass(
               id: userData['_id'],
               username: userData['username'],
-              email: userData['email'],
+              providerId: userData['providerId'],
             ),
           );
 
