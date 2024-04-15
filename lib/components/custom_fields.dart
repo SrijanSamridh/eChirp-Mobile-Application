@@ -84,36 +84,43 @@ class CustomFields {
       Size size, BuildContext context, TextEditingController dateCtl) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: size.width * 0.06),
-      child: TextFormField(
-        controller: dateCtl,
-        decoration: const InputDecoration(
-          labelText: "Select Date",
-          hintText: "YYYY-MM-DD",
-          isDense: true,
-          contentPadding: EdgeInsets.fromLTRB(10, 10, 10, 0),
-          enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: GlobalVariables.kPrimaryColor),
-              borderRadius: BorderRadius.all(Radius.circular(30))),
-        ),
-        onTap: () async {
-          DateTime? date = DateTime(1900);
-          FocusScope.of(context).requestFocus(FocusNode());
-
-          date = await showDatePicker(
-              context: context,
-              initialDate: DateTime.now(),
-              firstDate: DateTime(1900),
-              lastDate: DateTime(2100));
-
-          dateCtl.text = date!.toIso8601String().split("T")[0];
-        },
-        // The validator receives the text that the user has entered.
-        validator: (value) {
-          if (value == null || value.isEmpty) {
-            return 'Please enter some text';
-          }
-          return null;
-        },
+      child: Row(
+        children: [
+          SizedBox(
+            width: size.width * 0.36,
+            child: TextFormField(
+              controller: dateCtl,
+              decoration: const InputDecoration(
+                labelText: "YYYY-MM-DD",
+                hintText: "YYYY-MM-DD",
+                isDense: true,
+                contentPadding: EdgeInsets.fromLTRB(10, 10, 10, 0),
+                enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: GlobalVariables.kPrimaryColor),
+                    borderRadius: BorderRadius.all(Radius.circular(30))),
+              ),
+              onTap: () async {
+                DateTime? date = DateTime(1900);
+                FocusScope.of(context).requestFocus(FocusNode());
+            
+                date = await showDatePicker(
+                    context: context,
+                    initialDate: DateTime.now(),
+                    firstDate: DateTime(1900),
+                    lastDate: DateTime(2100));
+            
+                dateCtl.text = date!.toIso8601String().split("T")[0];
+              },
+              // The validator receives the text that the user has entered.
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please enter some text';
+                }
+                return null;
+              },
+            ),
+          ),
+        ],
       ),
     );
   }

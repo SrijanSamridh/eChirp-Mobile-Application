@@ -1,20 +1,25 @@
 // ignore_for_file: avoid_print
 
 import 'package:echirp/API/provider/chat_provider.dart';
+import 'package:echirp/API/provider/event_provider.dart';
 import 'package:echirp/API/provider/friend_provider.dart';
+import 'package:echirp/API/provider/group_provider.dart';
 import 'package:echirp/API/provider/user_provider.dart';
 import 'package:echirp/API/services/socket_connection.dart';
+import 'package:echirp/firebase_options.dart';
 import 'package:echirp/routes/routes.dart';
 import 'package:echirp/screens/splash/splash.dart';
 import 'package:echirp/utils/global_variabes.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'API/provider/event_provider.dart';
-import 'API/provider/group_provider.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   await SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
   ]);
@@ -38,20 +43,19 @@ Future<void> main() async {
     ],
     child: const MyApp(),
   ));
-  SocketConnection.establishConnection(); // socket connection
+  // Establish socket connection
+  SocketConnection.establishConnection();
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    SocketConnection().listenToSocketEvents(context); // socket connection
     return MaterialApp(
       title: 'eChirp',
       theme: ThemeData(
-        colorScheme:
-            ColorScheme.fromSeed(seedColor: GlobalVariables.kPrimaryColor),
+        colorScheme: ColorScheme.fromSeed(seedColor: GlobalVariables.kPrimaryColor),
         useMaterial3: true,
       ),
       onGenerateRoute: (routeSettings) => onGenerateRoute(routeSettings),

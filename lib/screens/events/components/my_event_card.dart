@@ -1,6 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-
+// ignore: depend_on_referenced_packages
+import 'package:intl/intl.dart';
 import '../../../utils/global_variabes.dart';
 
 class MyEventCard extends StatelessWidget {
@@ -59,15 +61,20 @@ class MyEventCard extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Text(
-                  '$date at $time',
-                  textAlign: TextAlign.left,
-                  style: TextStyle(fontSize: size.height * 0.012),
+                SizedBox(
+                  width: size.width*0.4,
+                  child: Text(
+                    '${formatDate(date.toString(), false)} at ${formatTime(time)}',
+                    textAlign: TextAlign.left,
+                    style: TextStyle(fontSize: size.height * 0.012),
+                  ),
                 ),
-                Text(
-                  typeOfEvent,
-                  textAlign: TextAlign.left,
-                  style: const TextStyle(fontWeight: FontWeight.bold),
+                SizedBox(
+                  width: size.width*0.4,
+                  child: Text(
+                    typeOfEvent,
+                    textAlign: TextAlign.left,
+                  ),
                 ),
                 SizedBox(height: size.height * 0.01),
                 Row(
@@ -78,6 +85,7 @@ class MyEventCard extends StatelessWidget {
                     ),
                     Text(
                       location,
+                      overflow: TextOverflow.ellipsis,
                       textAlign: TextAlign.left,
                       style: TextStyle(fontSize: size.height * 0.012),
                     ),
@@ -85,10 +93,21 @@ class MyEventCard extends StatelessWidget {
                 ),
                 SizedBox(height: size.height * 0.002),
                 Expanded(
-                  child: Text(
-                    about,
-                    textAlign: TextAlign.left,
-                    style: TextStyle(fontSize: size.height * 0.012),
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.location_city_sharp,
+                        size: size.height * 0.016,
+                      ),
+                      Expanded(
+                        child: Text(
+                          about,
+                          overflow: TextOverflow.ellipsis,
+                          textAlign: TextAlign.left,
+                          style: TextStyle(fontSize: size.height * 0.012),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ],
@@ -111,5 +130,31 @@ class MyEventCard extends StatelessWidget {
         ],
       ),
     );
+  }
+  String formatDate(String dateString, bool created) {
+    try {
+      DateTime date = DateTime.parse(dateString);
+      String formattedDate;
+
+      created
+          ? formattedDate = DateFormat('dd MMM yyyy').format(date)
+          : formattedDate = DateFormat('dd MMM').format(date);
+
+      return formattedDate;
+    } catch (e) {
+      debugPrint(e.toString());
+      return "";
+    }
+  }
+
+  String formatTime(String timeString) {
+    try {
+      DateTime dateTime = DateTime.parse('2022-01-01 $timeString');
+      String formattedTime = DateFormat('h:mm a').format(dateTime);
+      return formattedTime;
+    } catch (e) {
+      debugPrint(e.toString());
+      return "${e.toString().split(" ")[4]} ${e.toString().split(" ")[5]}";
+    }
   }
 }

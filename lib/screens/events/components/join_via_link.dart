@@ -62,15 +62,16 @@ class JoinViaLink extends StatelessWidget {
               'assets/images/Groupjoinvialink.png',
             ),
             const Text(
-              "Join via Link",
+              "Want to join?",
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
             SizedBox(height: size.height * 0.02),
             Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: size.width*0.1),
               child: Text(
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing.",
-                style: TextStyle(fontSize: size.height * 0.012),
+                textAlign: TextAlign.center,
+                "Please enter the event link code you received to gain access and join the event.",
+                style: TextStyle(fontSize: size.height * 0.014),
               ),
             ),
             SizedBox(height: size.height * 0.03),

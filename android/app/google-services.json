@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "77945450128",
+    "project_id": "echirp-25cdc",
+    "storage_bucket": "echirp-25cdc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:77945450128:android:b1363bf345f7d85adb3215",
+        "android_client_info": {
+          "package_name": "com.example.echirp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDxzrssHTlm5_2e186qDhXWfuAvHAWiH9k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

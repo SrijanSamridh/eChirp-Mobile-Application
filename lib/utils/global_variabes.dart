@@ -18,7 +18,7 @@ class ColorSchema {
 // ignore: constant_identifier_names
 enum EventType { PRIVATE, PUBLIC }
 
-enum Gender { male, female, others }
+enum Gender { male, female, undisclosed }
 
 class GlobalVariables {
   static const Color kPrimaryColor = ColorSchema._primary;
@@ -26,7 +26,7 @@ class GlobalVariables {
   static const backgroundColor = Colors.white;
   static var selectedNavBarColor = Colors.orange[800]!;
   static const unselectedNavBarColor = Colors.black87;
-  static const chatBubbleColor =  Color(0xffFBE6BD);
+  static const chatBubbleColor = Color(0xffFBE6BD);
   static const LinearGradient kPrimaryGradientColor =
       ColorSchema._primaryGradient;
   static const LinearGradient kUnselectedCardGradientColor =
@@ -40,10 +40,25 @@ class GlobalVariables {
   ];
 
   static const Map<String, List<String>> kEventSubCategory = {
-    'Music and Dance' : <String>['Classical', 'Western', 'others'],
-    'Social Food & Drink': <String>['Drinks/Cocktails', 'Mocktails', 'Brunch Gathering', 'Dinner Party'],
-    'Social Pickup Sports': <String>['Soccer', 'Basketball', 'Pickleball', 'Tennis'],
-    'Social Activities': <String>['Reading party', 'Card games', 'Crafts', 'Dog social'],
+    'Music and Dance': <String>['Classical', 'Western', 'others'],
+    'Social Food & Drink': <String>[
+      'Drinks/Cocktails',
+      'Mocktails',
+      'Brunch Gathering',
+      'Dinner Party'
+    ],
+    'Social Pickup Sports': <String>[
+      'Soccer',
+      'Basketball',
+      'Pickleball',
+      'Tennis'
+    ],
+    'Social Activities': <String>[
+      'Reading party',
+      'Card games',
+      'Crafts',
+      'Dog social'
+    ],
   };
 
   static const Map<String, List<String>> kEventSubSubCategory = {
@@ -86,7 +101,6 @@ class GlobalVariables {
   //     'Crafts': ["Knitting", "Crocheting", "Needlepoint", "Sewing", "Sketching"]
   //   }
   // };
-
 
   static const List<String> kAgeGroups = <String>[
     'Anyone',
@@ -155,5 +169,8 @@ class GlobalVariables {
     'Waiter/Waitress',
     'Web Developer',
     'Writer',
+  ];
+  static const List<String> kMaxMemberCount = [
+    "1","2","5","10","20","30","40","50","60","70","80","100","150","200","250"
   ];
 }

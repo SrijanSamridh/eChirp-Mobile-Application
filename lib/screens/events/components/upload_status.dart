@@ -49,7 +49,7 @@ class _UploadState extends State<UploadStatusScreen> {
             child: Text(
               widget.eventType != null && widget.eventType!.contains('.')
                   ? 'Congratulations!\nYour${widget.eventType?.split('.')[1] == "PRIVATE" ? " private" : ""} event has been created \nsuccessfully.'
-                  : 'Congratulations!\nYour event has been created \nsuccessfully.',
+                  : 'Congratulations!\nYour event has been successfully\ncreated.',
               style: TextStyle(fontSize: size.height * 0.02),
               textAlign: TextAlign.center,
             ),

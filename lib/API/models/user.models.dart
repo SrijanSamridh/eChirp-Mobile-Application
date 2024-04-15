@@ -28,7 +28,7 @@ class UserClass {
     int? numberOfEventsAttended;
     String? id;
     String? username;
-    String? email;
+    String? providerId;
     String? password;
     List<String>? friends;
     List<dynamic>? friendRequests;
@@ -47,7 +47,7 @@ class UserClass {
         this.numberOfEventsAttended,
         this.id,
         this.username,
-        this.email,
+        this.providerId,
         this.password,
         this.friends,
         this.friendRequests,
@@ -71,7 +71,7 @@ class UserClass {
         numberOfEventsAttended: json["numberOfEventsAttended"],
         id: json["_id"],
         username: json["username"],
-        email: json["email"],
+        providerId: json["providerId"],
         password: json["password"],
         friends: json["friends"] == null ? [] : List<String>.from(json["friends"]!.map((x) => x)),
         friendRequests: json["friendRequests"] == null ? [] : List<dynamic>.from(json["friendRequests"]!.map((x) => x)),
@@ -91,7 +91,7 @@ class UserClass {
         "numberOfEventsAttended": numberOfEventsAttended,
         "_id": id,
         "username": username,
-        "email": email,
+        "providerId": providerId,
         "password": password,
         "friends": friends == null ? [] : List<dynamic>.from(friends!.map((x) => x)),
         "friendRequests": friendRequests == null ? [] : List<dynamic>.from(friendRequests!.map((x) => x)),
