@@ -104,7 +104,7 @@ class AuthController {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(
-                '${response.body.split('Path')[1].split('email')[0]} ${response.body.split('Path')[2].split('"')[0]}'),
+                '${response.body.split('Path')[1].split('providerId')[0]} ${response.body.split('Path')[2].split('"')[0]}'),
           ),
         );
       }

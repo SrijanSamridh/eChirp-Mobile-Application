@@ -93,7 +93,7 @@ class EventsScreenState extends State<EventsScreen> {
                   imgUrl: 'assets/images/dummy_event.png',
                   profileImg: 'assets/images/dummyDP.png',
                   username: event!.createdBy?.username ?? 'By Unknown User',
-                  typeOfEvent: event.eventMode ?? 'Unknown Event Type',
+                  typeOfEvent: event.eventMode.toString() ?? 'Unknown Event Type',
                   date: event.dateOfEvent,
                   time: event.startTime ?? 'Unknown Time',
                   location: event.location ?? 'Unknown Location',
@@ -131,7 +131,7 @@ class EventsScreenState extends State<EventsScreen> {
                 location: event?.location ?? 'Mumbai, Maharashtra, India',
                 about: event?.eventDescription ??
                     'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-                visibility: event?.eventMode ?? 'Public',
+                visibility: event?.eventMode.toString() ?? 'Public',
                 guest: event?.participants?.length ?? 100,
               );
             },
@@ -164,7 +164,7 @@ class EventsScreenState extends State<EventsScreen> {
                 location: event?.location ?? 'Mumbai, Maharashtra, India',
                 about: event?.eventDescription ??
                     'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-                visibility: event?.eventMode ?? 'Public',
+                visibility: event?.eventMode.toString() ?? 'Public',
                 guest: event?.participants?.length ?? 100,
               );
             },
