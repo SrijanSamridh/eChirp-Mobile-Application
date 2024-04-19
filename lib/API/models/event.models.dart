@@ -33,7 +33,7 @@ class Event {
     String? nameOfPlace;
     String? address;
     int? maxParticipants;
-    List<Participant>? participants;
+    List<String>? participants;
     String? eventMode;
     String? ageRange;
     String? gender;
@@ -49,6 +49,7 @@ class Event {
     String? img4Url;
     DateTime? createdAt;
     DateTime? updatedAt;
+    int? v;
 
     Event({
         this.id,
@@ -79,6 +80,7 @@ class Event {
         this.img4Url,
         this.createdAt,
         this.updatedAt,
+        this.v,
     });
 
     factory Event.fromRawJson(String str) => Event.fromJson(json.decode(str));
@@ -98,10 +100,10 @@ class Event {
         nameOfPlace: json["nameOfPlace"],
         address: json["address"],
         maxParticipants: json["maxParticipants"],
-        participants: json["participants"] == null ? [] : List<Participant>.from(json["participants"]!.map((x) => participantValues.map[x]!)),
-        eventMode: json["eventMode"],
-        ageRange: json["ageRange"],
-        gender: json["gender"],
+        participants: json["participants"] == null ? [] : List<String>.from(json["participants"]!.map((x) => x)),
+        eventMode: json["eventMode"]!,
+        ageRange: json["ageRange"]!,
+        gender: json["gender"]!,
         femaleCount: json["femaleCount"],
         maleCount: json["maleCount"],
         occupation: json["occupation"],
@@ -114,6 +116,7 @@ class Event {
         img4Url: json["Img4Url"],
         createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
         updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
+        v: json["__v"],
     );
 
     Map<String, dynamic> toJson() => {
@@ -129,7 +132,7 @@ class Event {
         "nameOfPlace": nameOfPlace,
         "address": address,
         "maxParticipants": maxParticipants,
-        "participants": participants == null ? [] : List<dynamic>.from(participants!.map((x) => participantValues.reverse[x])),
+        "participants": participants == null ? [] : List<dynamic>.from(participants!.map((x) => x)),
         "eventMode": eventMode,
         "ageRange": ageRange,
         "gender": gender,
@@ -145,18 +148,19 @@ class Event {
         "Img4Url": img4Url,
         "createdAt": createdAt?.toIso8601String(),
         "updatedAt": updatedAt?.toIso8601String(),
+        "__v": v,
     };
 }
 
 class CreatedBy {
     String? id;
     String? username;
-    String? email;
+    String? providerId;
 
     CreatedBy({
         this.id,
         this.username,
-        this.email,
+        this.providerId,
     });
 
     factory CreatedBy.fromRawJson(String str) => CreatedBy.fromJson(json.decode(str));
@@ -166,36 +170,12 @@ class CreatedBy {
     factory CreatedBy.fromJson(Map<String, dynamic> json) => CreatedBy(
         id: json["_id"],
         username: json["username"],
-        email: json["email"],
+        providerId: json["providerId"],
     );
 
     Map<String, dynamic> toJson() => {
         "_id": id,
         "username": username,
-        "email": email,
+        "providerId": providerId,
     };
-}
-
-enum Participant {
-    THE_660_F8_FEDD1981_FF70_FF6_B920,
-    THE_660_F908852_FAF823234_BAF1_B,
-    THE_66110285_EB88_C7798_FE635_F5
-}
-
-final participantValues = EnumValues({
-    "660f8fedd1981ff70ff6b920": Participant.THE_660_F8_FEDD1981_FF70_FF6_B920,
-    "660f908852faf823234baf1b": Participant.THE_660_F908852_FAF823234_BAF1_B,
-    "66110285eb88c7798fe635f5": Participant.THE_66110285_EB88_C7798_FE635_F5
-});
-
-class EnumValues<T> {
-    Map<String, T> map;
-    late Map<T, String> reverseMap;
-
-    EnumValues(this.map);
-
-    Map<T, String> get reverse {
-        reverseMap = map.map((k, v) => MapEntry(v, k));
-        return reverseMap;
-    }
 }

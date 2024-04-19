@@ -16,7 +16,7 @@ import '../../components/bottom_bar.dart';
 
 enum AuthMode {
   signUp,
-  signIn, 
+  signIn,
 }
 
 class AuthScreen extends StatefulWidget {
@@ -32,7 +32,7 @@ class _AuthScreenState extends State<AuthScreen> {
   final authController = AuthController();
   AuthProvider authProvider = AuthProvider();
   final TextEditingController _usernameController = TextEditingController();
-  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _providerIdController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   bool? showPasswordCheck = false;
   // ignore: prefer_typing_uninitialized_variables
@@ -86,7 +86,7 @@ class _AuthScreenState extends State<AuthScreen> {
     var _payload = {
       'username': _usernameController.text.trim().toLowerCase(),
       'password': _passwordController.text.trim(),
-      'email': _emailController.text.trim().toLowerCase()
+      'providerId': _providerIdController.text.trim().toLowerCase()
     };
 
     var user = await authController.signUp(context, _payload);
@@ -98,11 +98,19 @@ class _AuthScreenState extends State<AuthScreen> {
     }
   }
 
+  Future<void> _handleSocialMedia(String provider) async {
+    var credential = await authProvider.signInWithGoogle();
+    // ignore: avoid_print
+    print(credential.user?.uid);
+    authController.signUp(context,
+        {"provider": provider, "verificationId": credential.user?.uid});
+  }
+
   @override
   void dispose() {
     super.dispose();
     _usernameController.dispose();
-    _emailController.dispose();
+    _providerIdController.dispose();
     _passwordController.dispose();
   }
 
@@ -284,9 +292,8 @@ class _AuthScreenState extends State<AuthScreen> {
                             height: size.height * 0.02,
                           ),
                           LoginViaSocialMedia(
-                            onPressed: () async {
-                              var credential = await authProvider.signInWithGoogle();
-                              print(credential);
+                            onPressed: () {
+                              _handleSocialMedia("google");
                             },
                           )
                         ],
@@ -315,7 +322,7 @@ class _AuthScreenState extends State<AuthScreen> {
                             color: Colors.grey,
                           ),
                           TextField(
-                            controller: _emailController,
+                            controller: _providerIdController,
                             decoration: const InputDecoration(
                               hintText: 'email',
                               border: InputBorder.none,
@@ -406,12 +413,9 @@ class _AuthScreenState extends State<AuthScreen> {
                           SizedBox(
                             height: size.height * 0.005,
                           ),
-                          LoginViaSocialMedia(
-                            onPressed: () async {
-                              var credential = await authProvider.signInWithGoogle();
-                              print(credential);
-                            }
-                          )
+                          LoginViaSocialMedia(onPressed: () {
+                            _handleSocialMedia("google");
+                          })
                         ],
                       ),
               ),

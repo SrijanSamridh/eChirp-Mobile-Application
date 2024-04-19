@@ -66,6 +66,7 @@ class _SplashScreenState extends State<SplashScreen> {
         user: UserClass(
             id: pref.getString('_id'), username: pref.getString("username")));
     userProvider.setUserData(userData);
+    print(pref.getString('x-auth-token'));
   }
 
   @override
