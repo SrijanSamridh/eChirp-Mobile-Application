@@ -64,6 +64,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '77945450128',
     projectId: 'echirp-25cdc',
     storageBucket: 'echirp-25cdc.appspot.com',
+    androidClientId: '77945450128-jpmqdb7r14c3bm557crhi32kv5ld5k35.apps.googleusercontent.com',
+    iosClientId: '77945450128-cjm7e695fp4t3icig2k9boltnc1vjvbi.apps.googleusercontent.com',
     iosBundleId: 'com.example.echirp',
   );
 
@@ -73,6 +75,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '77945450128',
     projectId: 'echirp-25cdc',
     storageBucket: 'echirp-25cdc.appspot.com',
+    androidClientId: '77945450128-jpmqdb7r14c3bm557crhi32kv5ld5k35.apps.googleusercontent.com',
+    iosClientId: '77945450128-cjm7e695fp4t3icig2k9boltnc1vjvbi.apps.googleusercontent.com',
     iosBundleId: 'com.example.echirp',
   );
 
@@ -85,4 +89,5 @@ class DefaultFirebaseOptions {
     storageBucket: 'echirp-25cdc.appspot.com',
     measurementId: 'G-FGZ1B6JKHR',
   );
+
 }

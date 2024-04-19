@@ -79,7 +79,7 @@ class EventController {
 
     try {
       final http.Response response = await http.post(
-        Uri.parse("https://e-chirp-server.vercel.app/api/events"),
+        Uri.parse("$baseUrl/events"),
         headers: headers,
         body: jsonEncode(body),
       );

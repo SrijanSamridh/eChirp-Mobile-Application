@@ -2,7 +2,6 @@
 
 import 'dart:convert';
 import 'package:echirp/API/services/base_client.dart';
-import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import '../models/group.models.dart';
 
@@ -22,7 +21,7 @@ class GroupController {
     // Make the POST request
     try {
       final http.Response response = await http.post(
-        Uri.parse("https://e-chirp-server.vercel.app/api/groups"),
+        Uri.parse("$baseUrl/groups"),
         headers: headers,
         body: jsonEncode(requestBody),
       );

@@ -50,6 +50,7 @@ dependencies:
   socket_io_client: ^3.0.0-beta.2
   firebase_core: ^2.29.0
   firebase_auth: ^4.19.1
+  google_sign_in: ^6.2.1
 
 dev_dependencies:
   flutter_test:
