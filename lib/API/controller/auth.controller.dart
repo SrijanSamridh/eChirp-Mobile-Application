@@ -11,9 +11,9 @@ import 'package:http/http.dart' as http;
 class AuthController {
   var client = http.Client();
 
-  Future<User?> signIn(String username, String password) async {
+  Future<User?> signIn(var payload) async {
     debugPrint('Authenticating data...');
-    var body = {'username': username, 'password': password};
+    var body = payload;
 
     try {
       // Make the POST request
@@ -36,12 +36,7 @@ class AuthController {
           // Access user data
           User user = User(
             message: responseData['message'],
-            user: UserClass(
-              id: userData['_id'],
-              username: userData['username'],
-              providerId: userData['providerId'],
-              token: userData['token'],
-            ),
+            user: UserClass.fromJson(userData),
           );
 
           // Use user data as needed
@@ -86,14 +81,10 @@ class AuthController {
           // Access user data
           User user = User(
             message: res['message'],
-            user: UserClass(
-              id: userData['_id'],
-              username: userData['username'],
-              providerId: userData['providerId'],
-            ),
+            user: UserClass.fromJson(userData),
           );
 
-          debugPrint('User Registered: ${user.user?.username}');
+          debugPrint('User Registered: ${user.user?.token}');
           return user;
         } else {
           debugPrint('User key not found in the response.');

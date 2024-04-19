@@ -14,6 +14,7 @@ class UserData {
   String username;
   String providerId;
   String password;
+  String? profilePicture;
   List<String> friends;
   List<dynamic> friendRequests;
   int numberOfFriends;
@@ -33,6 +34,7 @@ class UserData {
     required this.username,
     required this.providerId,
     required this.password,
+    this.profilePicture,
     required this.friends,
     required this.friendRequests,
     required this.numberOfFriends,
@@ -53,6 +55,7 @@ class UserData {
         username: json["username"] ?? '',
         providerId: json["providerId"] ?? '',
         password: json["password"] ?? '',
+        profilePicture: json['profilePicture'] ?? '',
         friends: List<String>.from(json["friends"].map((x) => x)),
         friendRequests:
             List<dynamic>.from(json["friendRequests"].map((x) => x)),
@@ -75,6 +78,7 @@ class UserData {
         "username": username,
         "providerId": providerId,
         "password": password,
+        "profilePicture": profilePicture,
         "friends": List<dynamic>.from(friends.map((x) => x)),
         "friendRequests": List<dynamic>.from(friendRequests.map((x) => x)),
         "numberOfFriends": numberOfFriends,

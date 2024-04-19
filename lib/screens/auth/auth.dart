@@ -43,10 +43,12 @@ class _AuthScreenState extends State<AuthScreen> {
   Future<void> signIn() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    User? user = await authController.signIn(
-      _usernameController.text.trim().toLowerCase(),
-      _passwordController.text.trim(),
-    );
+    var body = {
+      "username": _usernameController.text.trim().toLowerCase(),
+      "password": _passwordController.text.trim(),
+    };
+
+    User? user = await authController.signIn(body);
 
     if (user != null && user.user != null) {
       String? token = user.user!.token;
@@ -98,12 +100,71 @@ class _AuthScreenState extends State<AuthScreen> {
     }
   }
 
-  Future<void> _handleSocialMedia(String provider) async {
+  Future<void> _handleSocialMedia(String provider,
+      // ignore: unused_element
+      {bool signUp = false}) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
     var credential = await authProvider.signInWithGoogle();
     // ignore: avoid_print
     print(credential.user?.uid);
-    authController.signUp(context,
-        {"provider": provider, "verificationId": credential.user?.uid});
+
+    if (signUp) {
+      var user = await authController.signUp(context,
+          {"provider": provider, "verificationId": credential.user?.uid});
+      // ignore: avoid_print
+      print("token: ${user?.user?.provider}");
+      if (user?.user?.token != null) {
+        String? token = user?.user?.token;
+        prefs.setString("x-auth-token", token!);
+        prefs.setString("username", user!.user!.firstName!);
+        prefs.setString("_id", user.user!.id!);
+        Navigator.of(context)
+            .pushReplacementNamed(BottomBar.routeName, arguments: 0);
+      } else {
+        // Handle invalid login credentials or other errors
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: const Text('Login Error'),
+            content: const Text('Something Went Worng, Please try again!'),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: const Text('OK'),
+              ),
+            ],
+          ),
+        );
+      }
+    } else {
+      var user = await authController.signIn(
+          {"provider": provider, "verificationId": credential.user?.uid});
+      // ignore: avoid_print
+      print("token: ${user?.user?.token}");
+      if (user?.user?.token != null) {
+        String? token = user?.user?.token;
+        prefs.setString("x-auth-token", token!);
+        prefs.setString("username", "${user?.user?.firstName}");
+        prefs.setString("_id", "${user?.user?.id}");
+        Navigator.of(context)
+            .pushReplacementNamed(BottomBar.routeName, arguments: 0);
+      } else {
+        // Handle invalid login credentials or other errors
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: const Text('Login Error'),
+            content: const Text('Please try again!'),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: const Text('OK'),
+              ),
+            ],
+          ),
+        );
+      }
+    }
   }
 
   @override
@@ -414,7 +475,7 @@ class _AuthScreenState extends State<AuthScreen> {
                             height: size.height * 0.005,
                           ),
                           LoginViaSocialMedia(onPressed: () {
-                            _handleSocialMedia("google");
+                            _handleSocialMedia("google", signUp: true);
                           })
                         ],
                       ),
