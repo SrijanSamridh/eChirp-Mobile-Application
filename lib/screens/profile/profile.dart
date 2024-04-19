@@ -86,18 +86,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           decoration: BoxDecoration(
                               gradient: GlobalVariables.kPrimaryGradientColor,
                               borderRadius: BorderRadius.circular(25)),
-                          child: Center(
+                          child: userData?.profilePicture == '' ? Center(
                             child: Text(
                               (userData?.firstName).toString().substring(0, 1).toUpperCase(),
                               style: const TextStyle(fontSize: 24),
                             ),
-                          ),
+                          ): ClipRRect(
+                            borderRadius: BorderRadius.circular(25),
+                            child: Image.network(userData!.profilePicture!)),
                         ),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              (userData?.username).toString(),
+                              userData?.firstName == '' ? (userData?.username).toString():"${userData?.firstName} ${userData?.lastName}",
                               style: const TextStyle(
                                   fontSize: 20, fontWeight: FontWeight.w600),
                             ),

@@ -5,6 +5,7 @@ import 'package:echirp/API/provider/user_provider.dart';
 import 'package:echirp/components/bottom_bar.dart';
 import 'package:echirp/screens/auth/auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -87,16 +88,19 @@ class _SplashScreenState extends State<SplashScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 SizedBox(height: size.height * 0.13),
-                Image(
-                  image: const AssetImage('assets/icons/echirp-logo.png'),
-                  height: size.height * 0.12,
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(50),
+                  child: Image(
+                    image: const AssetImage('assets/icons/echirp_logo.jpeg'),
+                    height: size.height * 0.12,
+                  ),
                 ),
                 const SizedBox(height: 16),
                 Text(
-                  'Welcome to EventChirp!',
+                  'Welcome to eChirp',
                   style: TextStyle(
                     fontSize: size.width * 0.045,
-                    fontWeight: FontWeight.w500,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
                 const Spacer(),
