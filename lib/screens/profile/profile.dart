@@ -71,7 +71,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             } else if (snapshot.hasError) {
               return Center(child: Text('Error: ${snapshot.error}'));
             } else if (snapshot.hasData) {
-              final userData = snapshot.data!;
+              final userData = snapshot.data;
               return Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 child: Column(
@@ -88,7 +88,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               borderRadius: BorderRadius.circular(25)),
                           child: Center(
                             child: Text(
-                              userData.firstName.substring(0, 1).toUpperCase(),
+                              (userData?.firstName).toString().substring(0, 1).toUpperCase(),
                               style: const TextStyle(fontSize: 24),
                             ),
                           ),
@@ -97,7 +97,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              userData.username,
+                              (userData?.username).toString(),
                               style: const TextStyle(
                                   fontSize: 20, fontWeight: FontWeight.w600),
                             ),
@@ -131,7 +131,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 20.0),
                       child: Text(
-                        userData.bio,
+                        (userData?.bio).toString(),
                         textAlign: TextAlign.start,
                         style: const TextStyle(
                             fontSize: 14, color: Colors.black87),
@@ -153,8 +153,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
-                                  userData.myCreatedEvents.length
-                                      .toString(), // Replace with actual number of events created
+                                  (userData?.myCreatedEvents.length).toString(), // Replace with actual number of events created
                                   style: const TextStyle(
                                       color: Colors.white,
                                       fontWeight: FontWeight.bold,
@@ -181,8 +180,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
-                                  userData.numberOfFriends
-                                      .toString(), // Replace with actual number of events created
+                                  (userData?.numberOfFriends).toString(), // Replace with actual number of events created
                                   style: const TextStyle(
                                       color: Colors.white,
                                       fontWeight: FontWeight.bold,
@@ -209,8 +207,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
-                                  userData.eventsAttended.length
-                                      .toString(), // Replace with actual number of events created
+                                  (userData?.eventsAttended.length).toString(), // Replace with actual number of events created
                                   style: const TextStyle(
                                       color: Colors.white,
                                       fontWeight: FontWeight.bold,
@@ -269,14 +266,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
         } else if (snapshot.hasError) {
           return Center(child: Text('Error: ${snapshot.error}'));
         } else if (snapshot.hasData) {
-          final events = snapshot.data!.events;
+          final events = snapshot.data?.events;
           if (events == null || events.isEmpty) {
             return const Center(child: Text('No events available'));
           }
           return events.isNotEmpty
               ? ListView.builder(
                   scrollDirection: Axis.horizontal,
-                  itemCount: snapshot.data!.events!.isNotEmpty ? 3 : 0,
+                  itemCount: snapshot.data?.events?.length,
                   itemBuilder: (context, index) {
                     final event = events[index];
                     return EventBriefCard(
@@ -307,16 +304,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
         } else if (snapshot.hasError) {
           return Center(child: Text('Error: ${snapshot.error}'));
         } else if (snapshot.hasData) {
-          final events = snapshot.data!.events;
+          final events = snapshot.data?.events;
           return ListView.builder(
-            itemCount: events?.length ?? 0,
+            itemCount: events?.length,
             itemBuilder: (context, index) {
-              final event = events![index];
+              final event = events?[index];
               return EventTile(
-                category: event.mainCategory.toString(),
-                title: event.eventDescription.toString(),
-                date: formatDate(event.dateOfEvent.toString(), true),
-                time: formatTime(event.startTime.toString()),
+                category: (event?.mainCategory).toString(),
+                title: (event?.eventDescription).toString(),
+                date: formatDate((event?.dateOfEvent).toString(), true),
+                time: formatTime((event?.startTime).toString()),
                 imageUrl: 'assets/images/dummy_event.png',
               );
             },

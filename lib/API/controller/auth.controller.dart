@@ -3,6 +3,7 @@
 import 'dart:convert';
 
 import 'package:echirp/API/models/user.models.dart';
+import 'package:echirp/API/services/base_client.dart';
 import 'package:flutter/material.dart';
 
 import 'package:http/http.dart' as http;
@@ -17,7 +18,7 @@ class AuthController {
     try {
       // Make the POST request
       var response = await http.post(
-        Uri.parse('https://e-chirp-server.vercel.app/api/auth/signin'),
+        Uri.parse('$baseUrl/auth/signin'),
         body: json.encode(body),
         headers: {
           'Content-Type': 'application/json',
@@ -65,7 +66,7 @@ class AuthController {
 
       // Make the POST request
       var response = await http.post(
-        Uri.parse('https://e-chirp-server.vercel.app/api/auth/signup'),
+        Uri.parse('$baseUrl/auth/signup'),
         body: json.encode(payload),
         headers: {
           'Content-Type': 'application/json',

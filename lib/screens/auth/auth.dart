@@ -3,9 +3,12 @@
 import 'package:echirp/API/controller/auth.controller.dart';
 import 'package:echirp/API/models/user.models.dart';
 import 'package:echirp/API/provider/user_provider.dart';
+import 'package:echirp/API/services/auth_provider.dart';
 import 'package:echirp/components/custom_btn.dart';
 import 'package:echirp/utils/global_variabes.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:http/http.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../API/services/socket_connection.dart';
@@ -13,7 +16,7 @@ import '../../components/bottom_bar.dart';
 
 enum AuthMode {
   signUp,
-  signIn,
+  signIn, 
 }
 
 class AuthScreen extends StatefulWidget {
@@ -27,6 +30,7 @@ class AuthScreen extends StatefulWidget {
 class _AuthScreenState extends State<AuthScreen> {
   AuthMode _authMode = AuthMode.signIn; // for default option when screen loads
   final authController = AuthController();
+  AuthProvider authProvider = AuthProvider();
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -258,7 +262,7 @@ class _AuthScreenState extends State<AuthScreen> {
                             height: size.height * 0.02,
                           ),
                           CustomBtn(
-                            text: onLoad ? 'Loading...' :'Sign In ',
+                            text: onLoad ? 'Loading...' : 'Sign In ',
                             size: size,
                             width: size.width * 0.2,
                             onPressed: () {
@@ -279,7 +283,12 @@ class _AuthScreenState extends State<AuthScreen> {
                           SizedBox(
                             height: size.height * 0.02,
                           ),
-                          const LoginViaSocialMedia()
+                          LoginViaSocialMedia(
+                            onPressed: () async {
+                              var credential = await authProvider.signInWithGoogle();
+                              print(credential);
+                            },
+                          )
                         ],
                       )
                     : Column(
@@ -397,7 +406,12 @@ class _AuthScreenState extends State<AuthScreen> {
                           SizedBox(
                             height: size.height * 0.005,
                           ),
-                          const LoginViaSocialMedia()
+                          LoginViaSocialMedia(
+                            onPressed: () async {
+                              var credential = await authProvider.signInWithGoogle();
+                              print(credential);
+                            }
+                          )
                         ],
                       ),
               ),
@@ -411,8 +425,10 @@ class _AuthScreenState extends State<AuthScreen> {
 }
 
 class LoginViaSocialMedia extends StatelessWidget {
+  final VoidCallback onPressed;
   const LoginViaSocialMedia({
     super.key,
+    required this.onPressed,
   });
 
   @override
@@ -426,12 +442,15 @@ class LoginViaSocialMedia extends StatelessWidget {
               "assets/icons/facebook.png",
               height: 35,
             )),
-        ClipRRect(
-            borderRadius: BorderRadius.circular(50),
-            child: Image.asset(
-              "assets/icons/google.png",
-              height: 50,
-            )),
+        GestureDetector(
+          onTap: onPressed,
+          child: ClipRRect(
+              borderRadius: BorderRadius.circular(50),
+              child: Image.asset(
+                "assets/icons/google.png",
+                height: 50,
+              )),
+        ),
         ClipRRect(
             borderRadius: BorderRadius.circular(50),
             child: Image.asset(

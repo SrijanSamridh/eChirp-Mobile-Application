@@ -60,6 +60,7 @@ class GroupFormScreenState extends State<GroupFormScreen> {
       };
 
       var response = await GroupController().createGroup(requestBody);
+      print(response);
       // ignore: unnecessary_null_comparison
       if (response != null) {
         // Show SnackBar with the response message
@@ -71,7 +72,10 @@ class GroupFormScreenState extends State<GroupFormScreen> {
         );
         Navigator.pushNamedAndRemoveUntil(
             // ignore: use_build_context_synchronously
-            context, BottomBar.routeName, arguments: 3, (route) => false);
+            context,
+            BottomBar.routeName,
+            arguments: 3,
+            (route) => false);
       } else {
         // Group creation failed
         // Handle error
