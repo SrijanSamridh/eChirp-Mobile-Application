@@ -1,9 +1,17 @@
 import 'package:echirp/API/provider/user_provider.dart';
+import 'package:echirp/components/custom_btn.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../auth/auth.dart';
 
 class ProfileSettings extends StatefulWidget {
   static const String routeName = '/profile-settings';
-  const ProfileSettings({super.key, this.loggedUser = true, required this.id});
+  const ProfileSettings({
+    super.key,
+    required this.id,
+    this.loggedUser = true,
+  });
 
   final String id;
   final bool loggedUser;
@@ -24,17 +32,77 @@ class _ProfileSettingsState extends State<ProfileSettings> {
   Future<void> _initProfileData() async {
     await _userProvider.fetchUserData(widget.id, widget.loggedUser);
   }
+
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
-      appBar: AppBar(title: const Text("General"),),
-      body: Column(children: [
-        Card(
-          child: Row(children: [
-            Image.network("${_userProvider.userData?.user?.provider}")
-          ],),
-        )
-      ],),
+      appBar: AppBar(
+        title: const Text("General"),
+      ),
+      body: FutureBuilder(
+        future: _userProvider.profileData,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return Center(child: Text('Error: ${snapshot.error}'));
+          } else if (snapshot.hasData) {
+            final userData = snapshot.data;
+            return SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Card(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          children: [
+                            ClipRRect(
+                                borderRadius: BorderRadius.circular(50),
+                                child:
+                                    Image.network("${userData?.profilePicture}", height: size.height * 0.06,)),
+                            const SizedBox(width: 10),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  userData?.firstName == ''
+                                      ? (userData?.username).toString()
+                                      : "${userData?.firstName} ${userData?.lastName}",
+                                  style: const TextStyle(
+                                      fontSize: 20, fontWeight: FontWeight.w600),
+                                ),
+                                const Text('Artist')
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    CustomBtn(text: 'Logout', size: size, onPressed: () async {
+                      SharedPreferences pref =
+                          await SharedPreferences.getInstance();
+                      pref.remove('x-auth-token');
+                      pref.remove('_id');
+                      pref.remove('username');
+                      Navigator.pushNamedAndRemoveUntil(
+                          // ignore: use_build_context_synchronously
+                          context,
+                          AuthScreen.routeName,
+                          (route) => false);
+                    })
+                  ],
+                ),
+              ),
+            );
+          } else {
+            return const Center(child: Text('No user data available'));
+          }
+        },
+      ),
     );
   }
 }

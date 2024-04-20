@@ -1,14 +1,14 @@
 import 'package:dotted_line/dotted_line.dart';
-import 'package:echirp/screens/auth/auth.dart';
 import 'package:echirp/screens/home/components/event_brief_card.dart';
 import 'package:echirp/screens/profile/components/createdEventTile.dart';
 import 'package:echirp/utils/global_variabes.dart';
 import 'package:flutter/material.dart';
 // ignore: depend_on_referenced_packages
 import 'package:intl/intl.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:provider/provider.dart';
 import '../../API/models/event.models.dart';
 import '../../API/models/userData.model.dart';
+import '../../API/provider/friend_provider.dart';
 import '../../API/provider/user_provider.dart';
 import 'settings/profile_settings.dart';
 
@@ -49,21 +49,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   icon: const Icon(
                       Icons.settings), // Use IconButton for interaction
                   onPressed: () async {
-                    Navigator.pushNamedAndRemoveUntil(
-                        // ignore: use_build_context_synchronously
-                        context,
-                        ProfileSettings.routeName,
-                        arguments: _userProvider.userData?.user?.id,
-                        (route) => false);
-                    // SharedPreferences pref =
-                    //     await SharedPreferences.getInstance();
-                    // pref.remove('x-auth-token');
-                    // pref.remove('_id');
-                    // Navigator.pushNamedAndRemoveUntil(
-                    //     // ignore: use_build_context_synchronously
-                    //     context,
-                    //     AuthScreen.routeName,
-                    //     (route) => false);
+                    Navigator.pushNamed(
+                      // ignore: use_build_context_synchronously
+                      context,
+                      ProfileSettings.routeName,
+                      arguments: widget.id,
+                    );
                   },
                 )
               : Container(),
@@ -93,20 +84,28 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           decoration: BoxDecoration(
                               gradient: GlobalVariables.kPrimaryGradientColor,
                               borderRadius: BorderRadius.circular(25)),
-                          child: userData?.profilePicture == '' ? Center(
-                            child: Text(
-                              (userData?.firstName).toString().substring(0, 1).toUpperCase(),
-                              style: const TextStyle(fontSize: 24),
-                            ),
-                          ): ClipRRect(
-                            borderRadius: BorderRadius.circular(25),
-                            child: Image.network(userData!.profilePicture!)),
+                          child: userData?.profilePicture == ''
+                              ? Center(
+                                  child: Text(
+                                    (userData?.firstName)
+                                        .toString()
+                                        .substring(0, 1)
+                                        .toUpperCase(),
+                                    style: const TextStyle(fontSize: 24),
+                                  ),
+                                )
+                              : ClipRRect(
+                                  borderRadius: BorderRadius.circular(25),
+                                  child:
+                                      Image.network(userData!.profilePicture!)),
                         ),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              userData?.firstName == '' ? (userData?.username).toString():"${userData?.firstName} ${userData?.lastName}",
+                              userData?.firstName == ''
+                                  ? (userData?.username).toString()
+                                  : "${userData?.firstName} ${userData?.lastName}",
                               style: const TextStyle(
                                   fontSize: 20, fontWeight: FontWeight.w600),
                             ),
@@ -124,7 +123,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         GlobalVariables.kPrimaryGradientColor),
                                 child: TextButton(
                                   onPressed: () {
-                                    // Handle add friend action
+                                    Provider.of<FriendProvider>(context,
+                                          listen: false)
+                                      .sendFriendRequest(context, widget.id);
                                   },
                                   child: const Text(
                                     'Add Friend',
@@ -162,7 +163,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
-                                  (userData?.myCreatedEvents.length).toString(), // Replace with actual number of events created
+                                  (userData?.myCreatedEvents.length)
+                                      .toString(), // Replace with actual number of events created
                                   style: const TextStyle(
                                       color: Colors.white,
                                       fontWeight: FontWeight.bold,
@@ -189,7 +191,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
-                                  (userData?.numberOfFriends).toString(), // Replace with actual number of events created
+                                  (userData?.numberOfFriends)
+                                      .toString(), // Replace with actual number of events created
                                   style: const TextStyle(
                                       color: Colors.white,
                                       fontWeight: FontWeight.bold,
@@ -216,7 +219,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
-                                  (userData?.eventsAttended.length).toString(), // Replace with actual number of events created
+                                  (userData?.eventsAttended.length)
+                                      .toString(), // Replace with actual number of events created
                                   style: const TextStyle(
                                       color: Colors.white,
                                       fontWeight: FontWeight.bold,

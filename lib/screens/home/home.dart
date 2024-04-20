@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../API/provider/friend_provider.dart';
+import '../../API/provider/user_provider.dart';
 import '../../components/custom_clipper.dart';
 import '../../components/custom_search_bar.dart';
 import '../../components/headling_with_hyperlink.dart';
@@ -22,6 +23,12 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final UserProvider _userProvider = UserProvider();
+
+  Future<void> _initProfileData(String id) async {
+    await _userProvider.fetchUserData(id, true);
+  }
+
   String username = "";
 
   @override
@@ -30,12 +37,12 @@ class _HomeScreenState extends State<HomeScreen> {
     getUsername();
   }
 
-  
   Future<void> getUsername() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
       username = prefs.getString("username")!;
     });
+    _initProfileData(prefs.get('_id').toString());
   }
 
   @override
@@ -77,26 +84,44 @@ class _HomeScreenState extends State<HomeScreen> {
                             const Spacer(),
                             GestureDetector(
                               onTap: () {
-                                // SharedPreferences prefs =
-                                //     await SharedPreferences.getInstance();
-                                // prefs.remove('x-auth-token');
-                                // prefs.remove('username');
-                                // // ignore: use_build_context_synchronously
-                                // Navigator.of(context).pushNamedAndRemoveUntil(
-                                //     AuthScreen.routeName, (route) => false);
-
                                 Navigator.of(context)
                                     .pushNamed(ProfileScreen.routeName);
                               },
-                              child: CircleAvatar(
-                                child: ClipRRect(
-                                    borderRadius: const BorderRadius.all(
-                                        Radius.circular(100)),
-                                    child: Image.asset(
-                                      'assets/images/dummyDP.png',
-                                      fit: BoxFit.fitWidth,
-                                    )),
-                              ),
+                              child: FutureBuilder(
+                                  future: _userProvider.profileData,
+                                  builder: (context, snapshot) {
+                                    if (snapshot.connectionState ==
+                                        ConnectionState.waiting) {
+                                      return const Center(
+                                          child: CircularProgressIndicator());
+                                    } else if (snapshot.hasError) {
+                                      return Center(
+                                          child:
+                                              Text('Error: ${snapshot.error}'));
+                                    } else if (snapshot.hasData) {
+                                      final userData = snapshot.data;
+                                      return CircleAvatar(
+                                        child: ClipRRect(
+                                            borderRadius:
+                                                const BorderRadius.all(
+                                                    Radius.circular(100)),
+                                            child: Image.network(
+                                              "${userData?.profilePicture}",
+                                              fit: BoxFit.fitWidth,
+                                            )),
+                                      );
+                                    } else {
+                                      return Center(
+                                  child: Text(
+                                    (username)
+                                        .toString()
+                                        .substring(0, 1)
+                                        .toUpperCase(),
+                                    style: const TextStyle(fontSize: 24),
+                                  ),
+                                );
+                                    }
+                                  }),
                             ),
                           ],
                         ),
@@ -315,7 +340,8 @@ class _WidgetPotentialFriends extends StatelessWidget {
             height: size.height * 0.20, // Set a fixed height for the ListView
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
-              itemCount: potentialFriends.length, // Use the actual length of potentialFriends
+              itemCount: potentialFriends
+                  .length, // Use the actual length of potentialFriends
               itemBuilder: (context, index) {
                 final data = potentialFriends[index];
                 return MutualFriendCard(
