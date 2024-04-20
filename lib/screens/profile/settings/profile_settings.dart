@@ -1,5 +1,6 @@
 import 'package:echirp/API/provider/user_provider.dart';
 import 'package:echirp/components/custom_btn.dart';
+import 'package:echirp/screens/profile/settings/edit_profile.dart';
 import 'package:echirp/utils/global_variabes.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -40,7 +41,8 @@ class _ProfileSettingsState extends State<ProfileSettings> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Settings",
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600, letterSpacing: 2)),
+            style: TextStyle(
+                fontSize: 20, fontWeight: FontWeight.w600, letterSpacing: 2)),
       ),
       body: FutureBuilder(
         future: _userProvider.profileData,
@@ -66,13 +68,15 @@ class _ProfileSettingsState extends State<ProfileSettings> {
                                 vertical: 20.0, horizontal: 8.0),
                             child: Row(
                               children: [
-                                userData?.profilePicture != '' ? ClipRRect(
-                                    borderRadius: BorderRadius.circular(50),
-                                    child: Image.network(
-                                      "${userData?.profilePicture}",
-                                      height: size.height * 0.06,
-                                    )) : CircleAvatar(
-                                      radius: size.height * 0.03,
+                                userData?.profilePicture != ''
+                                    ? ClipRRect(
+                                        borderRadius: BorderRadius.circular(50),
+                                        child: Image.network(
+                                          "${userData?.profilePicture}",
+                                          height: size.height * 0.06,
+                                        ))
+                                    : CircleAvatar(
+                                        radius: size.height * 0.03,
                                         child: Center(
                                           child: Text(
                                             (userData?.username)
@@ -104,7 +108,10 @@ class _ProfileSettingsState extends State<ProfileSettings> {
                           ),
                         ),
                         GestureDetector(
-                          onTap: () {},
+                          onTap: () {
+                            Navigator.pushNamed(
+                                context, EditProfileScreen.routeName);
+                          },
                           child: const Card(
                             shadowColor: GlobalVariables.kPrimaryColor,
                             child: ListTile(
