@@ -10,6 +10,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../API/models/event.models.dart';
 import '../../API/models/userData.model.dart';
 import '../../API/provider/user_provider.dart';
+import 'settings/profile_settings.dart';
 
 class ProfileScreen extends StatefulWidget {
   static const String routeName = '/profile';
@@ -48,15 +49,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   icon: const Icon(
                       Icons.settings), // Use IconButton for interaction
                   onPressed: () async {
-                    SharedPreferences pref =
-                        await SharedPreferences.getInstance();
-                    pref.remove('x-auth-token');
-                    pref.remove('_id');
                     Navigator.pushNamedAndRemoveUntil(
                         // ignore: use_build_context_synchronously
                         context,
-                        AuthScreen.routeName,
+                        ProfileSettings.routeName,
+                        arguments: _userProvider.userData?.user?.id,
                         (route) => false);
+                    // SharedPreferences pref =
+                    //     await SharedPreferences.getInstance();
+                    // pref.remove('x-auth-token');
+                    // pref.remove('_id');
+                    // Navigator.pushNamedAndRemoveUntil(
+                    //     // ignore: use_build_context_synchronously
+                    //     context,
+                    //     AuthScreen.routeName,
+                    //     (route) => false);
                   },
                 )
               : Container(),
