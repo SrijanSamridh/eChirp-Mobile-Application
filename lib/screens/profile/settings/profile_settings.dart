@@ -66,12 +66,24 @@ class _ProfileSettingsState extends State<ProfileSettings> {
                                 vertical: 20.0, horizontal: 8.0),
                             child: Row(
                               children: [
-                                ClipRRect(
+                                userData?.profilePicture != '' ? ClipRRect(
                                     borderRadius: BorderRadius.circular(50),
                                     child: Image.network(
                                       "${userData?.profilePicture}",
                                       height: size.height * 0.06,
-                                    )),
+                                    )) : CircleAvatar(
+                                      radius: size.height * 0.03,
+                                        child: Center(
+                                          child: Text(
+                                            (userData?.username)
+                                                .toString()
+                                                .substring(0, 1)
+                                                .toUpperCase(),
+                                            style:
+                                                const TextStyle(fontSize: 24),
+                                          ),
+                                        ),
+                                      ),
                                 const SizedBox(width: 10),
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,

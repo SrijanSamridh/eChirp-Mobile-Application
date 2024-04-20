@@ -70,6 +70,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               return Center(child: Text('Error: ${snapshot.error}'));
             } else if (snapshot.hasData) {
               final userData = snapshot.data;
+              print(userData?.toJson());
               return Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 child: Column(
@@ -97,7 +98,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               : ClipRRect(
                                   borderRadius: BorderRadius.circular(25),
                                   child:
-                                      Image.network(userData!.profilePicture!)),
+                                      Image.network("${userData?.profilePicture}")),
                         ),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -124,8 +125,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 child: TextButton(
                                   onPressed: () {
                                     Provider.of<FriendProvider>(context,
-                                          listen: false)
-                                      .sendFriendRequest(context, widget.id);
+                                            listen: false)
+                                        .sendFriendRequest(context, widget.id);
                                   },
                                   child: const Text(
                                     'Add Friend',
@@ -278,25 +279,27 @@ class _ProfileScreenState extends State<ProfileScreen> {
           return const Center(child: CircularProgressIndicator());
         } else if (snapshot.hasError) {
           return Center(child: Text('Error: ${snapshot.error}'));
-        } else if (snapshot.hasData) {
-          final events = snapshot.data?.events;
-          if (events == null || events.isEmpty) {
+        // ignore: prefer_is_empty
+        } else if (snapshot.hasData || snapshot.data?.events?.length != 0) {
+          if (snapshot.data?.events == null) {
             return const Center(child: Text('No events available'));
           }
-          return events.isNotEmpty
+          final events = snapshot.data?.events;
+          // ignore: prefer_is_empty
+          return events?.length != 0
               ? ListView.builder(
                   scrollDirection: Axis.horizontal,
                   itemCount: snapshot.data?.events?.length,
                   itemBuilder: (context, index) {
-                    final event = events[index];
+                    final event = events?[index];
                     return EventBriefCard(
                       size: size,
                       imageUrl: 'assets/images/dummy_event.png',
                       profileImg: 'assets/images/dummyDP.png',
                       userName: "By Meg Rigden",
                       dateTime:
-                          "${formatDate(event.dateOfEvent.toString(), false)} at ${formatTime(event.startTime.toString())}",
-                      location: '${event.location}, ${event.address}',
+                          "${formatDate("${event?.dateOfEvent.toString()}", false)} at ${formatTime("${event?.startTime.toString()}")}",
+                      location: '${event?.location}, ${event?.address}',
                     );
                   },
                 )
@@ -316,7 +319,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
           return const Center(child: CircularProgressIndicator());
         } else if (snapshot.hasError) {
           return Center(child: Text('Error: ${snapshot.error}'));
-        } else if (snapshot.hasData) {
+        // ignore: prefer_is_empty
+        } else if (snapshot.hasData || snapshot.data?.events?.length != 0) {
+          if (snapshot.data?.events == null) {
+            return const Center(child: Text('No events available'));
+          }
           final events = snapshot.data?.events;
           return ListView.builder(
             itemCount: events?.length,

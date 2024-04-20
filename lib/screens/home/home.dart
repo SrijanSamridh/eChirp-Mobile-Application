@@ -98,7 +98,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                       return Center(
                                           child:
                                               Text('Error: ${snapshot.error}'));
-                                    } else if (snapshot.hasData) {
+                                    } else if (snapshot.hasData &&
+                                        snapshot.data?.profilePicture != '') {
                                       final userData = snapshot.data;
                                       return CircleAvatar(
                                         child: ClipRRect(
@@ -111,15 +112,18 @@ class _HomeScreenState extends State<HomeScreen> {
                                             )),
                                       );
                                     } else {
-                                      return Center(
-                                  child: Text(
-                                    (username)
-                                        .toString()
-                                        .substring(0, 1)
-                                        .toUpperCase(),
-                                    style: const TextStyle(fontSize: 24),
-                                  ),
-                                );
+                                      return CircleAvatar(
+                                        child: Center(
+                                          child: Text(
+                                            (username)
+                                                .toString()
+                                                .substring(0, 1)
+                                                .toUpperCase(),
+                                            style:
+                                                const TextStyle(fontSize: 24),
+                                          ),
+                                        ),
+                                      );
                                     }
                                   }),
                             ),
@@ -346,7 +350,7 @@ class _WidgetPotentialFriends extends StatelessWidget {
                 final data = potentialFriends[index];
                 return MutualFriendCard(
                   size: size,
-                  profileImg: data.friend.profilePicture ?? 'assets/images/dummyDP.png',
+                  profileImg: 'assets/images/dummyDP.png',
                   userName: data.friend.username,
                   mutualCount: data.count,
                   selectedColor: index == 0
