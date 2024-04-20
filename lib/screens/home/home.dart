@@ -346,7 +346,7 @@ class _WidgetPotentialFriends extends StatelessWidget {
                 final data = potentialFriends[index];
                 return MutualFriendCard(
                   size: size,
-                  profileImg: 'assets/images/dummyDP.png',
+                  profileImg: data.friend.profilePicture ?? 'assets/images/dummyDP.png',
                   userName: data.friend.username,
                   mutualCount: data.count,
                   selectedColor: index == 0

@@ -15,6 +15,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
+import 'API/provider/notification_provider.dart';
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
@@ -39,7 +41,10 @@ Future<void> main() async {
       ),
       ChangeNotifierProvider<ChatProvider>(
         create: (context) => ChatProvider(),
-      )
+      ),
+      ChangeNotifierProvider<NotificationProvider>(
+        create: (_) => NotificationProvider(),
+      ),
     ],
     child: const MyApp(),
   ));
@@ -55,7 +60,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'eChirp',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: GlobalVariables.kPrimaryColor),
+        colorScheme:
+            ColorScheme.fromSeed(seedColor: GlobalVariables.kPrimaryColor),
         useMaterial3: true,
       ),
       onGenerateRoute: (routeSettings) => onGenerateRoute(routeSettings),

@@ -61,7 +61,7 @@ class GroupTile extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                title,
+                                title.trimRight(),
                                 overflow: TextOverflow.fade,
                                 style: const TextStyle(
                                   color: Color(0xff565656),
@@ -69,9 +69,10 @@ class GroupTile extends StatelessWidget {
                                   fontSize: 17,
                                 ),
                               ),
+                              const SizedBox(width: 10),
                               Text(
                                 "${totalMembers.toString()} members",
-                                //overflow: TextOverflow.fade,
+                                overflow: TextOverflow.fade,
                                 style: const TextStyle(
                                   color: Color(0xff948A8A),
                                   fontWeight: FontWeight.w500,

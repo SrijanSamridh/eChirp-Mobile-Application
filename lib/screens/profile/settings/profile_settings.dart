@@ -1,5 +1,6 @@
 import 'package:echirp/API/provider/user_provider.dart';
 import 'package:echirp/components/custom_btn.dart';
+import 'package:echirp/utils/global_variabes.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -38,7 +39,8 @@ class _ProfileSettingsState extends State<ProfileSettings> {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
-        title: const Text("General"),
+        title: const Text("Settings",
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600, letterSpacing: 2)),
       ),
       body: FutureBuilder(
         future: _userProvider.profileData,
@@ -55,45 +57,71 @@ class _ProfileSettingsState extends State<ProfileSettings> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Card(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Row(
-                          children: [
-                            ClipRRect(
-                                borderRadius: BorderRadius.circular(50),
-                                child:
-                                    Image.network("${userData?.profilePicture}", height: size.height * 0.06,)),
-                            const SizedBox(width: 10),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                    Column(
+                      children: [
+                        Card(
+                          margin: EdgeInsets.only(bottom: size.height * 0.03),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 20.0, horizontal: 8.0),
+                            child: Row(
                               children: [
-                                Text(
-                                  userData?.firstName == ''
-                                      ? (userData?.username).toString()
-                                      : "${userData?.firstName} ${userData?.lastName}",
-                                  style: const TextStyle(
-                                      fontSize: 20, fontWeight: FontWeight.w600),
+                                ClipRRect(
+                                    borderRadius: BorderRadius.circular(50),
+                                    child: Image.network(
+                                      "${userData?.profilePicture}",
+                                      height: size.height * 0.06,
+                                    )),
+                                const SizedBox(width: 10),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      userData?.firstName == ''
+                                          ? (userData?.username).toString()
+                                          : "${userData?.firstName} ${userData?.lastName}",
+                                      style: const TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                    const Text('Artist')
+                                  ],
                                 ),
-                                const Text('Artist')
                               ],
                             ),
-                          ],
+                          ),
                         ),
-                      ),
+                        GestureDetector(
+                          onTap: () {},
+                          child: const Card(
+                            shadowColor: GlobalVariables.kPrimaryColor,
+                            child: ListTile(
+                              leading: Icon(Icons.edit),
+                              title: Text('Edit profile',
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600)),
+                              trailing: Icon(Icons.arrow_circle_right),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                    CustomBtn(text: 'Logout', size: size, onPressed: () async {
-                      SharedPreferences pref =
-                          await SharedPreferences.getInstance();
-                      pref.remove('x-auth-token');
-                      pref.remove('_id');
-                      pref.remove('username');
-                      Navigator.pushNamedAndRemoveUntil(
-                          // ignore: use_build_context_synchronously
-                          context,
-                          AuthScreen.routeName,
-                          (route) => false);
-                    })
+                    CustomBtn(
+                        text: 'Logout',
+                        size: size,
+                        onPressed: () async {
+                          SharedPreferences pref =
+                              await SharedPreferences.getInstance();
+                          pref.remove('x-auth-token');
+                          pref.remove('_id');
+                          pref.remove('username');
+                          Navigator.pushNamedAndRemoveUntil(
+                              // ignore: use_build_context_synchronously
+                              context,
+                              AuthScreen.routeName,
+                              (route) => false);
+                        })
                   ],
                 ),
               ),

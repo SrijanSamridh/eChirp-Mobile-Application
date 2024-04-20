@@ -68,7 +68,7 @@ onGenerateRoute(RouteSettings routeSettings) {
       );
     case NotificationScreen.routeName:
       return MaterialPageRoute(
-        builder: (_) => const NotificationScreen(),
+        builder: (_) => NotificationScreen(),
       );
 
     case ProfileScreen.routeName:

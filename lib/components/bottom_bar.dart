@@ -2,6 +2,8 @@ import 'package:echirp/screens/events/events.dart';
 import 'package:echirp/screens/group/group.dart';
 import 'package:flutter/material.dart';
 import 'package:badges/badges.dart' as badges;
+import 'package:provider/provider.dart';
+import '../API/provider/notification_provider.dart';
 import '../screens/friends/friends.dart';
 import '../screens/home/home.dart';
 import '../screens/notification/notification.dart';
@@ -137,21 +139,25 @@ class _BottomBarState extends State<BottomBar> {
                   ),
                 ),
               ),
-              child: const badges.Badge(
+              child:Provider.of<NotificationProvider>(context).notifications!.isNotEmpty ? badges.Badge(
                 badgeContent: Text(
-                  '2',
-                  style: TextStyle(
+                  "${Provider.of<NotificationProvider>(context).notifications?.length}",
+                  style: const TextStyle(
                     color: Colors.white,
                     fontSize: 10,
                   ),
                 ),
                 // badgeColor: GlobalVariables.secondaryColor,
-                child: Center(
+                child: const Center(
                     child: Padding(
                   padding: EdgeInsets.only(top: 2.0),
                   child: Icon(Icons.notifications_on_outlined),
                 )),
-              ),
+              ) : const Center(
+                    child: Padding(
+                  padding: EdgeInsets.only(top: 2.0),
+                  child: Icon(Icons.notifications_on_outlined),
+                )),
             ),
             label: 'Notification',
           ),
