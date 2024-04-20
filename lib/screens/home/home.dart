@@ -131,7 +131,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                       const CustomSearchBar(
                         // onPressed: () {},
-                        searchFor: 'events',
+                        searchFor: 'a friend',
                         backgroundColor: Color.fromARGB(64, 255, 255, 255),
                         fillColor: Color.fromARGB(90, 50, 50, 50),
                         iconColor: Color.fromARGB(255, 239, 239, 239),

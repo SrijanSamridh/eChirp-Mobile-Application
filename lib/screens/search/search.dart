@@ -106,7 +106,7 @@ class _SearchScreenState extends State<SearchScreen> {
                     width: 0,
                   ),
                 ),
-                hintText: 'Search for Users',
+                hintText: 'Search for people',
                 hintStyle: const TextStyle(
                   fontWeight: FontWeight.w500,
                   color: Color.fromARGB(255, 158, 158, 158),
@@ -163,8 +163,8 @@ class _SearchScreenState extends State<SearchScreen> {
                 return CustomTile(
                   title: data.username!,
                   subTitle: 'Potential Friend Subtitle',
-                  image: "",
-                  mutuals: "1", // Dummy data
+                  image: data.profilePicture ?? '',
+                  mutuals: '1', // Dummy data
                   myFriend: false,
                   id: data.id!,
                 );
