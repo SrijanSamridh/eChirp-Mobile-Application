@@ -43,79 +43,96 @@ class CustomTile extends StatelessWidget {
             ),
           );
         },
-        child: Container(
-          height: size.height * 0.1,
-          decoration: BoxDecoration(
-            color: const Color(0xffF4F3F3),
-            borderRadius: BorderRadius.circular(18),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              SizedBox(
-                width: size.width * 0.2,
-                child: CircleAvatar(
-                  radius: 28,
-                  child: image.isNotEmpty
-                      ? ClipOval(
-                          child: Image.network(
-                            image,
-                            height: 56,
-                            width: 56,
-                            fit: BoxFit.cover,
+        child: Stack(
+          alignment: AlignmentDirectional.centerEnd,
+          children: [
+            Container(
+              margin: EdgeInsets.only(right: size.width * 0.03),
+              height: size.height * 0.1,
+              decoration: BoxDecoration(
+                color: const Color(0xffF4F3F3),
+                borderRadius: BorderRadius.circular(18),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    width: size.width * 0.2,
+                    child: CircleAvatar(
+                      radius: 28,
+                      child: image.isNotEmpty
+                          ? ClipOval(
+                              child: Image.network(
+                                image,
+                                height: 56,
+                                width: 56,
+                                fit: BoxFit.cover,
+                              ),
+                            )
+                          : Text(
+                              title.substring(0, 1).toUpperCase(),
+                              style: const TextStyle(fontSize: 14),
+                            ),
+                    ),
+                  ),
+                  SizedBox(
+                    width: size.width * 0.45,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          title,
+                          overflow: TextOverflow.fade,
+                          style: const TextStyle(
+                            color: Color(0xff565656),
+                            fontWeight: FontWeight.w500,
+                            fontSize: 18,
                           ),
-                        )
-                      : Text(
-                          title.substring(0, 1).toUpperCase(),
-                          style: const TextStyle(fontSize: 14),
                         ),
-                ),
-              ),
-              SizedBox(
-                width: size.width * 0.45,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      title,
-                      overflow: TextOverflow.fade,
-                      style: const TextStyle(
-                        color: Color(0xff565656),
-                        fontWeight: FontWeight.w500,
-                        fontSize: 18,
-                      ),
+                        Text(
+                          subTitle,
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(
+                            fontSize: 14,
+                            color: Color(0xff565656),
+                          ),
+                        ),
+                      ],
                     ),
-                    Text(
-                      subTitle,
-                      overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
-                        fontSize: 14,
-                        color: Color(0xff565656),
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                  myFriend == false && requests == false
+                            ? Column(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(
+                                      mutuals == '1'
+                                          ? "$mutuals mutual"
+                                          : "$mutuals mutuals",
+                                      overflow: TextOverflow.ellipsis,
+                                      style: const TextStyle(
+                                        fontSize: 14,
+                                        color: Color(0xff565656),
+                                      ),
+                                    ),
+                                ),
+                              ],
+                            )
+                            : const SizedBox(),
+                ],
               ),
-              requests == false
+            ),
+            requests == false
                   ? Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        myFriend == false && requests == false
-                            ? Text(
-                                mutuals == '1' ? "$mutuals mutual" : "$mutuals mutuals",
-                                overflow: TextOverflow.ellipsis,
-                                style: const TextStyle(
-                                  fontSize: 14,
-                                  color: Color(0xff565656),
-                                ),
-                              )
-                            : const SizedBox(),
                         Container(
-                          height: 35,
+                          height: size.height * 0.04,
+                          width: size.height * 0.04,
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(12),
+                            borderRadius: BorderRadius.circular(200),
                             gradient: GlobalVariables.kPrimaryGradientColor,
                           ),
                           child: IconButton(
@@ -131,6 +148,7 @@ class CustomTile extends StatelessWidget {
                             icon: Icon(
                               myFriend ? Icons.remove : Icons.add,
                               color: Colors.white,
+                              size: size.height * 0.02,
                             ),
                           ),
                         ),
@@ -140,9 +158,10 @@ class CustomTile extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         Container(
-                          height: 35,
+                          height: size.height * 0.04,
+                          width: size.height * 0.04,
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(12),
+                            borderRadius: BorderRadius.circular(50),
                             gradient: GlobalVariables.kPrimaryGradientColor,
                           ),
                           child: IconButton(
@@ -151,30 +170,33 @@ class CustomTile extends StatelessWidget {
                                       listen: false)
                                   .acceptFriendRequest(context, id);
                             },
-                            icon: const Icon(
+                            icon: Icon(
                               Icons.check,
                               color: Colors.white,
+                              size: size.height * 0.02,
                             ),
                           ),
                         ),
+                        const SizedBox(height: 10),
                         Container(
-                          height: 35,
+                          height: size.height * 0.04,
+                          width: size.height * 0.04,
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(12),
+                            borderRadius: BorderRadius.circular(50),
                             gradient: GlobalVariables.kPrimaryGradientColor,
                           ),
                           child: IconButton(
                             onPressed: () {},
-                            icon: const Icon(
+                            icon: Icon(
                               Icons.close,
                               color: Colors.white,
+                              size: size.height * 0.02,
                             ),
                           ),
                         ),
                       ],
                     ),
-            ],
-          ),
+          ],
         ),
       ),
     );

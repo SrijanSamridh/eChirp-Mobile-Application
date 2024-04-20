@@ -5,6 +5,7 @@ class FriendRequests {
   String? username;
   String? providerId;
   String? password;
+  String? profilePicture;
   List<String>? friends;
   List<dynamic>? friendRequests;
   int? numberOfFriends;
@@ -23,6 +24,7 @@ class FriendRequests {
     this.username,
     this.providerId,
     this.password,
+    this.profilePicture,
     this.friends,
     this.friendRequests,
     this.numberOfFriends,
@@ -47,6 +49,7 @@ class FriendRequests {
         username: json["username"],
         providerId: json["providerId"],
         password: json["password"],
+        profilePicture: json["profilePicture"],
         friends: json["friends"] == null
             ? []
             : List<String>.from(json["friends"]!.map((x) => x)),
@@ -78,6 +81,7 @@ class FriendRequests {
         "username": username,
         "providerId": providerId,
         "password": password,
+        "profilePicture": profilePicture,
         "friends":
             friends == null ? [] : List<dynamic>.from(friends!.map((x) => x)),
         "friendRequests": friendRequests == null

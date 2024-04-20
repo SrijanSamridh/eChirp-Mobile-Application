@@ -162,7 +162,7 @@ class FriendsList extends StatelessWidget {
                   return CustomTile(
                     title: friend.username ?? 'Friend Name',
                     subTitle: friend.bio ?? 'Friend Bio',
-                    image: "",
+                    image: friend.profilePicture ?? "",
                     mutuals: friend.numberOfFriends.toString(),
                     myFriend: true,
                     id: friend.id ?? 'Friend ID',
@@ -191,7 +191,7 @@ class PotentialFriendsList extends StatelessWidget {
                   return CustomTile(
                     title: data.friend.username,
                     subTitle: 'Potential Friend Subtitle',
-                    image: "",
+                    image: data.friend.profilePicture ?? "",
                     mutuals: data.count.toString(), // Dummy data
                     myFriend: false,
                     id: data.friend.id,
@@ -231,7 +231,7 @@ class FriendRequestsList extends StatelessWidget {
                   return CustomTile(
                     title: friend.username ?? 'Friend Request Name',
                     subTitle: friend.bio ?? 'Friend Request Bio',
-                    image: "",
+                    image: friend.profilePicture ?? "",
                     mutuals: friend.numberOfFriends.toString(),
                     myFriend: true,
                     requests: true,
