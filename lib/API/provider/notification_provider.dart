@@ -9,9 +9,15 @@ class NotificationProvider extends ChangeNotifier {
 
   List<NotificationElement>? get notifications => _notifications;
 
-  Future<void> fetchNotifications() async {
+  Future<dynamic> fetchNotifications() async {
     final res = await _notificationController.fetchNotifications();
     _notifications = res!.notifications;
     notifyListeners();
   }
+
+  void listenToSocketEvents(dynamic data) {
+    _notifications?.add(NotificationElement.fromJson(data));
+    notifyListeners();
+  }
+
 }

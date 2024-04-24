@@ -1,35 +1,55 @@
+import 'package:echirp/API/models/notification.model.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
-import 'package:provider/provider.dart';
 import '../../API/provider/notification_provider.dart';
 
-
-class NotificationScreen extends StatelessWidget {
+class NotificationScreen extends StatefulWidget {
   static const String routeName = '/notification';
 
   const NotificationScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final notificationProvider = Provider.of<NotificationProvider>(context);
-    final notifications = notificationProvider.notifications;
+  State<NotificationScreen> createState() => _NotificationScreenState();
+}
 
+class _NotificationScreenState extends State<NotificationScreen> {
+  final NotificationProvider _notificationProvider = NotificationProvider();
+  List<NotificationElement>? notifications;
+  @override
+  void initState() {
+    super.initState();
+    initNotification();
+  }
+
+  Future<void> initNotification() async {
+    setState(() {
+      notifications = _notificationProvider.notifications;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    _notificationProvider;
     return Scaffold(
       appBar: AppBar(
         title: const Text('Notification'),
       ),
-      body: notifications != null && notifications.isNotEmpty
+      // ignore: prefer_is_empty
+      body: notifications != null && notifications?.length != 0
           ? ListView.builder(
-              itemCount: notifications.length,
+              itemCount: notifications?.length,
               itemBuilder: (context, index) {
-                final notification = notifications[index];
+                final notification = notifications?[index];
                 return ListTile(
                   leading: Lottie.asset(
                     'assets/animations/Animation - 1712302998944.json',
                     height: MediaQuery.of(context).size.height * 0.35,
                   ),
-                  title: Text(notification.message.toString()),
-                  subtitle: Text(notification.notificationId.toString(), overflow: TextOverflow.ellipsis,),
+                  title: Text("${notification?.message}"),
+                  subtitle: Text(
+                    "${notification?.notificationId}",
+                    overflow: TextOverflow.ellipsis,
+                  ),
                   trailing: IconButton(
                     icon: const Icon(Icons.abc),
                     onPressed: () {},

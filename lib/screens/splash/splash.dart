@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:echirp/API/models/user.models.dart';
+import 'package:echirp/API/provider/notification_provider.dart';
 import 'package:echirp/API/provider/user_provider.dart';
 import 'package:echirp/components/bottom_bar.dart';
 import 'package:echirp/screens/auth/auth.dart';
@@ -49,6 +50,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     _initPotentialFriendList();
+    initNotification();
     checkAuth();
   }
 
@@ -68,6 +70,10 @@ class _SplashScreenState extends State<SplashScreen> {
             id: pref.getString('_id'), username: pref.getString("username")));
     userProvider.setUserData(userData);
     print(pref.getString('x-auth-token'));
+  }
+
+  Future<void> initNotification() async {
+    await NotificationProvider().fetchNotifications();
   }
 
   @override

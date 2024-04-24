@@ -110,6 +110,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   @override
   Widget build(BuildContext context) {
     User? userData = _userProvider.userData;
+    // ignore: avoid_print
     print(userData?.user?.firstName);
     return Scaffold(
       appBar: AppBar(
