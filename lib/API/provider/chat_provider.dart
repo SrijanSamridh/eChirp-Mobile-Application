@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../API/models/message.models.dart';
@@ -53,7 +54,10 @@ class ChatProvider extends ChangeNotifier {
   }
 
   void listenToSocketEvents(dynamic data) {
-    _messages.add(MessageElement.fromJson(data));
+    MessageElement messageElement = MessageElement.fromJson(data);
+     AwesomeNotifications().createNotification(
+              content: NotificationContent(id: 2, channelKey: "basic_channel", title: "Message from ${messageElement.user?.username}", body: "${messageElement.message}"));
+    _messages.add(messageElement);
     notifyListeners();
   }
 

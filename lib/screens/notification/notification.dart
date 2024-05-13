@@ -1,3 +1,4 @@
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:echirp/API/models/notification.model.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
@@ -31,6 +32,13 @@ class _NotificationScreenState extends State<NotificationScreen> {
   Widget build(BuildContext context) {
     _notificationProvider;
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          AwesomeNotifications().createNotification(
+              content: NotificationContent(id: 1, channelKey: "basic_channel", title: "Hello World!", body: "Yay! I have Local Notifications working now!"));
+        },
+        child: const Icon(Icons.notification_add),
+      ),
       appBar: AppBar(
         title: const Text('Notification'),
       ),

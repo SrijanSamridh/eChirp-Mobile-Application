@@ -1,5 +1,7 @@
 // ignore_for_file: avoid_print
 
+import 'package:awesome_notifications/awesome_notifications.dart';
+import 'package:echirp/API/controller/notification.controller.dart';
 import 'package:echirp/API/provider/chat_provider.dart';
 import 'package:echirp/API/provider/event_provider.dart';
 import 'package:echirp/API/provider/friend_provider.dart';
@@ -25,6 +27,31 @@ Future<void> main() async {
   await SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
   ]);
+  // Initialize Awesome Notifications with default icon
+  AwesomeNotifications().initialize(
+    'resource://drawable/res_ic_notification',
+    [
+      NotificationChannel(
+        channelGroupKey: 'basic_channel_group',
+        channelKey: 'basic_channel',
+        channelName: 'eChirp Notification',
+        channelDescription: 'eChirp Notification channel',
+      )
+    ],
+    channelGroups: [
+      NotificationChannelGroup(
+        channelGroupKey: 'basic_channel_group',
+        channelGroupName: 'Basic Group',
+      )
+    ],
+  );
+
+  // Ensure permission to send notifications
+  final isAllowedToSendNotification =
+      await AwesomeNotifications().isNotificationAllowed();
+  if (!isAllowedToSendNotification) {
+    AwesomeNotifications().requestPermissionToSendNotifications();
+  }
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider<FriendProvider>(
@@ -50,10 +77,27 @@ Future<void> main() async {
   ));
   // Establish socket connection
   SocketConnection.establishConnection();
+  SocketConnection().listenToSocketEvents(); // socket connection
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  @override
+  void initState() {
+    AwesomeNotifications().setListeners(
+        onActionReceivedMethod: NotificationController.onActionReceivedMethod,
+        onDismissActionReceivedMethod: NotificationController.onDismissActionReceivedMethod,
+        onNotificationCreatedMethod: NotificationController.onNotificationCreatedMethod,
+        onNotificationDisplayedMethod: NotificationController.onNotificationDisplayedMethod,
+        );
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

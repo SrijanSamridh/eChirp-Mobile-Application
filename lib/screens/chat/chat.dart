@@ -183,14 +183,23 @@ class __ChatScreenContentState extends State<_ChatScreenContent> {
   }
 
   Widget _buildMessage(MessageElement message) {
-    var userProvider = Provider.of<UserProvider>(context, listen: false).userData;
-    checkSender =  message.user!.username == userProvider?.user?.username;
-    debugPrint("Message From Provider: ${userProvider?.message}\n$checkSender <-- ${message.user!.userId} : ${userProvider?.user?.id}");
+    var userProvider =
+        Provider.of<UserProvider>(context, listen: false).userData;
+    checkSender = message.user!.userId != userProvider?.user?.id;
+    // debugPrint("Message From Provider: ${userProvider?.message}\n$checkSender <-- ${message.user!.userId} : ${userProvider?.user?.id}");
     Size size = MediaQuery.of(context).size;
     return Row(
       mainAxisAlignment:
-          checkSender ? MainAxisAlignment.end : MainAxisAlignment.start,
+          !checkSender ? MainAxisAlignment.end : MainAxisAlignment.start,
       children: [
+        checkSender
+            ? CircleAvatar(
+                radius: size.height * 0.015,
+                backgroundImage: AssetImage(checkSender
+                    ? 'assets/images/dummyDP.png'
+                    : 'assets/other_user_photo.jpg'),
+              )
+            : Container(),
         Flexible(
           child: ConstrainedBox(
             constraints: BoxConstraints(maxWidth: size.width * 0.6),
@@ -198,7 +207,7 @@ class __ChatScreenContentState extends State<_ChatScreenContent> {
               margin: const EdgeInsets.all(4.0),
               padding: const EdgeInsets.all(8.0),
               decoration: BoxDecoration(
-                color: checkSender
+                color: !checkSender
                     ? GlobalVariables.chatBubbleColor
                     : Colors.grey[300],
                 borderRadius: BorderRadius.circular(20),
@@ -211,13 +220,17 @@ class __ChatScreenContentState extends State<_ChatScreenContent> {
           ),
         ),
         const SizedBox(width: 8.0),
-        checkSender
-            ? CircleAvatar(
-                radius: size.height * 0.015,
-                backgroundImage: AssetImage(checkSender
-                    ? 'assets/images/dummyDP.png'
-                    : 'assets/other_user_photo.jpg'),
-              )
+        !checkSender
+            ? userProvider?.user?.profilePicture == null
+                ? CircleAvatar(
+                    radius: size.height * 0.015,
+                    backgroundImage:
+                        const AssetImage('assets/images/dummyDP.png'))
+                : CircleAvatar(
+                    radius: size.height * 0.015,
+                    backgroundImage:
+                        NetworkImage("${userProvider?.user?.profilePicture}"),
+                  )
             : Container(),
       ],
     );
