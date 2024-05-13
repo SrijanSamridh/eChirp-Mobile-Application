@@ -60,7 +60,6 @@ class _AuthScreenState extends State<AuthScreen> {
       debugPrint(
         "User : ${prefs.getString('username')}, From Provider:${userProvider.userData!.user?.username} \nlocal Storage : ${prefs.getString('x-auth-token')},",
       );
-      SocketConnection().listenToSocketEvents(context); // socket connection
 
       Navigator.of(context)
           .pushReplacementNamed(BottomBar.routeName, arguments: 0);
