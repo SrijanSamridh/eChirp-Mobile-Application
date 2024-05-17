@@ -46,7 +46,7 @@ class _GroupScreenState extends State<GroupScreen> {
       length: 3,
       child: Scaffold(
         appBar: PreferredSize(
-          preferredSize: Size.fromHeight(size.height * 0.18),
+          preferredSize: Size.fromHeight(size.height * 0.20),
           child: CustomAppBar(
             size: size,
             title: 'Groups',

@@ -35,7 +35,7 @@ class EventsScreenState extends State<EventsScreen> {
       length: 4,
       child: Scaffold(
         appBar: PreferredSize(
-          preferredSize: Size.fromHeight(size.height * 0.18),
+          preferredSize: Size.fromHeight(size.height * 0.20),
           child: CustomAppBar(
             size: size,
             showCreate: true,

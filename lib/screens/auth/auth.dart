@@ -518,7 +518,7 @@ class LoginViaSocialMedia extends StatelessWidget {
         ClipRRect(
             borderRadius: BorderRadius.circular(50),
             child: Image.asset(
-              "assets/icons/instagram.png",
+              "assets/icons/instagram2.png",
               height: 48,
             )),
         ClipRRect(

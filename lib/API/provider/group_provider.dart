@@ -17,15 +17,15 @@ class GroupProvider extends ChangeNotifier {
 
   Future<void> fetchGroups() async {
     try {
-      final myGroupsResponse = await _groupController.fetchGroups("owned");
-      _myGroups = myGroupsResponse?.groups;
-      print(_myGroups?.first.groupId);
+      final allGroupsResponse = await _groupController.fetchGroups("all");
+      _allGroups = allGroupsResponse?.groups;
 
       final joinedGroupsResponse = await _groupController.fetchGroups("joined");
       _joinedGroups = joinedGroupsResponse?.groups;
 
-      final allGroupsResponse = await _groupController.fetchGroups("all");
-      _allGroups = allGroupsResponse?.groups;
+      final myGroupsResponse = await _groupController.fetchGroups("owned");
+      _myGroups = myGroupsResponse?.groups;
+      print(_myGroups?.first.groupId);
 
       notifyListeners();
     } catch (e) {

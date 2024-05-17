@@ -48,24 +48,24 @@ class CustomAppBar extends StatelessWidget {
                   ElevatedButton(
                     style: ButtonStyle(
                         foregroundColor:
-                            MaterialStateProperty.all(Colors.white),
-                        backgroundColor: MaterialStateProperty.all(
+                            WidgetStateProperty.all(Colors.white),
+                        backgroundColor: WidgetStateProperty.all(
                             GlobalVariables.kPrimaryColor),
-                        textStyle: MaterialStatePropertyAll(
+                        textStyle: WidgetStatePropertyAll(
                           TextStyle(
                               fontSize: size.height * 0.012,
                               fontWeight: FontWeight.bold),
                         ),
                         iconSize:
-                            MaterialStateProperty.all(size.height * 0.02)),
+                        WidgetStateProperty.all(size.height * 0.02)),
                     onPressed: onPressed,
                     child: Row(
                       children: [
-                        Icon(Icons.add),
-                        SizedBox(width: 8.0),
+                        const Icon(Icons.add),
+                        const SizedBox(width: 8.0),
                         showGroup
-                        ? Text('Create Group')
-                        : Text('Create Event'),
+                        ? const Text('Create Group')
+                        : const Text('Create Event'),
                       ],
                     ),
                   ),

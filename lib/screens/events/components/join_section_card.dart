@@ -52,8 +52,9 @@ class JoinSectionCard extends StatelessWidget {
             borderRadius: BorderRadius.circular(30.0),
             child: Image(
               image: AssetImage(imgUrl),
-              fit: BoxFit.fitWidth,
               height: size.height * 0.3,
+              width: size.width,
+              fit: BoxFit.fitWidth,
             ),
           ),
           Align(

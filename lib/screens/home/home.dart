@@ -24,6 +24,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final UserProvider _userProvider = UserProvider();
+  final FriendProvider _friendProvider = FriendProvider();
 
   Future<void> _initProfileData(String id) async {
     await _userProvider.fetchUserData(id, true);
@@ -35,6 +36,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     getUsername();
+    _friendProvider.fetchPotentialFriends();
   }
 
   Future<void> getUsername() async {
