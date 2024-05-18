@@ -139,25 +139,31 @@ class _BottomBarState extends State<BottomBar> {
                   ),
                 ),
               ),
-              child:Provider.of<NotificationProvider>(context).notifications!.isNotEmpty ? badges.Badge(
-                badgeContent: Text(
-                  "${Provider.of<NotificationProvider>(context).notifications?.length}",
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 10,
-                  ),
-                ),
-                // badgeColor: GlobalVariables.secondaryColor,
-                child: const Center(
-                    child: Padding(
-                  padding: EdgeInsets.only(top: 2.0),
-                  child: Icon(Icons.notifications_on_outlined),
-                )),
-              ) : const Center(
-                    child: Padding(
-                  padding: EdgeInsets.only(top: 2.0),
-                  child: Icon(Icons.notifications_on_outlined),
-                )),
+              child: Provider.of<NotificationProvider>(context)
+                      .notifications!
+                      .isNotEmpty
+                  ? badges.Badge(
+                      badgeContent: Text(
+                        "${Provider.of<NotificationProvider>(context).notifications?.length}",
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 10,
+                        ),
+                      ),
+                      // badgeColor: GlobalVariables.secondaryColor,
+                      child: const Center(
+                        child: Padding(
+                          padding: EdgeInsets.only(top: 2.0),
+                          child: Icon(Icons.notifications_on_outlined),
+                        ),
+                      ),
+                    )
+                  : const Center(
+                      child: Padding(
+                        padding: EdgeInsets.only(top: 2.0),
+                        child: Icon(Icons.notifications_on_outlined),
+                      ),
+                    ),
             ),
             label: 'Notification',
           ),

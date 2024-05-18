@@ -41,7 +41,7 @@ class NotificationController {
       if (decodedResponse.isNotEmpty ||
           decodedResponse['notifications'].length != 0) {
         final notifications = Notifications.fromRawJson(response);
-        print(notifications.notifications);
+        print(decodedResponse);
         return notifications;
       } else {
         debugPrint('No notification to show.');
