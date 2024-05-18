@@ -6,9 +6,7 @@ import 'package:echirp/API/provider/user_provider.dart';
 import 'package:echirp/API/services/base_client.dart';
 import 'package:echirp/screens/profile/profile.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
-import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../API/models/user.models.dart';

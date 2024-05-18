@@ -7,11 +7,8 @@ import 'package:echirp/API/services/auth_provider.dart';
 import 'package:echirp/components/custom_btn.dart';
 import 'package:echirp/utils/global_variabes.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:http/http.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../../API/services/socket_connection.dart';
 import '../../components/bottom_bar.dart';
 
 enum AuthMode {

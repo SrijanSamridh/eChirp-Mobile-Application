@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:echirp/API/controller/friend.controller.dart';
 import 'package:echirp/API/models/friends.model.dart';
-import 'package:echirp/API/models/potentialFriends.dart';
+import 'package:echirp/API/models/potential_friends.dart';
 import 'package:echirp/API/models/friendRequest.models.dart';
 
 class FriendProvider extends ChangeNotifier {

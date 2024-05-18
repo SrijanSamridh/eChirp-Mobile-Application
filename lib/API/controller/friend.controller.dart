@@ -4,7 +4,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import '../models/friendRequest.models.dart';
 import '../models/friends.model.dart';
-import '../models/potentialFriends.dart';
+import '../models/potential_friends.dart';
 import '../models/userData.model.dart';
 import '../services/base_client.dart';
 

@@ -42,28 +42,28 @@ class EventTile extends StatelessWidget {
           ),
               
             ),
-            SizedBox(width: 10),
+            const SizedBox(width: 10),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     category,
-                    style: TextStyle(
+                    style: const TextStyle(
                       
                       fontSize: 12,
                     ),
                   ),
-                  SizedBox(height: 5),
+                  const SizedBox(height: 5),
                   Text(
                     title,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 14,
                     ),
                   ),
                   
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -72,8 +72,8 @@ class EventTile extends StatelessWidget {
                         children: [
                           Row(
                             children: [
-                              Icon(Icons.calendar_today_outlined,size: 16,),
-                              SizedBox(width: 5),
+                              const Icon(Icons.calendar_today_outlined,size: 16,),
+                              const SizedBox(width: 5),
                       Text(date),
                             ],
                           ),
@@ -83,7 +83,7 @@ class EventTile extends StatelessWidget {
                       Row(
                         children: [
                           Icon(Icons.access_time_filled_rounded,size: 16,color: Colors.grey[700],),
-                          SizedBox(width: 5),
+                          const SizedBox(width: 5),
                       Text(time),
                         ],
                       ),

@@ -36,7 +36,6 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     getUsername();
-    _friendProvider.fetchPotentialFriends();
   }
 
   Future<void> getUsername() async {
