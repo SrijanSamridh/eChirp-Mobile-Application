@@ -1,16 +1,12 @@
 import 'dart:async';
-
 import 'package:echirp/API/models/user.models.dart';
-import 'package:echirp/API/provider/notification_provider.dart';
 import 'package:echirp/API/provider/user_provider.dart';
 import 'package:echirp/components/bottom_bar.dart';
 import 'package:echirp/screens/auth/auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-import '../../API/provider/friend_provider.dart';
+import '../../API/provider/notification_provider.dart';
 import '../../components/custom_btn.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -24,19 +20,28 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   bool loader = false;
 
+  @override
+  void initState() {
+    super.initState();
+    checkAuth();
+    _initNotification();
+  }
+
   void checkAuth() async {
     Timer(
       const Duration(seconds: 3),
       () async {
         final prefs = await SharedPreferences.getInstance();
         if (prefs.containsKey('x-auth-token')) {
-          _initProfileData();
-          Navigator.pushNamedAndRemoveUntil(
-              // ignore: use_build_context_synchronously
+          await _initProfileData();
+          if (mounted) {
+            Navigator.pushNamedAndRemoveUntil(
               context,
               BottomBar.routeName,
               arguments: 0,
-              (route) => false);
+              (route) => false,
+            );
+          }
         } else {
           setState(() {
             loader = true;
@@ -46,34 +51,29 @@ class _SplashScreenState extends State<SplashScreen> {
     );
   }
 
-  @override
-  void initState() {
-    super.initState();
-    _initPotentialFriendList();
-    initNotification();
-    checkAuth();
-  }
-
-  Future<void> _initPotentialFriendList() async {
-    await Provider.of<FriendProvider>(context, listen: false)
-        .fetchPotentialFriends();
-  }
-
   Future<void> _initProfileData() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
-    // ignore: use_build_context_synchronously
     var userProvider = Provider.of<UserProvider>(context, listen: false);
-    userProvider.fetchUserData(pref.getString("_id")!, true);
-    User userData = User(
-        message: "data feteced from the local storage",
+    String? userId = pref.getString("_id");
+    if (userId != null) {
+      await userProvider.fetchUserData(userId, true);
+      User userData = User(
+        message: "data fetched from the local storage",
         user: UserClass(
-            id: pref.getString('_id'), username: pref.getString("username")));
-    userProvider.setUserData(userData);
+          id: userId,
+          username: pref.getString("username"),
+        ),
+      );
+      userProvider.setUserData(userData);
+    }
     print(pref.getString('x-auth-token'));
   }
 
-  Future<void> initNotification() async {
-    await NotificationProvider().fetchNotifications();
+  Future<void> _initNotification() async {
+    var notificationProvider =
+        Provider.of<NotificationProvider>(context, listen: false);
+    await notificationProvider.fetchNotifications();
+    notificationProvider.triggerNewNotifications();
   }
 
   @override

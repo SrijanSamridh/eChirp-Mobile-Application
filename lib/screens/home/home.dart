@@ -24,7 +24,6 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final UserProvider _userProvider = UserProvider();
-  final FriendProvider _friendProvider = FriendProvider();
 
   Future<void> _initProfileData(String id) async {
     await _userProvider.fetchUserData(id, true);
@@ -36,6 +35,13 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     getUsername();
+    _initPotentialFriendList();
+  }
+
+  Future<void> _initPotentialFriendList() async {
+    await Provider.of<FriendProvider>(context, listen: false)
+        .fetchPotentialFriends();
+    setState(() {});
   }
 
   Future<void> getUsername() async {
@@ -338,7 +344,6 @@ class _WidgetPotentialFriends extends StatelessWidget {
   Widget build(BuildContext context) {
     final friendProvider = Provider.of<FriendProvider>(context);
     final potentialFriends = friendProvider.potentialFriends?.potentialFriends;
-
     return potentialFriends == null
         ? SkeletonLoaders.buildSkeletonLoader(context)
         : SizedBox(

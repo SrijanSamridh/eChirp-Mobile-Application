@@ -140,11 +140,10 @@ class _BottomBarState extends State<BottomBar> {
                 ),
               ),
               child: Provider.of<NotificationProvider>(context)
-                      .notifications!
-                      .isNotEmpty
+                      .newMessagesCount != 0
                   ? badges.Badge(
                       badgeContent: Text(
-                        "${Provider.of<NotificationProvider>(context).notifications?.length}",
+                        "${Provider.of<NotificationProvider>(context).newMessagesCount}",
                         style: const TextStyle(
                           color: Colors.white,
                           fontSize: 10,
