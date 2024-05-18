@@ -1,4 +1,3 @@
-import 'package:echirp/API/provider/group_provider.dart';
 import 'package:echirp/utils/global_variabes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -24,13 +23,13 @@ class _NotificationScreenState extends State<NotificationScreen> {
         .fetchNotifications();
   }
 
-  void doNothing(context){
+  void doNothing(context) {}
 
-  }
-
-  void acceptRequest(BuildContext context, String groupId, List<Map<String, String>> participants) {
+  void actionOnNotification(
+      BuildContext context, String notificationId, String reply) {
     setState(() {
-      Provider.of<GroupProvider>(context, listen: false).addParticipants(groupId, participants);
+      Provider.of<NotificationProvider>(context, listen: false)
+          .replyToNotifications(notificationId, reply);
     });
   }
 
@@ -38,9 +37,14 @@ class _NotificationScreenState extends State<NotificationScreen> {
   Widget build(BuildContext context) {
     // Provider.of<NotificationProvider>(context, listen: false)
     //     .listenToSocketEvents(newNotification.toJson());
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Notification'),
+        title: Text(
+          'Notification',
+          style: TextStyle(
+              fontWeight: FontWeight.bold, fontSize: size.height * 0.02),
+        ),
       ),
       body: Consumer<NotificationProvider>(
         builder: (context, notificationProvider, child) {
@@ -54,60 +58,65 @@ class _NotificationScreenState extends State<NotificationScreen> {
                       // Specify a key if the Slidable is dismissible.
                       key: const ValueKey(0),
 
-                      // The start action pane is the one at the left or the top side.
-                      startActionPane: ActionPane(
-                        // A motion is a widget used to control how the pane animates.
-                        motion: const ScrollMotion(),
-
-                        // A pane can dismiss the Slidable.
-                        dismissible: DismissiblePane(onDismissed: () {}),
-
-                        // All actions are defined in the children parameter.
-                        children: [
-                          // A SlidableAction can have an icon and/or a label.
-                          SlidableAction(
-                            onPressed: doNothing,
-                            backgroundColor: const Color(0xFFFE4A49),
-                            foregroundColor: Colors.white,
-                            icon: Icons.delete,
-                            label: 'Delete',
-                          ),
-                          // SlidableAction(
-                          //   onPressed: doNothing,
-                          //   backgroundColor: const Color(0xFF21B7CA),
-                          //   foregroundColor: Colors.white,
-                          //   icon: Icons.share,
-                          //   label: 'Share',
-                          // ),
-                        ],
-                      ),
-
                       // The end action pane is the one at the right or the bottom side.
-                      endActionPane: ActionPane(
-                        motion: const ScrollMotion(),
-                        children: [
-                          SlidableAction(
-                            // An action can be bigger than the others.
-                            flex: 2,
-                            onPressed: (context) => acceptRequest(context, "${notification.links?[1].typeId}", [
-                              {"_id": "${notification.links?[0].typeId}"} // Example participant
-                            ]),
-                            backgroundColor: GlobalVariables.kPrimaryColor,
-                            foregroundColor: Colors.white,
-                            icon: Icons.check_box,
-                            label: 'Accept',
-                          ),
-                          SlidableAction(
-                            // An action can be bigger than the others.
-                            flex: 2,
-                            onPressed: doNothing,
-                            backgroundColor: const Color(0xFF4D4D4D),
-                            foregroundColor: Colors.white,
-                            icon: Icons.check_box,
-                            label: 'Reject',
-                          ),
-                        ],
-                      ),
+                      endActionPane: notification.type ==
+                              "INCOMING_GROUP_INVITE"
+                          ? ActionPane(
+                              motion: const ScrollMotion(),
+                              children: [
+                                SlidableAction(
+                                  // An action can be bigger than the others.
+                                  flex: 2,
+                                  onPressed: (context) => actionOnNotification(
+                                      context,
+                                      "${notification.notificationId}",
+                                      "accept"),
+                                  backgroundColor:
+                                      GlobalVariables.kPrimaryColor,
+                                  foregroundColor: Colors.white,
+                                  icon: Icons.check_box,
+                                  label: 'Accept',
+                                ),
+                                SlidableAction(
+                                  // An action can be bigger than the others.
+                                  flex: 2,
+                                  onPressed: (context) => actionOnNotification(
+                                      context,
+                                      "${notification.notificationId}",
+                                      "decline"),
+                                  backgroundColor: const Color(0xFF4D4D4D),
+                                  foregroundColor: Colors.white,
+                                  icon: Icons.dangerous,
+                                  label: 'Reject',
+                                ),
+                              ],
+                            )
+                          : ActionPane(
+                              // A motion is a widget used to control how the pane animates.
+                              motion: const ScrollMotion(),
+
+                              // A pane can dismiss the Slidable.
+                              dismissible: DismissiblePane(onDismissed: () {}),
+
+                              // All actions are defined in the children parameter.
+                              children: [
+                                // A SlidableAction can have an icon and/or a label.
+                                SlidableAction(
+                                  onPressed: doNothing,
+                                  backgroundColor: const Color(0xFFFE4A49),
+                                  foregroundColor: Colors.white,
+                                  icon: Icons.delete,
+                                  label: 'Delete',
+                                ),
+                                // SlidableAction(
+                                //   onPressed: doNothing,
+                                //   backgroundColor: const Color(0xFF21B7CA),
+                                //   foregroundColor: Colors.white,
+                                //   icon: Icons.share,
+                                //   label: 'Share',
+                                // ),
+                              ],
+                            ),
 
                       // The child of the Slidable is what the user sees when the
                       // component is not dragged.
@@ -121,7 +130,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                           style: const TextStyle(fontWeight: FontWeight.bold),
                         ),
                         subtitle: Text(
-                          "${notification.notificationId}",
+                          "${notification.type?.replaceAll('_', " ")}",
                           overflow: TextOverflow.ellipsis,
                         ),
                         // trailing: notification.type == "INCOMING_GROUP_INVITE"

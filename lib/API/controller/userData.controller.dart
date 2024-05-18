@@ -3,10 +3,10 @@ import 'dart:convert';
 import 'package:echirp/API/models/userData.model.dart';
 import 'package:flutter/material.dart';
 
-import '../services/base_client.dart';
+import '../services/api_client.dart';
 
 class UserDataController {
-  final client = BaseClient();
+  final client = ApiClient();
   Future<UserData?> fetchUserData() async {
     try {
       final response = await client.get("/auth");

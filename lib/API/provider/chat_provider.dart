@@ -3,7 +3,7 @@ import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../API/models/message.models.dart';
-import '../../API/services/base_client.dart';
+import '../../API/services/api_client.dart';
 import '../../API/services/socket_connection.dart';
 import '../models/group.models.dart';
 
@@ -16,7 +16,7 @@ class ChatProvider extends ChangeNotifier {
       String message, String groupId, List<Participant>? participants) async {
     var body = {"groupId": groupId, "message": message};
 
-    var response = await BaseClient().post('/message', body);
+    var response = await ApiClient().post('/message', body);
     var result = response['message'];
     result["participants"] = participants;
     SocketConnection.socket.emit("new-message", result);
@@ -28,7 +28,7 @@ class ChatProvider extends ChangeNotifier {
 
   Future<void> fetchMessages(String groupId) async {
     try {
-      var response = await BaseClient().get('/message/$groupId');
+      var response = await ApiClient().get('/message/$groupId');
       final decodedResponse = json.decode(response);
 
       if (decodedResponse is! Map<String, dynamic>) {
@@ -55,8 +55,12 @@ class ChatProvider extends ChangeNotifier {
 
   void listenToSocketEvents(dynamic data) {
     MessageElement messageElement = MessageElement.fromJson(data);
-     AwesomeNotifications().createNotification(
-              content: NotificationContent(id: 2, channelKey: "basic_channel", title: "Message from ${messageElement.user?.username}", body: "${messageElement.message}"));
+    AwesomeNotifications().createNotification(
+        content: NotificationContent(
+            id: 2,
+            channelKey: "basic_channel",
+            title: "Message from ${messageElement.user?.username}",
+            body: "${messageElement.message}"));
     _messages.add(messageElement);
     notifyListeners();
   }

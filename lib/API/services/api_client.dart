@@ -10,7 +10,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 // const String baseUrl = 'http://localhost:8080/api';
 const String baseUrl = 'http://23.23.60.2:8080/api';
 
-class BaseClient {
+class ApiClient {
   var client = http.Client();
 
   Future<String> getToken() async {
@@ -30,7 +30,7 @@ class BaseClient {
         'x-auth-token': token,
       };
       var response = await client.get(url, headers: _headers);
-      // print('Response of BaseClient for $route: ${response.body}');
+      // print('Response of ApiClient for $route: ${response.body}');
       if (response.statusCode == 200) {
         return response.body;
       } else {
@@ -43,7 +43,7 @@ class BaseClient {
   }
 
   Future<Map<String, dynamic>> post(String route, dynamic object) async {
-    print("Procssing BaseClient with:\n $object");
+    print("Procssing ApiClient with:\n $object");
 
     // Get Token
     var token = await getToken();
@@ -66,7 +66,7 @@ class BaseClient {
         headers: _headers,
       );
 
-      print("Response from BaseClient : ${response.body}");
+      print("Response from ApiClient : ${response.body}");
 
       // Check if the request was successful (status code 2xx)
       if (response.statusCode >= 200 && response.statusCode < 300) {
@@ -90,18 +90,33 @@ class BaseClient {
   }
 
   // Put request code snippet
-  Future<dynamic> put(String route, dynamic object) async {
+  Future<dynamic> put(
+    String route,
+    dynamic object, {
+    Map<String, String>? headers,
+    String? authToken,
+  }) async {
+    // Get Token
+    var token = await getToken();
+
     var url = Uri.parse(baseUrl + route);
     var _payload = json.encode(object);
-    // ignore: unused_local_variable,
+
     var _headers = {
-      'Authorization': 'Bearer',
       'Content-Type': 'application/json',
       'Accept': 'application/json',
+      if (authToken != null) 'x-auth-token': token,
+      if (headers != null) ...headers,
     };
-    var response = await client.put(url, body: _payload);
+
+    var response = await http.put(
+      url,
+      headers: _headers,
+      body: _payload,
+    );
+
     if (response.statusCode == 200) {
-      return response.body;
+      return json.decode(response.body);
     } else {
       return null;
     }
@@ -116,7 +131,7 @@ class BaseClient {
     };
     try {
       var response = await client.delete(url, headers: _headers);
-      print("Response from BaseClient : ${response.body}");
+      print("Response from ApiClient : ${response.body}");
 
       if (response.statusCode == 200) {
         return json.decode(response.body);

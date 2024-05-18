@@ -57,4 +57,16 @@ class NotificationProvider extends ChangeNotifier {
     // Generate a unique ID for each notification.
     return DateTime.now().millisecondsSinceEpoch.remainder(100000);
   }
+
+
+  Future<void> replyToNotifications(String notificationId, String reply) async {
+    try{
+      NotificationElement? notificationElement = await _notificationController.replyToNotifications(notificationId, reply);
+      // fetchNotifications();
+      notifyListeners();
+    }catch (e){
+      print(e.toString());
+    }
+
+  }
 }

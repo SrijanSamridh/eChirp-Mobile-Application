@@ -3,7 +3,7 @@
 import 'dart:convert';
 
 import 'package:echirp/API/models/user.models.dart';
-import 'package:echirp/API/services/base_client.dart';
+import 'package:echirp/API/services/api_client.dart';
 import 'package:flutter/material.dart';
 
 import 'package:http/http.dart' as http;

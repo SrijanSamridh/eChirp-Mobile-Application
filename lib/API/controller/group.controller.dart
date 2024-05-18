@@ -1,16 +1,16 @@
 // ignore_for_file: avoid_print
 
 import 'dart:convert';
-import 'package:echirp/API/services/base_client.dart';
+import 'package:echirp/API/services/api_client.dart';
 import 'package:http/http.dart' as http;
 import '../models/group.models.dart';
 
 class GroupController {
-  final client = BaseClient();
+  final client = ApiClient();
 
   Future<Groups> createGroup(Map<String, dynamic> requestBody) async {
     // Get Token
-    String token = await BaseClient().getToken();
+    String token = await ApiClient().getToken();
 
     // Header Config
     var headers = <String, String>{

@@ -42,4 +42,13 @@ class GroupProvider extends ChangeNotifier {
       print('Error Adding member to the group: $e');
     }
   }
+  Future<void> removeParticipants(String groupId, List<Map<String, String>> participants) async {
+    try {
+      await _groupController.addParticipant(groupId, participants);
+      fetchGroups();
+      notifyListeners();
+    } catch (e) {
+      print('Error Adding member to the group: $e');
+    }
+  }
 }

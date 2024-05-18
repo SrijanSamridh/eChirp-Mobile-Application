@@ -6,14 +6,15 @@ import 'package:flutter/material.dart';
 
 import '../models/group.models.dart';
 import '../models/message.models.dart';
-import '../services/base_client.dart';
+import '../services/api_client.dart';
 import '../services/socket_connection.dart';
 
 class ChatController {
-  Future<void> sendMessage(String message, String groupId, List<Participant>? participants) async {
+  Future<void> sendMessage(
+      String message, String groupId, List<Participant>? participants) async {
     var body = {"groupId": groupId, "message": message};
 
-    var response = await BaseClient().post('/message', body);
+    var response = await ApiClient().post('/message', body);
     var result = response['message'];
     print("result : $result");
     result["participants"] = participants;
@@ -23,7 +24,7 @@ class ChatController {
 
   Future<List<MessageElement>?> fetchMessages(String groupId) async {
     try {
-      var response = await BaseClient().get('/message/$groupId');
+      var response = await ApiClient().get('/message/$groupId');
       final decodedResponse = json.decode(response);
 
       if (decodedResponse is! Map<String, dynamic>) {
@@ -35,7 +36,8 @@ class ChatController {
 
       if (messagesData != null && messagesData is List) {
         final messages = messagesData
-            .map<MessageElement>((messageData) => MessageElement.fromJson(messageData))
+            .map<MessageElement>(
+                (messageData) => MessageElement.fromJson(messageData))
             .toList();
         return messages;
       } else {
