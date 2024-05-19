@@ -47,10 +47,12 @@ class _EventCreateFromState extends State<EventCreateFrom> {
   TextEditingController maleCntController = TextEditingController();
   TextEditingController eventTitleController = TextEditingController();
   TextEditingController eventDescriptionController = TextEditingController();
+
   EventType? _type = EventType.PUBLIC;
   Gender? _gender;
+
   File? image1;
-  Color borderColor = GlobalVariables.kPrimaryColor;
+  Color borderColor = GlobalVariables.colors.primary;
   double stroke = 1;
   File? image2;
   File? image3;
@@ -88,7 +90,7 @@ class _EventCreateFromState extends State<EventCreateFrom> {
     super.initState();
     setState(() {
       stroke = 1;
-      borderColor = GlobalVariables.kPrimaryColor;
+      borderColor = GlobalVariables.colors.primary;
     });
   }
 
@@ -276,7 +278,7 @@ class _EventCreateFromState extends State<EventCreateFrom> {
                                   style: ButtonStyle(
                                       backgroundColor:
                                           MaterialStateProperty.all(
-                                              GlobalVariables.kPrimaryColor)),
+                                              GlobalVariables.colors.primary)),
                                   onPressed: () {
                                     if (!_formKey.currentState!.validate()) {
                                       // If the form is valid, display a snackbar. In the real world,
@@ -474,16 +476,16 @@ class _EventCreateFromState extends State<EventCreateFrom> {
                 child: TextFormField(
                   keyboardType: TextInputType.number,
                   controller: femaleCntController,
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                     labelText: "Female",
                     hintText: "05",
                     isDense: true,
-                    contentPadding: EdgeInsets.fromLTRB(10, 10, 10, 0),
+                    contentPadding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
                     enabledBorder: OutlineInputBorder(
                       borderSide: BorderSide(
-                        color: GlobalVariables.kPrimaryColor,
+                        color: GlobalVariables.colors.primary,
                       ),
-                      borderRadius: BorderRadius.all(
+                      borderRadius: const BorderRadius.all(
                         Radius.circular(30),
                       ),
                     ),
@@ -501,16 +503,16 @@ class _EventCreateFromState extends State<EventCreateFrom> {
                 child: TextFormField(
                   keyboardType: TextInputType.number,
                   controller: maleCntController,
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                     labelText: "Male",
                     hintText: "05",
                     isDense: true,
-                    contentPadding: EdgeInsets.fromLTRB(10, 10, 10, 0),
+                    contentPadding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
                     enabledBorder: OutlineInputBorder(
                       borderSide: BorderSide(
-                        color: GlobalVariables.kPrimaryColor,
+                        color: GlobalVariables.colors.primary,
                       ),
-                      borderRadius: BorderRadius.all(
+                      borderRadius: const BorderRadius.all(
                         Radius.circular(30),
                       ),
                     ),
@@ -569,20 +571,20 @@ class _EventCreateFromState extends State<EventCreateFrom> {
               controller: eventDescriptionController,
               cursorColor: Colors.red,
               maxLines: height ~/ 20, // <--- maxLines
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 filled: true,
                 fillColor: Colors.transparent,
                 hintText: 'Add description',
-                hintStyle: TextStyle(fontWeight: FontWeight.normal),
+                hintStyle: const TextStyle(fontWeight: FontWeight.normal),
                 enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: GlobalVariables.kPrimaryColor),
-                  borderRadius: BorderRadius.all(
+                  borderSide: BorderSide(color: GlobalVariables.colors.primary),
+                  borderRadius: const BorderRadius.all(
                     Radius.circular(30),
                   ),
                 ),
                 focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: GlobalVariables.kPrimaryColor),
-                  borderRadius: BorderRadius.all(
+                  borderSide: BorderSide(color: GlobalVariables.colors.primary),
+                  borderRadius: const BorderRadius.all(
                     Radius.circular(30),
                   ),
                 ),
@@ -684,7 +686,7 @@ class _EventCreateFromState extends State<EventCreateFrom> {
                 : GestureDetector(
                     onTap: () => selectImage(2),
                     child: DottedBorder(
-                      color: GlobalVariables.kPrimaryColor,
+                      color: GlobalVariables.colors.primary,
                       borderType: BorderType.RRect,
                       // strokeWidth: 3,
                       strokeCap: StrokeCap.round,
@@ -740,7 +742,7 @@ class _EventCreateFromState extends State<EventCreateFrom> {
                 : GestureDetector(
                     onTap: () => selectImage(3),
                     child: DottedBorder(
-                      color: GlobalVariables.kPrimaryColor,
+                      color: GlobalVariables.colors.primary,
                       borderType: BorderType.RRect,
                       // strokeWidth: 3,
                       strokeCap: StrokeCap.round,
@@ -796,7 +798,7 @@ class _EventCreateFromState extends State<EventCreateFrom> {
                 : GestureDetector(
                     onTap: () => selectImage(4),
                     child: DottedBorder(
-                      color: GlobalVariables.kPrimaryColor,
+                      color: GlobalVariables.colors.primary,
                       borderType: BorderType.RRect,
                       // strokeWidth: 3,
                       strokeCap: StrokeCap.round,
@@ -852,7 +854,7 @@ class _EventCreateFromState extends State<EventCreateFrom> {
                 : GestureDetector(
                     onTap: () => selectImage(5),
                     child: DottedBorder(
-                      color: GlobalVariables.kPrimaryColor,
+                      color: GlobalVariables.colors.primary,
                       borderType: BorderType.RRect,
                       // strokeWidth: 3,
                       strokeCap: StrokeCap.round,
@@ -906,7 +908,7 @@ class _EventCreateFromState extends State<EventCreateFrom> {
             ElevatedButton(
               style: ButtonStyle(
                   backgroundColor:
-                      MaterialStateProperty.all(GlobalVariables.kPrimaryColor)),
+                      MaterialStateProperty.all(GlobalVariables.colors.primary)),
               onPressed: _handleSubmitButton,
               child: const Text(
                 'Submit',

@@ -24,15 +24,15 @@ class CustomDropdown extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 16),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(30),
-        gradient: backgroundColor ?? GlobalVariables.kPrimaryGradientColor,
+        gradient: backgroundColor ?? GlobalVariables.colors.primaryGradient,
         border: Border.all(
-          color: GlobalVariables.kPrimaryColor,
+          color: GlobalVariables.colors.primary,
           width: 1,
         ),
       ),
       child: DropdownButton<String>(
         value: dropdownValue,
-        dropdownColor: GlobalVariables.kPrimaryColor,
+        dropdownColor: GlobalVariables.colors.primary,
         borderRadius: BorderRadius.circular(10),
         icon: const Icon(Icons.arrow_drop_down_circle, color: Colors.white,),
         iconSize: 24,

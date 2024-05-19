@@ -83,7 +83,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           height: 88,
                           width: 88,
                           decoration: BoxDecoration(
-                              gradient: GlobalVariables.kPrimaryGradientColor,
+                              gradient: GlobalVariables.colors.primaryGradient,
                               borderRadius: BorderRadius.circular(25)),
                           child: userData?.profilePicture == ''
                               ? Center(
@@ -121,7 +121,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(12),
                                     gradient:
-                                        GlobalVariables.kPrimaryGradientColor),
+                                        GlobalVariables.colors.primaryGradient),
                                 child: TextButton(
                                   onPressed: () {
                                     Provider.of<FriendProvider>(context,

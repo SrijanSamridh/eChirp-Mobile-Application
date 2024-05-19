@@ -62,7 +62,7 @@ class GroupController {
       } else {
         response = await client.get("/groups?type=$type");
       }
-      // print("\n\n\n$type :: ${response.toString()}");
+      print("\n\n\n$type :: ${response.toString()}");
       if (response == null || response.isEmpty) {
         print('Unexpected response format: $response');
         return null;
@@ -76,7 +76,7 @@ class GroupController {
       }
 
       final groupsData = decodedResponse['groups'];
-      // print(groupsData);
+      print(groupsData);
 
       if (groupsData != null && groupsData is List) {
         final groups = groupsData

@@ -69,7 +69,7 @@ class EventDetail extends StatelessWidget {
                       padding: const EdgeInsets.only(top: 100.0),
                       child: Container(
                         decoration: BoxDecoration(
-                          gradient: GlobalVariables.kPrimaryGradientColor,
+                          gradient: GlobalVariables.colors.primaryGradient,
                           borderRadius: BorderRadius.circular(50),
                         ),
                         padding: const EdgeInsets.all(20),
@@ -223,7 +223,7 @@ class EventDetail extends StatelessWidget {
                           width: 110,
                           height: 40,
                           decoration: BoxDecoration(
-                              gradient: GlobalVariables.kPrimaryGradientColor,
+                              gradient: GlobalVariables.colors.primaryGradient,
                               borderRadius: BorderRadius.circular(50)),
                           child: isLoggedUser
                               ? TextButton(
@@ -398,7 +398,7 @@ Widget CustomDialog(BuildContext context) {
             width: 110,
             height: 40,
             decoration: BoxDecoration(
-                gradient: GlobalVariables.kPrimaryGradientColor,
+                gradient: GlobalVariables.colors.primaryGradient,
                 borderRadius: BorderRadius.circular(30)),
             child: TextButton(
               onPressed: () {

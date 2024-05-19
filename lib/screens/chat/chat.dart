@@ -13,13 +13,14 @@ class ChatScreen extends StatelessWidget {
   final String title;
   final String image;
   final List<Participant>? participants;
+  final int index;
 
   const ChatScreen({
     Key? key,
     required this.title,
     required this.image,
     required this.id,
-    required this.participants,
+    required this.participants, required this.index,
   }) : super(key: key);
 
   @override
@@ -30,7 +31,7 @@ class ChatScreen extends StatelessWidget {
         id: id,
         title: title,
         image: image,
-        participants: participants,
+        participants: participants, index: index,
       ),
     );
   }
@@ -41,13 +42,14 @@ class _ChatScreenContent extends StatefulWidget {
   final String title;
   final String image;
   final List<Participant>? participants;
+  final int index;
 
   const _ChatScreenContent({
     Key? key,
     required this.id,
     required this.title,
     required this.image,
-    required this.participants,
+    required this.participants, required this.index,
   }) : super(key: key);
 
   @override
@@ -90,7 +92,7 @@ class __ChatScreenContentState extends State<_ChatScreenContent> {
           onTap: () => Navigator.of(context).pushNamed(GroupDetailsPage.routeName),
           child: Row(
             children: [
-              CircleAvatar(
+              const CircleAvatar(
                 backgroundImage: AssetImage('assets/images/dummyDP.png'),
               ),
               const SizedBox(width: 8),
@@ -104,7 +106,7 @@ class __ChatScreenContentState extends State<_ChatScreenContent> {
             ],
           ),
         ),
-        backgroundColor: const Color(0xffFEA865),
+        backgroundColor: GlobalVariables.colors.primary,
         centerTitle: false,
       ),
       body: Column(
@@ -153,7 +155,7 @@ class __ChatScreenContentState extends State<_ChatScreenContent> {
                     }
                   },
                   style: const TextStyle(color: Colors.black),
-                  cursorColor: GlobalVariables.kPrimaryColor,
+                  cursorColor: GlobalVariables.colors.primary,
                   decoration: InputDecoration(
                     suffixIcon: Icon(CupertinoIcons.photo, color: Colors.grey[700]),
                     filled: true,
@@ -165,15 +167,15 @@ class __ChatScreenContentState extends State<_ChatScreenContent> {
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
-                      borderSide: const BorderSide(
-                        color: GlobalVariables.kPrimaryColor,
+                      borderSide: BorderSide(
+                        color: GlobalVariables.colors.primary,
                         width: 1,
                       ),
                     ),
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
-                      borderSide: const BorderSide(
-                        color: GlobalVariables.kPrimaryColor,
+                      borderSide: BorderSide(
+                        color:GlobalVariables.colors.primary,
                         width: 0,
                       ),
                     ),
@@ -209,7 +211,7 @@ class __ChatScreenContentState extends State<_ChatScreenContent> {
             if (!isSender)
               CircleAvatar(
                 radius: size.height * 0.015,
-                backgroundImage: AssetImage('assets/images/dummyDP.png'),
+                backgroundImage: const AssetImage('assets/images/dummyDP.png'),
               ),
             Flexible(
               child: ConstrainedBox(
@@ -219,7 +221,7 @@ class __ChatScreenContentState extends State<_ChatScreenContent> {
                   padding: const EdgeInsets.all(8.0),
                   decoration: BoxDecoration(
                     color: isSender
-                        ? GlobalVariables.chatBubbleColor
+                        ? GlobalVariables.colors.chatBubble
                         : Colors.grey[300],
                     borderRadius: BorderRadius.circular(20),
                   ),

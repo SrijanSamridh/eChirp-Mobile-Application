@@ -34,8 +34,8 @@ class _UploadState extends State<UploadStatusScreen> {
             clipper: MyCustomClipper(),
             child: Container(
               height: size.height * 0.18,
-              decoration: const BoxDecoration(
-                gradient: GlobalVariables.kPrimaryGradientColor,
+              decoration: BoxDecoration(
+                gradient: GlobalVariables.colors.primaryGradient,
               ),
             ),
           ),
@@ -68,7 +68,7 @@ class _UploadState extends State<UploadStatusScreen> {
                       style: ButtonStyle(
                         elevation: MaterialStateProperty.all(0),
                         side: MaterialStateProperty.all(
-                          const BorderSide(color: GlobalVariables.kPrimaryColor),
+                          BorderSide(color: GlobalVariables.colors.primary),
                         ),
                         shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                           RoundedRectangleBorder(
@@ -97,7 +97,7 @@ class _UploadState extends State<UploadStatusScreen> {
                     horizontal: size.width * 0.2,
                   ),
                   decoration: BoxDecoration(
-                    color: GlobalVariables.kPrimaryColor.withOpacity(0.2),
+                    color: GlobalVariables.colors.primary.withOpacity(0.2),
                     borderRadius: BorderRadius.circular(15),
                   ),
                   child: Text(inviteCode),

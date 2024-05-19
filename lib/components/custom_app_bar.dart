@@ -50,7 +50,7 @@ class CustomAppBar extends StatelessWidget {
                         foregroundColor:
                             WidgetStateProperty.all(Colors.white),
                         backgroundColor: WidgetStateProperty.all(
-                            GlobalVariables.kPrimaryColor),
+                            GlobalVariables.colors.primary),
                         textStyle: WidgetStatePropertyAll(
                           TextStyle(
                               fontSize: size.height * 0.012,
@@ -74,9 +74,9 @@ class CustomAppBar extends StatelessWidget {
               const SizedBox(height: 10.0),
               CustomSearchBar(
                 searchFor: searchfor,
-                backgroundColor: GlobalVariables.kPrimaryColor,
+                backgroundColor: GlobalVariables.colors.primary,
                 fillColor: Colors.white,
-                iconColor: GlobalVariables.kPrimaryColor,
+                iconColor: GlobalVariables.colors.primary,
                 iconSize: 18,
                 textColor: Colors.black,
                 textSize: 15,
@@ -86,8 +86,8 @@ class CustomAppBar extends StatelessWidget {
         ),
       ),
       bottom: TabBar(
-          indicatorColor: GlobalVariables.kPrimaryColor,
-          labelColor: GlobalVariables.kPrimaryColor,
+          indicatorColor: GlobalVariables.colors.primary,
+          labelColor: GlobalVariables.colors.primary,
           tabs: tabs),
     );
   }

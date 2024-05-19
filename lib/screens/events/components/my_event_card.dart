@@ -54,7 +54,7 @@ class MyEventCard extends StatelessWidget {
             height: size.height * 0.1,
             width: size.width * 0.015,
             decoration: BoxDecoration(
-                color: GlobalVariables.kPrimaryColor,
+                color: GlobalVariables.colors.primary,
                 borderRadius: BorderRadius.circular(30.0)),
           ),
           Expanded(

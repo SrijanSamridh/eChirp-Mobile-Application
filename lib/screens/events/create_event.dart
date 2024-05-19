@@ -158,7 +158,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                 child: Container(
                   padding: const EdgeInsets.all(8.0),
                   decoration: BoxDecoration(
-                    gradient: GlobalVariables.kPrimaryGradientColor,
+                    gradient: GlobalVariables.colors.primaryGradient,
                     borderRadius: BorderRadius.circular(50),
                   ),
                   child: Icon(

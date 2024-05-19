@@ -103,10 +103,9 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'eChirp',
-      theme: ThemeData(
+      theme: ThemeData.light().copyWith(
         colorScheme:
-            ColorScheme.fromSeed(seedColor: GlobalVariables.kPrimaryColor),
-        useMaterial3: true,
+        ColorScheme.fromSeed(seedColor: GlobalVariables.colors.primary),
       ),
       onGenerateRoute: (routeSettings) => onGenerateRoute(routeSettings),
       initialRoute: SplashScreen.routeName,

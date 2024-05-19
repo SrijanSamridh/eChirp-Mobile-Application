@@ -44,9 +44,9 @@ class _BottomBarState extends State<BottomBar> {
       body: _screens[widget.page],
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: widget.page,
-        selectedItemColor: GlobalVariables.selectedNavBarColor,
-        unselectedItemColor: GlobalVariables.unselectedNavBarColor,
-        backgroundColor: GlobalVariables.backgroundColor,
+        selectedItemColor: GlobalVariables.colors.selectedNavBar,
+        unselectedItemColor: GlobalVariables.colors.unselectedNavBar,
+        backgroundColor: GlobalVariables.colors.background,
         onTap: updatePage,
         iconSize: 28,
         items: [
@@ -58,8 +58,8 @@ class _BottomBarState extends State<BottomBar> {
                 border: Border(
                   top: BorderSide(
                     color: widget.page == 0
-                        ? GlobalVariables.selectedNavBarColor
-                        : GlobalVariables.backgroundColor,
+                        ? GlobalVariables.colors.selectedNavBar
+                        : GlobalVariables.colors.background,
                     width: bottomBarBorderWidth,
                   ),
                 ),
@@ -76,8 +76,8 @@ class _BottomBarState extends State<BottomBar> {
                 border: Border(
                   top: BorderSide(
                     color: widget.page == 1
-                        ? GlobalVariables.selectedNavBarColor
-                        : GlobalVariables.backgroundColor,
+                        ? GlobalVariables.colors.selectedNavBar
+                        : GlobalVariables.colors.background,
                     width: bottomBarBorderWidth,
                   ),
                 ),
@@ -97,8 +97,8 @@ class _BottomBarState extends State<BottomBar> {
                 border: Border(
                   top: BorderSide(
                     color: widget.page == 2
-                        ? GlobalVariables.selectedNavBarColor
-                        : GlobalVariables.backgroundColor,
+                        ? GlobalVariables.colors.selectedNavBar
+                        : GlobalVariables.colors.background,
                     width: bottomBarBorderWidth,
                   ),
                 ),
@@ -115,8 +115,8 @@ class _BottomBarState extends State<BottomBar> {
                 border: Border(
                   top: BorderSide(
                     color: widget.page == 3
-                        ? GlobalVariables.selectedNavBarColor
-                        : GlobalVariables.backgroundColor,
+                        ? GlobalVariables.colors.selectedNavBar
+                        : GlobalVariables.colors.background,
                     width: bottomBarBorderWidth,
                   ),
                 ),
@@ -133,8 +133,8 @@ class _BottomBarState extends State<BottomBar> {
                 border: Border(
                   top: BorderSide(
                     color: widget.page == 4
-                        ? GlobalVariables.selectedNavBarColor
-                        : GlobalVariables.backgroundColor,
+                        ? GlobalVariables.colors.selectedNavBar
+                        : GlobalVariables.colors.background,
                     width: bottomBarBorderWidth,
                   ),
                 ),

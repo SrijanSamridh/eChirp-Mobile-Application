@@ -133,7 +133,7 @@ class CustomTile extends StatelessWidget {
                           width: size.height * 0.04,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(200),
-                            gradient: GlobalVariables.kPrimaryGradientColor,
+                            gradient: GlobalVariables.colors.primaryGradient,
                           ),
                           child: IconButton(
                             onPressed: () {
@@ -162,7 +162,7 @@ class CustomTile extends StatelessWidget {
                           width: size.height * 0.04,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(50),
-                            gradient: GlobalVariables.kPrimaryGradientColor,
+                            gradient: GlobalVariables.colors.primaryGradient,
                           ),
                           child: IconButton(
                             onPressed: () {
@@ -183,7 +183,7 @@ class CustomTile extends StatelessWidget {
                           width: size.height * 0.04,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(50),
-                            gradient: GlobalVariables.kPrimaryGradientColor,
+                            gradient: GlobalVariables.colors.primaryGradient,
                           ),
                           child: IconButton(
                             onPressed: () {},

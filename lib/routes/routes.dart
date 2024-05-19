@@ -89,10 +89,13 @@ onGenerateRoute(RouteSettings routeSettings) {
       );
 
     case GroupInfoScreen.routeName:
-      var onPressed = routeSettings.arguments as VoidCallback;
+      var arguments = routeSettings.arguments as Map<String, dynamic>;
+      var onPressed = arguments['onPressed'] as VoidCallback;
+      var index = arguments['index'] as int;
       return MaterialPageRoute(
-        builder: (_) => GroupInfoScreen(onPressed: onPressed),
+        builder: (_) => GroupInfoScreen(onPressed: onPressed, index: index),
       );
+
     case GroupDetailsPage.routeName:
       return MaterialPageRoute(
         builder: (_) => GroupDetailsPage(),

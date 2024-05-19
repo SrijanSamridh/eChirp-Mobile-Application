@@ -40,7 +40,7 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
                 height: size.height * 0.28,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(30),
-                  color: GlobalVariables.chatBubbleColor,
+                  color: GlobalVariables.colors.chatBubble,
                 ),
                 padding: const EdgeInsets.all(20.0),
                 child: Column(
@@ -92,15 +92,15 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
                                 borderRadius: BorderRadius.circular(50),
                                 //shape: BoxShape.circle,
                                 color: Colors.grey[300]),
-                            child: const Center(
+                            child: Center(
                                 child: Icon(Icons.people_rounded,
-                                    color: GlobalVariables.kPrimaryColor))),
+                                    color: GlobalVariables.colors.primary))),
                         const SizedBox(
                           width: 10,
                         ),
-                        const Text("Add People to Group",
+                        Text("Add People to Group",
                             style: TextStyle(
-                                color: GlobalVariables.kPrimaryColor,
+                                color: GlobalVariables.colors.primary,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 16))
                       ],

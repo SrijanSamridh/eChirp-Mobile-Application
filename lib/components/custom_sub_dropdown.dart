@@ -22,17 +22,17 @@ class CustomSubDropdown extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(30),
         border: Border.all(
-          color: GlobalVariables.kPrimaryColor,
+          color: GlobalVariables.colors.primary,
           width: 2,
         ),
       ),
       child: DropdownButton<String>(
         value: dropdownValue,
-        icon: const Icon(Icons.arrow_drop_down_circle, color: GlobalVariables.kPrimaryColor),
+        icon:  Icon(Icons.arrow_drop_down_circle, color: GlobalVariables.colors.primary),
         iconSize: 24,
         elevation: 16,
         borderRadius: BorderRadius.circular(10),
-        style: const TextStyle(color: GlobalVariables.kPrimaryColor),
+        style:  TextStyle(color: GlobalVariables.colors.primary),
         onChanged: onChanged,
         items: categorySubcategories.keys
             .map<DropdownMenuItem<String>>(

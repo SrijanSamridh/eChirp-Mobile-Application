@@ -3,7 +3,7 @@ import 'package:echirp/utils/global_variabes.dart';
 import 'package:flutter/material.dart';
 
 class CustomStepperCount extends StatelessWidget {
-  const CustomStepperCount({
+   CustomStepperCount({
     super.key,
     required this.currentIndex,
     required this.size,
@@ -25,10 +25,10 @@ class CustomStepperCount extends StatelessWidget {
                         vertical: size.height * 0.015,
                         horizontal: size.width * 0.05),
                     decoration: BoxDecoration(
-                      gradient: GlobalVariables.kPrimaryGradientColor,
+                      gradient: GlobalVariables.colors.primaryGradient,
                       borderRadius: BorderRadius.circular(50),
                     ),
-                    child: const Text(
+                    child:  const Text(
                       '1',
                       style: TextStyle(
                           color: Colors.white, fontWeight: FontWeight.bold),
@@ -36,9 +36,9 @@ class CustomStepperCount extends StatelessWidget {
                   )
                 : DottedBorder(
                     borderType: BorderType.RRect,
-                    radius: const Radius.circular(50),
-                    dashPattern: const [10, 10],
-                    color: GlobalVariables.kPrimaryColor,
+                    radius:  const Radius.circular(50),
+                    dashPattern:  [10, 10],
+                    color: GlobalVariables.colors.primary,
                     strokeWidth: 2,
                     child: Container(
                       padding: EdgeInsets.symmetric(
@@ -48,10 +48,10 @@ class CustomStepperCount extends StatelessWidget {
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(50),
                       ),
-                      child: const Text(
+                      child:  Text(
                         '1',
                         style: TextStyle(
-                            color: GlobalVariables.kPrimaryColor,
+                            color: GlobalVariables.colors.primary,
                             fontWeight: FontWeight.bold),
                       ),
                     ),
@@ -62,10 +62,10 @@ class CustomStepperCount extends StatelessWidget {
                         vertical: size.height * 0.015,
                         horizontal: size.width * 0.05),
                     decoration: BoxDecoration(
-                      gradient: GlobalVariables.kPrimaryGradientColor,
+                      gradient: GlobalVariables.colors.primaryGradient,
                       borderRadius: BorderRadius.circular(50),
                     ),
-                    child: const Text(
+                    child:  const Text(
                       '2',
                       style: TextStyle(
                           color: Colors.white, fontWeight: FontWeight.bold),
@@ -73,9 +73,9 @@ class CustomStepperCount extends StatelessWidget {
                   )
                 : DottedBorder(
                     borderType: BorderType.RRect,
-                    radius: const Radius.circular(50),
-                    dashPattern: const [10, 10],
-                    color: GlobalVariables.kPrimaryColor,
+                    radius:  const Radius.circular(50),
+                    dashPattern:  [10, 10],
+                    color: GlobalVariables.colors.primary,
                     strokeWidth: 2,
                     child: Container(
                       padding: EdgeInsets.symmetric(
@@ -85,10 +85,10 @@ class CustomStepperCount extends StatelessWidget {
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(50),
                       ),
-                      child: const Text(
+                      child:  Text(
                         '2',
                         style: TextStyle(
-                            color: GlobalVariables.kPrimaryColor,
+                            color: GlobalVariables.colors.primary,
                             fontWeight: FontWeight.bold),
                       ),
                     ),
@@ -99,10 +99,10 @@ class CustomStepperCount extends StatelessWidget {
                         vertical: size.height * 0.015,
                         horizontal: size.width * 0.05),
                     decoration: BoxDecoration(
-                      gradient: GlobalVariables.kPrimaryGradientColor,
+                      gradient: GlobalVariables.colors.primaryGradient,
                       borderRadius: BorderRadius.circular(50),
                     ),
-                    child: const Text(
+                    child:  const Text(
                       '3',
                       style: TextStyle(
                           color: Colors.white, fontWeight: FontWeight.bold),
@@ -110,9 +110,9 @@ class CustomStepperCount extends StatelessWidget {
                   )
                 : DottedBorder(
                     borderType: BorderType.RRect,
-                    radius: const Radius.circular(50),
-                    dashPattern: const [10, 10],
-                    color: GlobalVariables.kPrimaryColor,
+                    radius:  const Radius.circular(50),
+                    dashPattern:  [10, 10],
+                    color: GlobalVariables.colors.primary,
                     strokeWidth: 2,
                     child: Container(
                       padding: EdgeInsets.symmetric(
@@ -122,10 +122,10 @@ class CustomStepperCount extends StatelessWidget {
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(50),
                       ),
-                      child: const Text(
+                      child:  Text(
                         '3',
                         style: TextStyle(
-                            color: GlobalVariables.kPrimaryColor,
+                            color: GlobalVariables.colors.primary,
                             fontWeight: FontWeight.bold),
                       ),
                     ),
@@ -134,7 +134,7 @@ class CustomStepperCount extends StatelessWidget {
         ),
         SizedBox(height: size.height * 0.01),
         if (currentIndex == 1)
-          const Padding(
+           const Padding(
             padding: EdgeInsets.all(8.0),
             child: Text(
               'Event Information',
@@ -142,7 +142,7 @@ class CustomStepperCount extends StatelessWidget {
             ),
           )
         else if (currentIndex == 2)
-          const Padding(
+           const Padding(
             padding: EdgeInsets.all(8.0),
             child: Text(
               'Event Specifications',
@@ -150,7 +150,7 @@ class CustomStepperCount extends StatelessWidget {
             ),
           )
         else if (currentIndex == 3)
-          const Padding(
+           const Padding(
             padding: EdgeInsets.all(8.0),
             child: Text(
               'Upload',
@@ -158,7 +158,7 @@ class CustomStepperCount extends StatelessWidget {
             ),
           )
         else
-          const Padding(
+           const Padding(
             padding: EdgeInsets.all(8.0),
             child: Text(''),
           ),

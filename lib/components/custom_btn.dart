@@ -31,7 +31,7 @@ class CustomBtn extends StatelessWidget {
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(18),
             // color: Colors.white,
-            gradient: GlobalVariables.kPrimaryGradientColor),
+            gradient: GlobalVariables.colors.primaryGradient),
         child: Text(
           text,
           style: TextStyle(

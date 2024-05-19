@@ -213,7 +213,7 @@ class _HomeScreenState extends State<HomeScreen> {
             height: size.height * 0.28,
             width: size.width,
             decoration: BoxDecoration(
-                gradient: GlobalVariables.kPrimaryGradientColor,
+                gradient: GlobalVariables.colors.primaryGradient,
                 borderRadius: BorderRadius.circular(30.0)),
             child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -264,11 +264,11 @@ class _HomeScreenState extends State<HomeScreen> {
                             width: 26.0,
                             margin: EdgeInsets.only(left: size.width * 0.18),
                             decoration: BoxDecoration(
-                                gradient: GlobalVariables.kPrimaryGradientColor,
+                                gradient: GlobalVariables.colors.primaryGradient,
                                 borderRadius: const BorderRadius.all(
                                     Radius.circular(50.0)),
                                 border: Border.all(
-                                    color: GlobalVariables.kPrimaryColor)),
+                                    color: GlobalVariables.colors.primary)),
                             child: ClipRRect(
                               borderRadius:
                                   const BorderRadius.all(Radius.circular(50.0)),
@@ -283,11 +283,11 @@ class _HomeScreenState extends State<HomeScreen> {
                             width: 26.0,
                             margin: EdgeInsets.only(left: size.width * 0.1),
                             decoration: BoxDecoration(
-                                gradient: GlobalVariables.kPrimaryGradientColor,
+                                gradient: GlobalVariables.colors.primaryGradient,
                                 borderRadius: const BorderRadius.all(
                                     Radius.circular(50.0)),
                                 border: Border.all(
-                                    color: GlobalVariables.kPrimaryColor)),
+                                    color: GlobalVariables.colors.primary)),
                             child: ClipRRect(
                               borderRadius:
                                   const BorderRadius.all(Radius.circular(50.0)),
@@ -302,11 +302,11 @@ class _HomeScreenState extends State<HomeScreen> {
                             width: 26.0,
                             margin: EdgeInsets.only(left: size.width * 0.02),
                             decoration: BoxDecoration(
-                                gradient: GlobalVariables.kPrimaryGradientColor,
+                                gradient: GlobalVariables.colors.primaryGradient,
                                 borderRadius: const BorderRadius.all(
                                     Radius.circular(50.0)),
                                 border: Border.all(
-                                    color: GlobalVariables.kPrimaryColor)),
+                                    color: GlobalVariables.colors.primary)),
                             child: ClipRRect(
                               borderRadius:
                                   const BorderRadius.all(Radius.circular(50.0)),
@@ -360,8 +360,8 @@ class _WidgetPotentialFriends extends StatelessWidget {
                   userName: data.friend.username,
                   mutualCount: data.count,
                   selectedColor: index == 0
-                      ? GlobalVariables.kPrimaryGradientColor
-                      : GlobalVariables.kUnselectedCardGradientColor,
+                      ? GlobalVariables.colors.primaryGradient
+                      : GlobalVariables.colors.unselectedCardGradient,
                   textColor: index == 0 ? Colors.white : Colors.black,
                 );
               },
@@ -387,7 +387,7 @@ class _WidgetPotentialFriends extends StatelessWidget {
                           profileImg: 'assets/images/dummyDP.png',
                           userName: 'Meg Rigden',
                           mutualCount: 1,
-                          selectedColor: GlobalVariables.kPrimaryGradientColor,
+                          selectedColor: GlobalVariables.colors.primaryGradient,
                           textColor: Colors.white,
                         ),
                         MutualFriendCard(

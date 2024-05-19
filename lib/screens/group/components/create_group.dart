@@ -156,7 +156,7 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
                 child: Container(
                   padding: const EdgeInsets.all(8.0),
                   decoration: BoxDecoration(
-                    gradient: GlobalVariables.kPrimaryGradientColor,
+                    gradient: GlobalVariables.colors.primaryGradient,
                     borderRadius: BorderRadius.circular(50),
                   ),
                   child: Icon(

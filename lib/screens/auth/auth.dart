@@ -232,7 +232,7 @@ class _AuthScreenState extends State<AuthScreen> {
                           fontSize: 24,
                           fontWeight: FontWeight.w500,
                           color: _authMode == AuthMode.signIn
-                              ? GlobalVariables.kPrimaryColor
+                              ? GlobalVariables.colors.primary
                               : Colors.grey,
                         ),
                       ),
@@ -250,7 +250,7 @@ class _AuthScreenState extends State<AuthScreen> {
                           fontSize: 24,
                           fontWeight: FontWeight.w500,
                           color: _authMode == AuthMode.signUp
-                              ? GlobalVariables.kPrimaryColor
+                              ? GlobalVariables.colors.primary
                               : Colors.grey,
                         ),
                       ),

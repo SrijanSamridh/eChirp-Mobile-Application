@@ -72,7 +72,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                       "${notification.notificationId}",
                                       "accept"),
                                   backgroundColor:
-                                      GlobalVariables.kPrimaryColor,
+                                      GlobalVariables.colors.primary,
                                   foregroundColor: Colors.white,
                                   icon: Icons.check_box,
                                   label: 'Accept',
