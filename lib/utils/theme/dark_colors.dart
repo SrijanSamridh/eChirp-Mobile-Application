@@ -45,4 +45,8 @@ class DarkColors extends AppColorScheme {
   @override
   LinearGradient get unselectedCardGradient =>
       const LinearGradient(colors: [Colors.black, Colors.black]);
+
+  @override
+  // TODO: implement badgeColor
+  Color get badgeColor => throw UnimplementedError();
 }

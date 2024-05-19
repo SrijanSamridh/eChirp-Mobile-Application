@@ -56,45 +56,46 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-        body: SingleChildScrollView(
-      child: Column(
-        children: [
-          Stack(
-            children: [
-              // ? Header section
-              ClipPath(
-                clipper: MyCustomClipper(),
-                child: Image(
-                  image: const AssetImage('assets/images/coverImg.png'),
-                  height: size.height * 0.3,
-                  fit: BoxFit.cover,
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Stack(
+              children: [
+                // ? Header section
+                ClipPath(
+                  clipper: MyCustomClipper(),
+                  child: Image(
+                    image: const AssetImage('assets/images/coverImg.png'),
+                    height: size.height * 0.3,
+                    fit: BoxFit.cover,
+                  ),
                 ),
-              ),
-              SafeArea(
-                child: Container(
-                  margin: EdgeInsets.only(top: size.width * 0.04),
-                  padding: EdgeInsets.symmetric(horizontal: size.width * 0.08),
-                  child: Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 7.0),
-                        child: Row(
-                          children: [
-                            Text(
-                              'Welcome, $username!',
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 20,
+                SafeArea(
+                  child: Container(
+                    margin: EdgeInsets.only(top: size.width * 0.04),
+                    padding:
+                        EdgeInsets.symmetric(horizontal: size.width * 0.08),
+                    child: Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 7.0),
+                          child: Row(
+                            children: [
+                              Text(
+                                'Welcome, $username!',
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20,
+                                ),
                               ),
-                            ),
-                            const Spacer(),
-                            GestureDetector(
-                              onTap: () {
-                                Navigator.of(context)
-                                    .pushNamed(ProfileScreen.routeName);
-                              },
-                              child: FutureBuilder(
+                              const Spacer(),
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.of(context)
+                                      .pushNamed(ProfileScreen.routeName);
+                                },
+                                child: FutureBuilder(
                                   future: _userProvider.profileData,
                                   builder: (context, snapshot) {
                                     if (snapshot.connectionState ==
@@ -132,90 +133,91 @@ class _HomeScreenState extends State<HomeScreen> {
                                         ),
                                       );
                                     }
-                                  }),
-                            ),
-                          ],
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                      const SizedBox(
-                        height: 18.0,
-                      ),
-                      const CustomSearchBar(
-                        // onPressed: () {},
-                        searchFor: 'a friend',
-                        backgroundColor: Color.fromARGB(64, 255, 255, 255),
-                        fillColor: Color.fromARGB(90, 50, 50, 50),
-                        iconColor: Color.fromARGB(255, 239, 239, 239),
-                      ),
-                    ],
+                        const SizedBox(
+                          height: 18.0,
+                        ),
+                        const CustomSearchBar(
+                          // onPressed: () {},
+                          searchFor: 'a friend',
+                          backgroundColor: Color.fromARGB(64, 255, 255, 255),
+                          fillColor: Color.fromARGB(90, 50, 50, 50),
+                          iconColor: Color.fromARGB(255, 239, 239, 239),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              )
-            ],
-          ),
-
-          // ? Events section
-          HeadlineWithHyperLink(
-              headingText: 'Events',
-              onPressed: () {
-                Navigator.of(context).pushNamedAndRemoveUntil(
-                    BottomBar.routeName, arguments: 1, (route) => false);
-              }),
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Row(
-              children: [
-                EventBriefCard(
-                  size: size,
-                  imageUrl: 'assets/images/dummy_event.png',
-                  profileImg: 'assets/images/dummyDP.png',
-                  userName: "By Meg Rigden",
-                  dateTime: '23 Dec at 10:00 am',
-                  location: 'Mumbai, Maharshtra , India',
-                ),
-                EventBriefCard(
-                  size: size,
-                  imageUrl: 'assets/images/dummy_image.jpg',
-                  profileImg: 'assets/images/dummyDP.png',
-                  userName: "By Meg Rigden",
-                  dateTime: '23 Dec at 10:00 am',
-                  location: 'Mumbai, Maharshtra , India',
-                ),
-                EventBriefCard(
-                  size: size,
-                  imageUrl: 'assets/images/dummy_event.png',
-                  profileImg: 'assets/images/dummyDP.png',
-                  userName: "By Meg Rigden",
-                  dateTime: '23 Dec at 10:00 am',
-                  location: 'Mumbai, Maharshtra , India',
-                ),
+                )
               ],
             ),
-          ),
 
-          // ? Mutual Friends section
-          HeadlineWithHyperLink(
-              headingText: 'Friends of Friends',
-              onPressed: () {
-                Navigator.of(context).pushNamedAndRemoveUntil(
-                    BottomBar.routeName, arguments: 2, (route) => false);
-              }),
-          _WidgetPotentialFriends(size: size),
-          HeadlineWithHyperLink(
-              headingText: "Groups",
-              onPressed: () {
-                Navigator.of(context).pushNamedAndRemoveUntil(
-                    BottomBar.routeName, arguments: 3, (route) => false);
-              }),
-          Container(
-            margin: const EdgeInsets.symmetric(horizontal: 10.0),
-            padding: EdgeInsets.all(size.height * 0.02),
-            height: size.height * 0.28,
-            width: size.width,
-            decoration: BoxDecoration(
-                gradient: GlobalVariables.colors.primaryGradient,
-                borderRadius: BorderRadius.circular(30.0)),
-            child: Column(
+            // ? Events section
+            HeadlineWithHyperLink(
+                headingText: 'Events',
+                onPressed: () {
+                  Navigator.of(context).pushNamedAndRemoveUntil(
+                      BottomBar.routeName, arguments: 1, (route) => false);
+                }),
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: [
+                  EventBriefCard(
+                    size: size,
+                    imageUrl: 'assets/images/dummy_event.png',
+                    profileImg: 'assets/images/dummyDP.png',
+                    userName: "By Meg Rigden",
+                    dateTime: '23 Dec at 10:00 am',
+                    location: 'Mumbai, Maharshtra , India',
+                  ),
+                  EventBriefCard(
+                    size: size,
+                    imageUrl: 'assets/images/dummy_image.jpg',
+                    profileImg: 'assets/images/dummyDP.png',
+                    userName: "By Meg Rigden",
+                    dateTime: '23 Dec at 10:00 am',
+                    location: 'Mumbai, Maharshtra , India',
+                  ),
+                  EventBriefCard(
+                    size: size,
+                    imageUrl: 'assets/images/dummy_event.png',
+                    profileImg: 'assets/images/dummyDP.png',
+                    userName: "By Meg Rigden",
+                    dateTime: '23 Dec at 10:00 am',
+                    location: 'Mumbai, Maharshtra , India',
+                  ),
+                ],
+              ),
+            ),
+
+            // ? Mutual Friends section
+            HeadlineWithHyperLink(
+                headingText: 'Friends of Friends',
+                onPressed: () {
+                  Navigator.of(context).pushNamedAndRemoveUntil(
+                      BottomBar.routeName, arguments: 2, (route) => false);
+                }),
+            _WidgetPotentialFriends(size: size),
+            HeadlineWithHyperLink(
+                headingText: "Groups",
+                onPressed: () {
+                  Navigator.of(context).pushNamedAndRemoveUntil(
+                      BottomBar.routeName, arguments: 3, (route) => false);
+                }),
+            Container(
+              margin: const EdgeInsets.symmetric(horizontal: 10.0),
+              padding: EdgeInsets.all(size.height * 0.02),
+              height: size.height * 0.28,
+              width: size.width,
+              decoration: BoxDecoration(
+                  gradient: GlobalVariables.colors.primaryGradient,
+                  borderRadius: BorderRadius.circular(30.0)),
+              child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Row(
@@ -264,7 +266,8 @@ class _HomeScreenState extends State<HomeScreen> {
                             width: 26.0,
                             margin: EdgeInsets.only(left: size.width * 0.18),
                             decoration: BoxDecoration(
-                                gradient: GlobalVariables.colors.primaryGradient,
+                                gradient:
+                                    GlobalVariables.colors.primaryGradient,
                                 borderRadius: const BorderRadius.all(
                                     Radius.circular(50.0)),
                                 border: Border.all(
@@ -283,7 +286,8 @@ class _HomeScreenState extends State<HomeScreen> {
                             width: 26.0,
                             margin: EdgeInsets.only(left: size.width * 0.1),
                             decoration: BoxDecoration(
-                                gradient: GlobalVariables.colors.primaryGradient,
+                                gradient:
+                                    GlobalVariables.colors.primaryGradient,
                                 borderRadius: const BorderRadius.all(
                                     Radius.circular(50.0)),
                                 border: Border.all(
@@ -302,7 +306,8 @@ class _HomeScreenState extends State<HomeScreen> {
                             width: 26.0,
                             margin: EdgeInsets.only(left: size.width * 0.02),
                             decoration: BoxDecoration(
-                                gradient: GlobalVariables.colors.primaryGradient,
+                                gradient:
+                                    GlobalVariables.colors.primaryGradient,
                                 borderRadius: const BorderRadius.all(
                                     Radius.circular(50.0)),
                                 border: Border.all(
@@ -325,11 +330,13 @@ class _HomeScreenState extends State<HomeScreen> {
                       )
                     ],
                   )
-                ]),
-          )
-        ],
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
-    ));
+    );
   }
 }
 
@@ -369,48 +376,3 @@ class _WidgetPotentialFriends extends StatelessWidget {
           );
   }
 }
-
-
-
-/*
-
-: potentialFriends == null
-            ? const Center(child: CircularProgressIndicator())
-            : potentialFriends.isEmpty
-                ? SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        MutualFriendCard(
-                          size: size,
-                          profileImg: 'assets/images/dummyDP.png',
-                          userName: 'Meg Rigden',
-                          mutualCount: 1,
-                          selectedColor: GlobalVariables.colors.primaryGradient,
-                          textColor: Colors.white,
-                        ),
-                        MutualFriendCard(
-                          size: size,
-                          profileImg: 'assets/images/dummyDP.png',
-                          userName: 'Meg Rigden',
-                          mutualCount: 1,
-                          selectedColor:
-                              GlobalVariables.kUnselectedCardGradientColor,
-                          textColor: Colors.black,
-                        ),
-                        MutualFriendCard(
-                          size: size,
-                          profileImg: 'assets/images/dummyDP.png',
-                          userName: 'Meg Rigden',
-                          mutualCount: 1,
-                          selectedColor:
-                              GlobalVariables.kUnselectedCardGradientColor,
-                          textColor: Colors.black,
-                        ),
-                      ],
-                    ),
-                  )
-
-
- */

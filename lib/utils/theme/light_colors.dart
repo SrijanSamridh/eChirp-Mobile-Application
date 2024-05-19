@@ -46,4 +46,7 @@ class LightColors extends AppColorScheme {
   @override
   LinearGradient get unselectedCardGradient =>
       const LinearGradient(colors: [Colors.white, Colors.white]);
+
+  @override
+  Color get badgeColor => Colors.red;
 }

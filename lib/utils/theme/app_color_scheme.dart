@@ -4,6 +4,7 @@ abstract class AppColorScheme {
   Color get primary;
   Color get secondary;
   Color get chatBubble;
+  Color get badgeColor;
   Color get unselectedNavBar;
   Color get selectedNavBar;
   Color get background;

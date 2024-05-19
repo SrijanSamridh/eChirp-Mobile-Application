@@ -21,10 +21,6 @@ class BottomBar extends StatefulWidget {
 }
 
 class _BottomBarState extends State<BottomBar> {
-  double bottomBarHeight = 60;
-  double bottomBarWidth = 42;
-  double bottomBarBorderWidth = 5;
-
   final List<Widget> _screens = [
     const HomeScreen(),
     const EventsScreen(),
@@ -32,6 +28,7 @@ class _BottomBarState extends State<BottomBar> {
     const GroupScreen(),
     const NotificationScreen(),
   ];
+
   void updatePage(int page) {
     setState(() {
       widget.page = page;
@@ -40,131 +37,59 @@ class _BottomBarState extends State<BottomBar> {
 
   @override
   Widget build(BuildContext context) {
+    final notificationCount = Provider.of<NotificationProvider>(context).newMessagesCount;
+
     return Scaffold(
       body: _screens[widget.page],
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: widget.page,
         selectedItemColor: GlobalVariables.colors.selectedNavBar,
         unselectedItemColor: GlobalVariables.colors.unselectedNavBar,
-        backgroundColor: GlobalVariables.colors.background,
+        // backgroundColor: GlobalVariables.colors.background,
         onTap: updatePage,
-        iconSize: 28,
+        type: BottomNavigationBarType.fixed,
+        showSelectedLabels: false,
+        showUnselectedLabels: false,
+        iconSize: 26,
         items: [
-          //? Home Page
-          BottomNavigationBarItem(
-            icon: Container(
-              width: bottomBarWidth,
-              decoration: BoxDecoration(
-                border: Border(
-                  top: BorderSide(
-                    color: widget.page == 0
-                        ? GlobalVariables.colors.selectedNavBar
-                        : GlobalVariables.colors.background,
-                    width: bottomBarBorderWidth,
-                  ),
-                ),
-              ),
-              child: const Icon(Icons.home_outlined),
-            ),
-            label: 'Home',
+          // Home Page
+          const BottomNavigationBarItem(
+            icon: Icon(Icons.home_filled),
+            label: '',
           ),
-          //? Events Page
-          BottomNavigationBarItem(
-            icon: Container(
-              width: bottomBarWidth,
-              decoration: BoxDecoration(
-                border: Border(
-                  top: BorderSide(
-                    color: widget.page == 1
-                        ? GlobalVariables.colors.selectedNavBar
-                        : GlobalVariables.colors.background,
-                    width: bottomBarBorderWidth,
-                  ),
-                ),
-              ),
-              child: const Padding(
-                padding: EdgeInsets.only(top: 2.0),
-                child: Icon(Icons.event_available),
-              ),
-            ),
-            label: 'Events',
+          // Events Page
+          const BottomNavigationBarItem(
+            icon: Icon(Icons.event_available),
+            label: '',
           ),
-          //? Firends Page
-          BottomNavigationBarItem(
-            icon: Container(
-              width: bottomBarWidth,
-              decoration: BoxDecoration(
-                border: Border(
-                  top: BorderSide(
-                    color: widget.page == 2
-                        ? GlobalVariables.colors.selectedNavBar
-                        : GlobalVariables.colors.background,
-                    width: bottomBarBorderWidth,
-                  ),
-                ),
-              ),
-              child: const Icon(Icons.person_add),
-            ),
-            label: 'Add Friends',
+          // Add Friends Page
+          const BottomNavigationBarItem(
+            icon: Icon(Icons.person_add),
+            label: '',
           ),
-          //? Groups Page
-          BottomNavigationBarItem(
-            icon: Container(
-              width: bottomBarWidth,
-              decoration: BoxDecoration(
-                border: Border(
-                  top: BorderSide(
-                    color: widget.page == 3
-                        ? GlobalVariables.colors.selectedNavBar
-                        : GlobalVariables.colors.background,
-                    width: bottomBarBorderWidth,
-                  ),
-                ),
-              ),
-              child: const Icon(Icons.group),
-            ),
-            label: 'Groups',
+          // Groups Page
+          const BottomNavigationBarItem(
+            icon: Icon(Icons.group),
+            label: '',
           ),
-          //? Notification Page
+          // Notification Page
           BottomNavigationBarItem(
-            icon: Container(
-              width: bottomBarWidth,
-              decoration: BoxDecoration(
-                border: Border(
-                  top: BorderSide(
-                    color: widget.page == 4
-                        ? GlobalVariables.colors.selectedNavBar
-                        : GlobalVariables.colors.background,
-                    width: bottomBarBorderWidth,
-                  ),
+            icon: badges.Badge(
+              position: badges.BadgePosition.topEnd(top: -10, end: -10),
+              showBadge: notificationCount != 0,
+              badgeContent: Text(
+                "$notificationCount",
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 10,
                 ),
               ),
-              child: Provider.of<NotificationProvider>(context)
-                      .newMessagesCount != 0
-                  ? badges.Badge(
-                      badgeContent: Text(
-                        "${Provider.of<NotificationProvider>(context).newMessagesCount}",
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 10,
-                        ),
-                      ),
-                      // badgeColor: GlobalVariables.secondaryColor,
-                      child: const Center(
-                        child: Padding(
-                          padding: EdgeInsets.only(top: 2.0),
-                          child: Icon(Icons.notifications_on_outlined),
-                        ),
-                      ),
-                    )
-                  : const Center(
-                      child: Padding(
-                        padding: EdgeInsets.only(top: 2.0),
-                        child: Icon(Icons.notifications_on_outlined),
-                      ),
-                    ),
+              badgeStyle: badges.BadgeStyle(
+                badgeColor: GlobalVariables.colors.badgeColor,
+              ),
+              child: const Icon(Icons.notifications),
             ),
-            label: 'Notification',
+            label: '',
           ),
         ],
       ),
