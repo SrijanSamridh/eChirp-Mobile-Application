@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../screens/search/search.dart';
-import '../utils/global_variabes.dart';
+import '../utils/global_variables.dart';
 
 class CustomSearchBar extends StatelessWidget {
   const CustomSearchBar({

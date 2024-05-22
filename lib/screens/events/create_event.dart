@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../../components/custom_dropdown.dart';
 import '../../components/custom_sub_dropdown.dart';
-import '../../utils/global_variabes.dart';
+import '../../utils/global_variables.dart';
 
 class CreateEventScreen extends StatefulWidget {
   static const String routeName = '/create-event';

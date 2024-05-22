@@ -7,7 +7,7 @@ import '../API/provider/notification_provider.dart';
 import '../screens/friends/friends.dart';
 import '../screens/home/home.dart';
 import '../screens/notification/notification.dart';
-import '../utils/global_variabes.dart';
+import '../utils/global_variables.dart';
 
 // ignore: must_be_immutable
 class BottomBar extends StatefulWidget {

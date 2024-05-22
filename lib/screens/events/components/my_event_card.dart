@@ -1,9 +1,10 @@
+import 'package:echirp/utils/data_formatter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 // ignore: depend_on_referenced_packages
 import 'package:intl/intl.dart';
-import '../../../utils/global_variabes.dart';
+import '../../../utils/global_variables.dart';
 
 class MyEventCard extends StatelessWidget {
   const MyEventCard({
@@ -62,15 +63,15 @@ class MyEventCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 SizedBox(
-                  width: size.width*0.4,
+                  width: size.width * 0.4,
                   child: Text(
-                    '${formatDate(date.toString(), false)} at ${formatTime(time)}',
+                    '${DataFormatter.formatDateWithFlag(date.toString(), false)} at ${DataFormatter.formatTimeWithoutSeconds(time)}',
                     textAlign: TextAlign.left,
                     style: TextStyle(fontSize: size.height * 0.012),
                   ),
                 ),
                 SizedBox(
-                  width: size.width*0.4,
+                  width: size.width * 0.4,
                   child: Text(
                     typeOfEvent,
                     textAlign: TextAlign.left,
@@ -130,31 +131,5 @@ class MyEventCard extends StatelessWidget {
         ],
       ),
     );
-  }
-  String formatDate(String dateString, bool created) {
-    try {
-      DateTime date = DateTime.parse(dateString);
-      String formattedDate;
-
-      created
-          ? formattedDate = DateFormat('dd MMM yyyy').format(date)
-          : formattedDate = DateFormat('dd MMM').format(date);
-
-      return formattedDate;
-    } catch (e) {
-      debugPrint(e.toString());
-      return "";
-    }
-  }
-
-  String formatTime(String timeString) {
-    try {
-      DateTime dateTime = DateTime.parse('2022-01-01 $timeString');
-      String formattedTime = DateFormat('h:mm a').format(dateTime);
-      return formattedTime;
-    } catch (e) {
-      debugPrint(e.toString());
-      return "${e.toString().split(" ")[4]} ${e.toString().split(" ")[5]}";
-    }
   }
 }

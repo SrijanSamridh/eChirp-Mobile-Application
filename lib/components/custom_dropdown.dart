@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../utils/global_variabes.dart';
+import '../utils/global_variables.dart';
 
 // ignore: must_be_immutable
 class CustomDropdown extends StatelessWidget {

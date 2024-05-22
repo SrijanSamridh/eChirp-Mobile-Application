@@ -12,7 +12,7 @@ import 'package:echirp/API/services/socket_connection.dart';
 import 'package:echirp/firebase_options.dart';
 import 'package:echirp/routes/routes.dart';
 import 'package:echirp/screens/splash/splash.dart';
-import 'package:echirp/utils/global_variabes.dart';
+import 'package:echirp/utils/global_variables.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

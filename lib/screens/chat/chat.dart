@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 import '../../API/models/message.models.dart';
 import '../../API/provider/chat_provider.dart';
-import 'package:echirp/utils/global_variabes.dart';
+import 'package:echirp/utils/global_variables.dart';
 import '../../API/models/group.models.dart';
 import '../../API/provider/user_provider.dart';
 import '../../screens/group/components/group_detail.dart';
@@ -14,13 +14,16 @@ class ChatScreen extends StatelessWidget {
   final String image;
   final List<Participant>? participants;
   final int index;
+  final bool myGroups;
 
   const ChatScreen({
     Key? key,
     required this.title,
     required this.image,
     required this.id,
-    required this.participants, required this.index,
+    required this.participants,
+    required this.index,
+    required this.myGroups,
   }) : super(key: key);
 
   @override
@@ -31,7 +34,9 @@ class ChatScreen extends StatelessWidget {
         id: id,
         title: title,
         image: image,
-        participants: participants, index: index,
+        participants: participants,
+        index: index,
+        myGroups: myGroups,
       ),
     );
   }
@@ -43,13 +48,16 @@ class _ChatScreenContent extends StatefulWidget {
   final String image;
   final List<Participant>? participants;
   final int index;
+  final bool myGroups;
 
   const _ChatScreenContent({
     Key? key,
     required this.id,
     required this.title,
     required this.image,
-    required this.participants, required this.index,
+    required this.participants,
+    required this.index,
+    required this.myGroups,
   }) : super(key: key);
 
   @override
@@ -66,12 +74,14 @@ class __ChatScreenContentState extends State<_ChatScreenContent> {
     super.initState();
     _controller = TextEditingController();
     userId = getUserId();
-    _chatProvider = Provider.of<ChatProvider>(context, listen: false);
-    _chatProvider.fetchMessages(widget.id);
   }
 
   String getUserId() {
-    return Provider.of<UserProvider>(context, listen: false).userData?.user?.id ?? "";
+    return Provider.of<UserProvider>(context, listen: false)
+            .userData
+            ?.user
+            ?.id ??
+        "";
   }
 
   @override
@@ -82,6 +92,8 @@ class __ChatScreenContentState extends State<_ChatScreenContent> {
 
   @override
   Widget build(BuildContext context) {
+    _chatProvider = Provider.of<ChatProvider>(context);
+    _chatProvider.fetchMessages(widget.id);
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -89,7 +101,11 @@ class __ChatScreenContentState extends State<_ChatScreenContent> {
           icon: const Icon(Icons.arrow_back, color: Colors.white, size: 30),
         ),
         title: GestureDetector(
-          onTap: () => Navigator.of(context).pushNamed(GroupDetailsPage.routeName),
+          onTap: () => Navigator.of(context)
+              .pushNamed(GroupDetailsPage.routeName, arguments: {
+            'index': widget.index,
+            'myGroups': widget.myGroups,
+          }),
           child: Row(
             children: [
               const CircleAvatar(
@@ -157,7 +173,8 @@ class __ChatScreenContentState extends State<_ChatScreenContent> {
                   style: const TextStyle(color: Colors.black),
                   cursorColor: GlobalVariables.colors.primary,
                   decoration: InputDecoration(
-                    suffixIcon: Icon(CupertinoIcons.photo, color: Colors.grey[700]),
+                    suffixIcon:
+                        Icon(CupertinoIcons.photo, color: Colors.grey[700]),
                     filled: true,
                     fillColor: Colors.white,
                     contentPadding: const EdgeInsets.only(top: 10, left: 10),
@@ -175,7 +192,7 @@ class __ChatScreenContentState extends State<_ChatScreenContent> {
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
                       borderSide: BorderSide(
-                        color:GlobalVariables.colors.primary,
+                        color: GlobalVariables.colors.primary,
                         width: 0,
                       ),
                     ),
@@ -206,7 +223,7 @@ class __ChatScreenContentState extends State<_ChatScreenContent> {
 
         return Row(
           mainAxisAlignment:
-          isSender ? MainAxisAlignment.end : MainAxisAlignment.start,
+              isSender ? MainAxisAlignment.end : MainAxisAlignment.start,
           children: [
             if (!isSender)
               CircleAvatar(
@@ -237,7 +254,8 @@ class __ChatScreenContentState extends State<_ChatScreenContent> {
                 radius: size.height * 0.015,
                 backgroundImage: user?.profilePicture != null
                     ? NetworkImage("${user?.profilePicture}")
-                    : const AssetImage('assets/images/dummyDP.png') as ImageProvider,
+                    : const AssetImage('assets/images/dummyDP.png')
+                        as ImageProvider,
               ),
           ],
         );
@@ -246,8 +264,7 @@ class __ChatScreenContentState extends State<_ChatScreenContent> {
   }
 }
 
-
-  class ProfilePicture extends StatelessWidget {
+class ProfilePicture extends StatelessWidget {
   const ProfilePicture({Key? key}) : super(key: key);
 
   @override

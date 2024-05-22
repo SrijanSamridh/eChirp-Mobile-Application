@@ -1,8 +1,9 @@
-import 'package:echirp/utils/global_variabes.dart';
+import 'package:echirp/utils/global_variables.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../API/provider/group_provider.dart';
+import '../../utils/data_formatter.dart';
 
 class GroupInfoScreen extends StatelessWidget {
   static const String routeName = "/groupInfo";
@@ -117,19 +118,19 @@ class GroupInfoScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Row(
+                    Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text('Category',
+                        const Text('Category',
                             style: TextStyle(
                                 fontSize: 12, fontWeight: FontWeight.bold)),
                         Row(
                           children: [
-                            Text('Created on: ',
+                            const Text('Created on: ',
                                 style: TextStyle(
                                     fontSize: 12, fontWeight: FontWeight.bold)),
-                            Text('27 December 2022',
-                                style: TextStyle(
+                            Text(DataFormatter.formatDate('${groups[index].createdAt}'),
+                                style: const TextStyle(
                                     fontSize: 12, fontWeight: FontWeight.w400))
                           ],
                         ),
@@ -277,9 +278,8 @@ class GroupInfoScreen extends StatelessWidget {
                     scrollDirection: Axis.horizontal,
                     itemCount: 10,
                     itemBuilder: (context, index) {
-                      return
-                          // Rounded Corner Containers (Group Images)
-                          Padding(
+                      // Rounded Corner Containers (Group Images)
+                      return Padding(
                         padding: const EdgeInsets.only(right: 4.0),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,

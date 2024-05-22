@@ -1,4 +1,4 @@
-import 'package:echirp/utils/global_variabes.dart';
+import 'package:echirp/utils/global_variables.dart';
 import 'package:flutter/material.dart';
 
 class CustomBtn extends StatelessWidget {

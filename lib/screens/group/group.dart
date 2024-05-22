@@ -129,7 +129,7 @@ class _GroupScreenState extends State<GroupScreen> {
                         title: group.name.toString(),
                         image: '',
                         id: group.groupId.toString(),
-                        participants: group.participants, index: index,
+                        participants: group.participants, index: index, myGroups: true,
                       ))),
           child: GroupTile(
             image: group.imageUrl ?? '',
@@ -178,7 +178,7 @@ class _GroupScreenState extends State<GroupScreen> {
                 image: '',
                 id: group.groupId.toString(),
                 participants: group.participants,
-                index: index,
+                index: index, myGroups: false,
               ),
             ),
           ),

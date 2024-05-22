@@ -1,6 +1,6 @@
 import 'package:echirp/components/bottom_bar.dart';
 import 'package:echirp/components/custom_btn.dart';
-import 'package:echirp/utils/global_variabes.dart';
+import 'package:echirp/utils/global_variables.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:lottie/lottie.dart';

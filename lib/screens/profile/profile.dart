@@ -1,10 +1,9 @@
 import 'package:dotted_line/dotted_line.dart';
 import 'package:echirp/screens/home/components/event_brief_card.dart';
 import 'package:echirp/screens/profile/components/createdEventTile.dart';
-import 'package:echirp/utils/global_variabes.dart';
+import 'package:echirp/utils/data_formatter.dart';
+import 'package:echirp/utils/global_variables.dart';
 import 'package:flutter/material.dart';
-// ignore: depend_on_referenced_packages
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import '../../API/models/event.models.dart';
 import '../../API/models/userData.model.dart';
@@ -38,25 +37,27 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
+    Size size = MediaQuery
+        .of(context)
+        .size;
     return Scaffold(
       appBar: AppBar(
         backgroundColor:
-            Colors.transparent, // Set background color to transparent
+        Colors.transparent, // Set background color to transparent
         actions: [
           widget.loggedUser
               ? IconButton(
-                  icon: const Icon(
-                      Icons.settings), // Use IconButton for interaction
-                  onPressed: () async {
-                    Navigator.pushNamed(
-                      // ignore: use_build_context_synchronously
-                      context,
-                      ProfileSettings.routeName,
-                      arguments: widget.id,
-                    );
-                  },
-                )
+            icon: const Icon(
+                Icons.settings), // Use IconButton for interaction
+            onPressed: () async {
+              Navigator.pushNamed(
+                // ignore: use_build_context_synchronously
+                context,
+                ProfileSettings.routeName,
+                arguments: widget.id,
+              );
+            },
+          )
               : Container(),
         ],
       ),
@@ -87,18 +88,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               borderRadius: BorderRadius.circular(25)),
                           child: userData?.profilePicture == ''
                               ? Center(
-                                  child: Text(
-                                    (userData?.firstName)
-                                        .toString()
-                                        .substring(0, 1)
-                                        .toUpperCase(),
-                                    style: const TextStyle(fontSize: 24),
-                                  ),
-                                )
+                            child: Text(
+                              (userData?.firstName)
+                                  .toString()
+                                  .substring(0, 1)
+                                  .toUpperCase(),
+                              style: const TextStyle(fontSize: 24),
+                            ),
+                          )
                               : ClipRRect(
-                                  borderRadius: BorderRadius.circular(25),
-                                  child:
-                                      Image.network("${userData?.profilePicture}")),
+                              borderRadius: BorderRadius.circular(25),
+                              child:
+                              Image.network("${userData?.profilePicture}")),
                         ),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -106,7 +107,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             Text(
                               userData?.firstName == ''
                                   ? (userData?.username).toString()
-                                  : "${userData?.firstName} ${userData?.lastName}",
+                                  : "${userData?.firstName} ${userData
+                                  ?.lastName}",
                               style: const TextStyle(
                                   fontSize: 20, fontWeight: FontWeight.w600),
                             ),
@@ -117,25 +119,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         widget.loggedUser
                             ? Container()
                             : Container(
-                                height: 35,
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(12),
-                                    gradient:
-                                        GlobalVariables.colors.primaryGradient),
-                                child: TextButton(
-                                  onPressed: () {
-                                    Provider.of<FriendProvider>(context,
-                                            listen: false)
-                                        .sendFriendRequest(context, widget.id);
-                                  },
-                                  child: const Text(
-                                    'Add Friend',
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.w600),
-                                  ),
-                                ),
-                              ),
+                          height: 35,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(12),
+                              gradient:
+                              GlobalVariables.colors.primaryGradient),
+                          child: TextButton(
+                            onPressed: () {
+                              Provider.of<FriendProvider>(context,
+                                  listen: false)
+                                  .sendFriendRequest(context, widget.id);
+                            },
+                            child: const Text(
+                              'Add Friend',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w600),
+                            ),
+                          ),
+                        ),
                       ],
                     ),
                     const SizedBox(height: 8),
@@ -165,7 +167,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               children: [
                                 Text(
                                   (userData?.myCreatedEvents.length)
-                                      .toString(), // Replace with actual number of events created
+                                      .toString(),
+                                  // Replace with actual number of events created
                                   style: const TextStyle(
                                       color: Colors.white,
                                       fontWeight: FontWeight.bold,
@@ -193,7 +196,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               children: [
                                 Text(
                                   (userData?.numberOfFriends)
-                                      .toString(), // Replace with actual number of events created
+                                      .toString(),
+                                  // Replace with actual number of events created
                                   style: const TextStyle(
                                       color: Colors.white,
                                       fontWeight: FontWeight.bold,
@@ -221,7 +225,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               children: [
                                 Text(
                                   (userData?.eventsAttended.length)
-                                      .toString(), // Replace with actual number of events created
+                                      .toString(),
+                                  // Replace with actual number of events created
                                   style: const TextStyle(
                                       color: Colors.white,
                                       fontWeight: FontWeight.bold,
@@ -279,7 +284,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           return const Center(child: CircularProgressIndicator());
         } else if (snapshot.hasError) {
           return Center(child: Text('Error: ${snapshot.error}'));
-        // ignore: prefer_is_empty
+          // ignore: prefer_is_empty
         } else if (snapshot.hasData || snapshot.data?.events?.length != 0) {
           if (snapshot.data?.events == null) {
             return const Center(child: Text('No events available'));
@@ -288,21 +293,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
           // ignore: prefer_is_empty
           return events?.length != 0
               ? ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: snapshot.data?.events?.length,
-                  itemBuilder: (context, index) {
-                    final event = events?[index];
-                    return EventBriefCard(
-                      size: size,
-                      imageUrl: 'assets/images/dummy_event.png',
-                      profileImg: 'assets/images/dummyDP.png',
-                      userName: "By Meg Rigden",
-                      dateTime:
-                          "${formatDate("${event?.dateOfEvent.toString()}", false)} at ${formatTime("${event?.startTime.toString()}")}",
-                      location: '${event?.location}, ${event?.address}',
-                    );
-                  },
-                )
+            scrollDirection: Axis.horizontal,
+            itemCount: snapshot.data?.events?.length,
+            itemBuilder: (context, index) {
+              final event = events?[index];
+              return EventBriefCard(
+                size: size,
+                imageUrl: 'assets/images/dummy_event.png',
+                profileImg: 'assets/images/dummyDP.png',
+                userName: "By Meg Rigden",
+                dateTime:
+                "${DataFormatter.formatDateWithFlag(
+                    "${event?.dateOfEvent.toString()}",
+                    false)} at ${DataFormatter.formatTimeWithoutSeconds(
+                    "${event?.startTime.toString()}")}",
+                location: '${event?.location}, ${event?.address}',
+              );
+            },
+          )
               : const Center(child: Text('No events available'));
         } else {
           return const Center(child: Text('No events available'));
@@ -319,7 +327,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           return const Center(child: CircularProgressIndicator());
         } else if (snapshot.hasError) {
           return Center(child: Text('Error: ${snapshot.error}'));
-        // ignore: prefer_is_empty
+          // ignore: prefer_is_empty
         } else if (snapshot.hasData || snapshot.data?.events?.length != 0) {
           if (snapshot.data?.events == null) {
             return const Center(child: Text('No events available'));
@@ -332,8 +340,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
               return EventTile(
                 category: (event?.mainCategory).toString(),
                 title: (event?.eventDescription).toString(),
-                date: formatDate((event?.dateOfEvent).toString(), true),
-                time: formatTime((event?.startTime).toString()),
+                date: DataFormatter.formatDateWithFlag(
+                    (event?.dateOfEvent).toString(), true),
+                time: DataFormatter.formatTimeWithoutSeconds((event?.startTime).toString()),
                 imageUrl: 'assets/images/dummy_event.png',
               );
             },
@@ -343,32 +352,5 @@ class _ProfileScreenState extends State<ProfileScreen> {
         }
       },
     );
-  }
-
-  String formatDate(String dateString, bool created) {
-    try {
-      DateTime date = DateTime.parse(dateString);
-      String formattedDate;
-
-      created
-          ? formattedDate = DateFormat('dd MMM yyyy').format(date)
-          : formattedDate = DateFormat('dd MMM').format(date);
-
-      return formattedDate;
-    } catch (e) {
-      debugPrint(e.toString());
-      return "";
-    }
-  }
-
-  String formatTime(String timeString) {
-    try {
-      DateTime dateTime = DateTime.parse('2022-01-01 $timeString');
-      String formattedTime = DateFormat('h:mm a').format(dateTime);
-      return formattedTime;
-    } catch (e) {
-      debugPrint(e.toString());
-      return "${e.toString().split(" ")[4]} ${e.toString().split(" ")[5]}";
-    }
   }
 }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../utils/global_variabes.dart';
+import '../utils/global_variables.dart';
 import 'custom_search_bar.dart';
 
 class CustomAppBar extends StatelessWidget {

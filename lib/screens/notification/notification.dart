@@ -1,4 +1,4 @@
-import 'package:echirp/utils/global_variabes.dart';
+import 'package:echirp/utils/global_variables.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:provider/provider.dart';
@@ -15,6 +15,7 @@ class NotificationScreen extends StatefulWidget {
 }
 
 class _NotificationScreenState extends State<NotificationScreen> {
+  late NotificationProvider _notificationProvider;
   @override
   void initState() {
     super.initState();
@@ -35,8 +36,8 @@ class _NotificationScreenState extends State<NotificationScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // Provider.of<NotificationProvider>(context, listen: false)
-    //     .listenToSocketEvents(newNotification.toJson());
+    _notificationProvider = Provider.of<NotificationProvider>(context);
+    _notificationProvider.fetchNotifications();
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(

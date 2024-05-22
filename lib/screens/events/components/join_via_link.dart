@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:echirp/API/controller/event.controller.dart';
 import '../../../components/custom_btn.dart';
-import '../../../utils/global_variabes.dart';
+import '../../../utils/global_variables.dart';
 import 'upload_status.dart';
 
 class JoinViaLink extends StatelessWidget {

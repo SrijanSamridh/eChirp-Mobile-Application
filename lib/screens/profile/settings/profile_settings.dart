@@ -1,7 +1,7 @@
 import 'package:echirp/API/provider/user_provider.dart';
 import 'package:echirp/components/custom_btn.dart';
 import 'package:echirp/screens/profile/settings/edit_profile.dart';
-import 'package:echirp/utils/global_variabes.dart';
+import 'package:echirp/utils/global_variables.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';

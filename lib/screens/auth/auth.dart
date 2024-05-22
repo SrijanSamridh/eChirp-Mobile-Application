@@ -5,7 +5,7 @@ import 'package:echirp/API/models/user.models.dart';
 import 'package:echirp/API/provider/user_provider.dart';
 import 'package:echirp/API/services/auth_provider.dart';
 import 'package:echirp/components/custom_btn.dart';
-import 'package:echirp/utils/global_variabes.dart';
+import 'package:echirp/utils/global_variables.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';

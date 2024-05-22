@@ -1,5 +1,6 @@
 import 'package:echirp/API/provider/event_provider.dart';
-import 'package:echirp/utils/global_variabes.dart';
+import 'package:echirp/utils/data_formatter.dart';
+import 'package:echirp/utils/global_variables.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -95,12 +96,11 @@ class EventDetail extends StatelessWidget {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      formatDate(event?[index]
+                                      DataFormatter.formatDate(event?[index]
                                               .dateOfEvent
                                               .toString() ??
                                           '')
                                       // "${event?[index].dateOfEvent.toString() ??'date'}"
-
                                       ,
                                       style: const TextStyle(
                                         color: Colors.white,
@@ -329,17 +329,6 @@ class EventDetail extends StatelessWidget {
       ),
     );
   }
-}
-
-// Function to convert date string to day-month-year format
-String formatDate(String dateString) {
-  DateTime date = DateTime.parse(dateString);
-  final List<String> months = [
-    '', // Leave an empty string at index 0 to match month numbers with indices
-    'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August',
-    'September', 'October', 'November', 'December'
-  ];
-  return '${date.day} ${months[date.month]} ${date.year}';
 }
 
 Widget Images(String url) {

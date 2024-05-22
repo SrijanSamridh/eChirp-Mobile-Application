@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:echirp/components/bottom_bar.dart';
 import 'package:echirp/screens/auth/auth.dart';
 import 'package:echirp/screens/events/components/event_cerate_form.dart';
@@ -11,114 +12,94 @@ import 'package:echirp/screens/notification/notification.dart';
 import 'package:echirp/screens/profile/profile.dart';
 import 'package:echirp/screens/profile/settings/edit_profile.dart';
 import 'package:echirp/screens/search/search.dart';
-import 'package:flutter/material.dart';
+import 'package:echirp/screens/group/components/create_group.dart';
+import 'package:echirp/screens/group/components/group_detail.dart';
+import 'package:echirp/screens/home/home.dart';
+import 'package:echirp/screens/profile/settings/profile_settings.dart';
+import 'package:echirp/screens/splash/splash.dart';
 
-import '../screens/group/components/create_group.dart';
-import '../screens/group/components/group_detail.dart';
-import '../screens/home/home.dart';
-import '../screens/profile/settings/profile_settings.dart';
-import '../screens/splash/splash.dart';
+// Create a route map
+final Map<String, WidgetBuilder> routes = {
+  SplashScreen.routeName: (_) => const SplashScreen(),
+  AuthScreen.routeName: (_) => const AuthScreen(),
+  BottomBar.routeName: (_) => BottomBar(page: 0), // Default page index
+  HomeScreen.routeName: (_) => const HomeScreen(),
+  EventsScreen.routeName: (_) => const EventsScreen(),
+  CreateEventScreen.routeName: (_) => const CreateEventScreen(),
+  EventCreateFrom.routeName: (_) =>
+      const EventCreateFrom(category: '', subCategory: '', subSubCategory: ''),
+  UploadStatusScreen.routeName: (_) => const UploadStatusScreen(eventType: ''),
+  SearchScreen.routeName: (_) => const SearchScreen(query: ''),
+  NotificationScreen.routeName: (_) => const NotificationScreen(),
+  ProfileScreen.routeName: (_) => const ProfileScreen(),
+  EditProfileScreen.routeName: (_) => const EditProfileScreen(),
+  ProfileSettings.routeName: (_) => const ProfileSettings(id: ''),
+  GroupInfoScreen.routeName: (_) => GroupInfoScreen(onPressed: () {}, index: 0),
+  GroupDetailsPage.routeName: (_) =>
+      const GroupDetailsPage(index: 0, myGroups: false),
+  CreateGroupScreen.routeName: (_) => const CreateGroupScreen(),
+  GroupFormScreen.routeName: (_) => const GroupFormScreen(),
+  EventDetail.routeName: (_) => EventDetail(index: 0),
+};
 
-onGenerateRoute(RouteSettings routeSettings) {
+// Centralized route generator
+Route<dynamic> onGenerateRoute(RouteSettings routeSettings) {
   switch (routeSettings.name) {
-    case SplashScreen.routeName:
-      return MaterialPageRoute(
-        builder: (_) => const SplashScreen(),
-      );
-    case AuthScreen.routeName:
-      return MaterialPageRoute(
-        builder: (_) => const AuthScreen(),
-      );
     case BottomBar.routeName:
-      int pageIndex = routeSettings.arguments as int;
+      final int pageIndex = routeSettings.arguments as int;
       return MaterialPageRoute(
           builder: (_) => BottomBar(
                 page: pageIndex,
               ));
-    case HomeScreen.routeName:
-      return MaterialPageRoute(
-        builder: (_) => const HomeScreen(),
-      );
-    case EventsScreen.routeName:
-      return MaterialPageRoute(
-        builder: (_) => const EventsScreen(),
-      );
-    case CreateEventScreen.routeName:
-      return MaterialPageRoute(
-        builder: (_) => const CreateEventScreen(),
-      );
     case EventCreateFrom.routeName:
-      String category = routeSettings.arguments as String;
-      String subCategory = routeSettings.arguments as String;
-      String subSubCategory = routeSettings.arguments as String;
+      final args = routeSettings.arguments as Map<String, String>;
       return MaterialPageRoute(
         builder: (_) => EventCreateFrom(
-            category: category,
-            subCategory: subCategory,
-            subSubCategory: subSubCategory),
+          category: args['category'] ?? '',
+          subCategory: args['subCategory'] ?? '',
+          subSubCategory: args['subSubCategory'] ?? '',
+        ),
       );
     case UploadStatusScreen.routeName:
-      String eventType = routeSettings.arguments as String;
+      final eventType = routeSettings.arguments as String;
       return MaterialPageRoute(
         builder: (_) => UploadStatusScreen(eventType: eventType),
       );
     case SearchScreen.routeName:
-      String query = routeSettings.arguments as String;
+      final query = routeSettings.arguments as String;
       return MaterialPageRoute(
         builder: (_) => SearchScreen(query: query),
       );
-    case NotificationScreen.routeName:
-      return MaterialPageRoute(
-        builder: (_) => const NotificationScreen(),
-      );
-
-    case ProfileScreen.routeName:
-      return MaterialPageRoute(
-        builder: (_) => const ProfileScreen(),
-      );
-    
-    case EditProfileScreen.routeName:
-      return MaterialPageRoute(
-        builder: (_) => const EditProfileScreen(),
-      );
-
     case ProfileSettings.routeName:
-     String id = routeSettings.arguments as String;
+      final id = routeSettings.arguments as String;
       return MaterialPageRoute(
         builder: (_) => ProfileSettings(id: id),
       );
-
     case GroupInfoScreen.routeName:
-      var arguments = routeSettings.arguments as Map<String, dynamic>;
-      var onPressed = arguments['onPressed'] as VoidCallback;
-      var index = arguments['index'] as int;
+      final args = routeSettings.arguments as Map<String, dynamic>;
       return MaterialPageRoute(
-        builder: (_) => GroupInfoScreen(onPressed: onPressed, index: index),
+        builder: (_) => GroupInfoScreen(
+          onPressed: args['onPressed'],
+          index: args['index'],
+        ),
       );
-
     case GroupDetailsPage.routeName:
+      final args = routeSettings.arguments as Map<String, dynamic>;
       return MaterialPageRoute(
-        builder: (_) => GroupDetailsPage(),
-      );
-
-    case CreateGroupScreen.routeName:
-      return MaterialPageRoute(
-        builder: (_) => const CreateGroupScreen(),
-      );
-
-    case GroupFormScreen.routeName:
-      return MaterialPageRoute(
-        builder: (_) => const GroupFormScreen(),
+        builder: (_) => GroupDetailsPage(
+          index: args['index'],
+          myGroups: args['myGroups'],
+        ),
       );
     case EventDetail.routeName:
-      int index = routeSettings.arguments as int;
+      final index = routeSettings.arguments as int;
       return MaterialPageRoute(
         builder: (_) => EventDetail(index: index),
       );
-
     default:
-      return MaterialPageRoute(
-        builder: (_) => const SplashScreen(),
-      );
+      if (routes.containsKey(routeSettings.name)) {
+        return MaterialPageRoute(builder: routes[routeSettings.name]!);
+      }
+      return MaterialPageRoute(builder: (_) => const SplashScreen());
   }
 }

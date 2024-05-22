@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import '../../API/controller/friend.controller.dart';
 import '../../API/models/friends.model.dart';
-import '../../utils/global_variabes.dart';
+import '../../utils/global_variables.dart';
 import '../friends/components/custom_tile.dart';
 
 class SearchScreen extends StatefulWidget {
