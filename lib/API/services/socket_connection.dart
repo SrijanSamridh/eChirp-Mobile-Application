@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print, library_prefixes
+
 import 'package:echirp/API/provider/chat_provider.dart';
 import 'package:echirp/API/provider/notification_provider.dart';
 import 'package:echirp/API/services/api_client.dart';
@@ -6,7 +8,7 @@ import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 class SocketConnection {
   static final IO.Socket socket = IO.io(
-    domains[Platform.aws],
+    SOCKET_URL,
     IO.OptionBuilder().setTransports(['websocket']) // for Flutter or Dart VM
         .build(),
   );

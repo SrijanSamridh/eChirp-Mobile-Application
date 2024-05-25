@@ -2,6 +2,7 @@
 
 import 'dart:convert';
 import 'package:echirp/API/services/api_client.dart';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import '../models/group.models.dart';
 
@@ -54,13 +55,13 @@ class GroupController {
     }
   }
 
-  Future<Groups?> fetchGroups(String type) async {
+  Future<Groups?> fetchGroups(BuildContext context,String type) async {
     try {
       var response;
       if (type == "all") {
-        response = await client.get("/groups/$type");
+        response = await client.get(context ,"/groups/$type");
       } else {
-        response = await client.get("/groups?type=$type");
+        response = await client.get(context, "/groups?type=$type");
       }
       print("\n\n\n$type :: ${response.toString()}");
       if (response == null || response.isEmpty) {

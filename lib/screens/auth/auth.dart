@@ -3,6 +3,7 @@
 import 'package:echirp/API/controller/auth.controller.dart';
 import 'package:echirp/API/models/user.models.dart';
 import 'package:echirp/API/provider/user_provider.dart';
+import 'package:echirp/API/services/Manager/dialog_manager.dart';
 import 'package:echirp/API/services/auth_provider.dart';
 import 'package:echirp/components/custom_btn.dart';
 import 'package:echirp/utils/global_variables.dart';
@@ -45,7 +46,11 @@ class _AuthScreenState extends State<AuthScreen> {
       "password": _passwordController.text.trim(),
     };
 
-    User? user = await authController.signIn(body);
+    User? user = await authController.signIn(context, body);
+
+    setState(() {
+      onLoad = false;
+    });
 
     if (user != null && user.user != null) {
       String? token = user.user!.token;
@@ -61,21 +66,12 @@ class _AuthScreenState extends State<AuthScreen> {
       Navigator.of(context)
           .pushReplacementNamed(BottomBar.routeName, arguments: 0);
     } else {
-      // Handle invalid login credentials or other errors
-      showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          title: const Text('Login Error'),
-          content:
-              const Text('Invalid username or password. Please try again.'),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: const Text('OK'),
-            ),
-          ],
-        ),
-      );
+      DialogManager.showLoginErrorDialog(context, 'SignIn Error', () {
+        setState(() {
+          onLoad = false;
+        });
+        Navigator.of(context).pop();
+      });
     }
   }
 
@@ -88,6 +84,11 @@ class _AuthScreenState extends State<AuthScreen> {
     };
 
     var user = await authController.signUp(context, _payload);
+
+    setState(() {
+      onLoad = false;
+    });
+
     // ignore: unnecessary_null_comparison
     if (user != null) {
       setState(() {
@@ -117,23 +118,15 @@ class _AuthScreenState extends State<AuthScreen> {
         Navigator.of(context)
             .pushReplacementNamed(BottomBar.routeName, arguments: 0);
       } else {
-        // Handle invalid login credentials or other errors
-        showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-            title: const Text('Login Error'),
-            content: const Text('Something Went Worng, Please try again!'),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.of(context).pop(),
-                child: const Text('OK'),
-              ),
-            ],
-          ),
-        );
+        DialogManager.showLoginErrorDialog(context, 'SignUp Error', () {
+          setState(() {
+            onLoad = false;
+          });
+          Navigator.of(context).pop();
+        });
       }
     } else {
-      var user = await authController.signIn(
+      var user = await authController.signIn(context,
           {"provider": provider, "verificationId": credential.user?.uid});
       // ignore: avoid_print
       print("token: ${user?.user?.token}");
@@ -145,20 +138,12 @@ class _AuthScreenState extends State<AuthScreen> {
         Navigator.of(context)
             .pushReplacementNamed(BottomBar.routeName, arguments: 0);
       } else {
-        // Handle invalid login credentials or other errors
-        showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-            title: const Text('Login Error'),
-            content: const Text('Please try again!'),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.of(context).pop(),
-                child: const Text('OK'),
-              ),
-            ],
-          ),
-        );
+        DialogManager.showLoginErrorDialog(context, 'Login Error', () {
+          setState(() {
+            onLoad = false;
+          });
+          Navigator.of(context).pop();
+        });
       }
     }
   }
@@ -440,19 +425,22 @@ class _AuthScreenState extends State<AuthScreen> {
                             height: size.height * 0.00,
                           ),
                           CustomBtn(
-                            text: 'Sign Up',
+                            text: onLoad ? 'Loading...' : 'Sign Up',
                             size: size,
                             width: size.width * 0.2,
                             onPressed: () {
                               if (validatePassword(_passwordController.text)) {
+                                setState(() {
+                                  onLoad = true;
+                                });
                                 signUp();
                               } else {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content: Text(
-                                        "Please make sure all the fields are filled and as per requirements!"),
-                                  ),
-                                );
+                                DialogManager.showSnackbar(
+                                    context: context,
+                                    message:
+                                        "Please make sure all the fields are filled and as per requirements!",
+                                    backgroundColor:
+                                        const Color.fromARGB(255, 145, 145, 0));
                               }
                             },
                           ),

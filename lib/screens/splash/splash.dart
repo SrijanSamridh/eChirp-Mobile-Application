@@ -56,7 +56,7 @@ class _SplashScreenState extends State<SplashScreen> {
     var userProvider = Provider.of<UserProvider>(context, listen: false);
     String? userId = pref.getString("_id");
     if (userId != null) {
-      await userProvider.fetchUserData(userId, true);
+      await userProvider.fetchUserData(context, userId, true);
       User userData = User(
         message: "data fetched from the local storage",
         user: UserClass(
@@ -72,7 +72,7 @@ class _SplashScreenState extends State<SplashScreen> {
   Future<void> _initNotification() async {
     var notificationProvider =
         Provider.of<NotificationProvider>(context, listen: false);
-    await notificationProvider.fetchNotifications();
+    await notificationProvider.fetchNotifications(context);
     notificationProvider.triggerNewNotifications();
   }
 

@@ -26,9 +26,9 @@ class ChatProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> fetchMessages(String groupId) async {
+  Future<void> fetchMessages(BuildContext context,String groupId) async {
     try {
-      var response = await ApiClient().get('/message/$groupId');
+      var response = await ApiClient().get(context, '/message/$groupId');
       final decodedResponse = json.decode(response);
 
       if (decodedResponse is! Map<String, dynamic>) {

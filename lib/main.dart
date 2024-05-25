@@ -51,36 +51,29 @@ Future<void> main() async {
   );
 
   // Ensure permission to send notifications
-  final isAllowedToSendNotification =
-      await AwesomeNotifications().isNotificationAllowed();
+  bool isAllowedToSendNotification = await AwesomeNotifications().isNotificationAllowed();
   if (!isAllowedToSendNotification) {
-    AwesomeNotifications().requestPermissionToSendNotifications();
+    await AwesomeNotifications().requestPermissionToSendNotifications();
   }
 
   // Initialize providers and run the app
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider<FriendProvider>(
-            create: (context) => FriendProvider()),
-        ChangeNotifierProvider<GroupProvider>(
-            create: (context) => GroupProvider()),
-        ChangeNotifierProvider<EventsProvider>(
-            create: (context) => EventsProvider()),
-        ChangeNotifierProvider<UserProvider>(
-            create: (context) => UserProvider()),
-        ChangeNotifierProvider<ChatProvider>(
-            create: (context) => ChatProvider()),
-        ChangeNotifierProvider<NotificationProvider>(
-            create: (_) => NotificationProvider()),
+        ChangeNotifierProvider<FriendProvider>(create: (context) => FriendProvider()),
+        ChangeNotifierProvider<GroupProvider>(create: (context) => GroupProvider()),
+        ChangeNotifierProvider<EventsProvider>(create: (context) => EventsProvider()),
+        ChangeNotifierProvider<UserProvider>(create: (context) => UserProvider()),
+        ChangeNotifierProvider<ChatProvider>(create: (context) => ChatProvider()),
+        ChangeNotifierProvider<NotificationProvider>(create: (_) => NotificationProvider()),
       ],
       child: const MyApp(),
     ),
   );
 
   // Establish socket connection
-  SocketConnection.establishConnection();
-  SocketConnection().listenToSocketEvents();
+  await SocketConnection.establishConnection();
+  await SocketConnection().listenToSocketEvents();
 }
 
 class MyApp extends StatefulWidget {
@@ -98,12 +91,9 @@ class _MyAppState extends State<MyApp> {
     // Set listeners for notification events
     AwesomeNotifications().setListeners(
       onActionReceivedMethod: NotificationController.onActionReceivedMethod,
-      onDismissActionReceivedMethod:
-          NotificationController.onDismissActionReceivedMethod,
-      onNotificationCreatedMethod:
-          NotificationController.onNotificationCreatedMethod,
-      onNotificationDisplayedMethod:
-          NotificationController.onNotificationDisplayedMethod,
+      onDismissActionReceivedMethod: NotificationController.onDismissActionReceivedMethod,
+      onNotificationCreatedMethod: NotificationController.onNotificationCreatedMethod,
+      onNotificationDisplayedMethod: NotificationController.onNotificationDisplayedMethod,
     );
   }
 
@@ -112,8 +102,7 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       title: 'eChirp',
       theme: ThemeData(
-        colorScheme:
-            ColorScheme.fromSeed(seedColor: GlobalVariables.colors.primary),
+        colorScheme: ColorScheme.fromSeed(seedColor: GlobalVariables.colors.primary),
         useMaterial3: true,
       ),
       // darkTheme: ThemeData(

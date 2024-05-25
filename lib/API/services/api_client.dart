@@ -1,27 +1,31 @@
-// ignore_for_file: no_leading_underscores_for_local_identifiers, avoid_print
+// ignore_for_file: no_leading_underscores_for_local_identifiers, avoid_print,, non_constant_identifier_names
 
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
-enum Platform {
-  vercel,
-  aws,
-  local
-}
+import 'helper/api_error.dart';
+import 'helper/api_error_handler.dart';
 
+enum PlatformDeployed { vercel, aws, local }
 
-Map<Platform, String> domains = {
-  Platform.vercel : 'https://e-craze-server.vercel.app',
-  Platform.aws : 'http://23.23.60.2:8080',
-  Platform.local: 'http://localhost:8080'
+Map<PlatformDeployed, List<String>> domains = {
+  PlatformDeployed.vercel: ['https://e-craze-server.vercel.app'],
+  PlatformDeployed.aws: ['http://23.23.60.2:8080'],
+  PlatformDeployed.local: ['http://localhost:8080']
 };
 
-// const String baseUrl = 'https://e-chirp-server.vercel.app/api';
-// const String baseUrl = 'https://api.eventchirp.com/api';
-// const String baseUrl = 'http://localhost:8080/api';
-String baseUrl = '${domains[Platform.vercel]}/api';
+// Set the platform you want to use here
+const PlatformDeployed currentPlatform = PlatformDeployed.vercel;
+const PlatformDeployed socketPlatform = PlatformDeployed.aws;
+
+// set domains
+String API_BASE_URL = domains[currentPlatform]![0];
+String SOCKET_URL = domains[socketPlatform]![0];
+
+String baseUrl = '$API_BASE_URL/api';
 
 class ApiClient {
   var client = http.Client();
@@ -34,23 +38,34 @@ class ApiClient {
   }
 
   // Get request
-  Future<dynamic> get(String route) async {
+  Future<dynamic> get(BuildContext context, String route) async {
     try {
       var url = Uri.parse(baseUrl + route);
       var token = await getToken();
+      if (token == '') {
+        throw ApiError(statusCode: 401, message: "Unauthorized: Token is null");
+      }
       var _headers = {
         'Content-Type': 'application/json',
         'x-auth-token': token,
       };
       var response = await client.get(url, headers: _headers);
-      // print('Response of ApiClient for $route: ${response.body}');
       if (response.statusCode == 200) {
+        print('Response of ApiClient for $route: ${response.body}');
         return response.body;
       } else {
-        return null;
+        throw ApiError(
+          statusCode: response.statusCode,
+          message: "Failed to fetch data",
+          details: response.body,
+        );
       }
     } catch (e) {
       print('Error in get request: $e');
+      if(e is ApiError) {
+        // ignore: use_build_context_synchronously
+        ApiErrorHandler.showErrorToast(context, e);
+      }
       return null;
     }
   }
@@ -89,11 +104,20 @@ class ApiClient {
         var errorJson = jsonDecode(response.body);
         var errorMessage = errorJson["message"] ?? "Error";
         print('Error: ${response.statusCode}, $errorMessage');
-        throw Exception(errorMessage);
+        throw ApiError(
+          statusCode: response.statusCode,
+          message: "Failed to post data",
+          details: response.body,
+        );
       }
     } catch (error) {
       print('Error: $error');
-      throw Exception('Internal server error');
+      print('Error in post request: $error');
+      throw ApiError(
+        statusCode: 500,
+        message: "Internal server error",
+        details: error.toString(),
+      );
     }
   }
 
@@ -131,7 +155,11 @@ class ApiClient {
     if (response.statusCode == 200) {
       return json.decode(response.body);
     } else {
-      return null;
+      throw ApiError(
+        statusCode: response.statusCode,
+        message: "Failed to update data",
+        details: response.body,
+      );
     }
   }
 
@@ -152,11 +180,19 @@ class ApiClient {
         var errorJson = json.decode(response.body);
         var errorMessage = errorJson["message"] ?? "Error";
         print('Error: ${response.statusCode}, $errorMessage');
-        throw Exception(errorMessage);
+        throw ApiError(
+          statusCode: response.statusCode,
+          message: "Failed to delete data",
+          details: response.body,
+        );
       }
     } catch (error) {
-      print('Error: $error');
-      throw Exception('Internal server error');
+      print('Error in delete request: $error');
+      throw ApiError(
+        statusCode: 500,
+        message: "Internal server error",
+        details: error.toString(),
+      );
     }
   }
 }

@@ -93,7 +93,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   Future<void> _initProfileData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String id = prefs.getString('_id').toString();
-    await _userProvider.fetchUserData(id, true);
+    await _userProvider.fetchUserData(context, id, true);
   }
 
   @override

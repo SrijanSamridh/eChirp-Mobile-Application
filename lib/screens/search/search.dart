@@ -140,7 +140,7 @@ class _SearchScreenState extends State<SearchScreen> {
 
   Future<void> _searchUsers(String query) async {
     setState(() {
-      _searchResults = friendController.searchPeople('/search', query);
+      _searchResults = friendController.searchPeople(context, '/search', query);
     });
   }
 

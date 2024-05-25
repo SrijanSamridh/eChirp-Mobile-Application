@@ -14,9 +14,9 @@ class NotificationProvider extends ChangeNotifier {
   int get newMessagesCount => _newMessagesCount;
 
   /// Fetch notifications from the server and update the notification list.
-  Future<void> fetchNotifications() async {
+  Future<void> fetchNotifications(BuildContext context) async {
     try {
-      final res = await _notificationController.fetchNotifications();
+      final res = await _notificationController.fetchNotifications(context);
       if (res != null) {
         List<NotificationElement>? newNotifications = res.notifications;
         if (newNotifications != null && newNotifications.isNotEmpty) {
@@ -62,7 +62,7 @@ class NotificationProvider extends ChangeNotifier {
   }
 
   /// Reply to a specific notification.
-  Future<void> replyToNotifications(String notificationId, String reply) async {
+  Future<void> replyToNotifications(BuildContext context, String notificationId, String reply) async {
     try {
       NotificationElement? notificationElement = await _notificationController
           .replyToNotifications(notificationId, reply);
@@ -70,7 +70,7 @@ class NotificationProvider extends ChangeNotifier {
         // Handle any additional logic if needed
         // Optionally refetch notifications or update state as needed
       }
-      fetchNotifications();
+      fetchNotifications(context);
       notifyListeners();
     } catch (e) {
       print("Error replying to notification: ${e.toString()}");

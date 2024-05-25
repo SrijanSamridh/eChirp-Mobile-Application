@@ -22,9 +22,9 @@ class ChatController {
     // No setState() method is available here. You need to handle state changes in the widget tree.
   }
 
-  Future<List<MessageElement>?> fetchMessages(String groupId) async {
+  Future<List<MessageElement>?> fetchMessages(BuildContext context, String groupId) async {
     try {
-      var response = await ApiClient().get('/message/$groupId');
+      var response = await ApiClient().get(context, '/message/$groupId');
       final decodedResponse = json.decode(response);
 
       if (decodedResponse is! Map<String, dynamic>) {

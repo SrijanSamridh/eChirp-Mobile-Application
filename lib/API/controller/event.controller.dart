@@ -10,9 +10,9 @@ import 'package:http/http.dart' as http;
 class EventController {
   final client = ApiClient();
 
-  Future<Events?> fetchEvents(String route) async {
+  Future<Events?> fetchEvents(BuildContext context, String route) async {
     try {
-      final response = await client.get("/events$route");
+      final response = await client.get(context, "/events$route");
 
       if (response == null || response.isEmpty) {
         debugPrint('Unexpected response format: $response');

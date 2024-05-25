@@ -32,7 +32,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   Future<void> _initProfileData() async {
-    await _userProvider.fetchUserData(widget.id, widget.loggedUser);
+    await _userProvider.fetchUserData(context, widget.id, widget.loggedUser);
   }
 
   @override

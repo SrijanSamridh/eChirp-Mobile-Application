@@ -33,16 +33,16 @@ class _FriendsScreenState extends State<FriendsScreen> {
 
   Future<void> _initPotentialFriendList() async {
     await Provider.of<FriendProvider>(context, listen: false)
-        .fetchPotentialFriends();
+        .fetchPotentialFriends(context);
   }
 
   Future<void> _initFriendsList() async {
-    await Provider.of<FriendProvider>(context, listen: false).fetchFriends();
+    await Provider.of<FriendProvider>(context, listen: false).fetchFriends(context);
   }
 
   Future<void> _initFriendRequestList() async {
     await Provider.of<FriendProvider>(context, listen: false)
-        .fetchFriendRequests();
+        .fetchFriendRequests(context);
   }
 
   @override
@@ -72,7 +72,7 @@ class _FriendsScreenState extends State<FriendsScreen> {
             RefreshIndicator(
               onRefresh: () async {
                 await Provider.of<FriendProvider>(context, listen: false)
-                    .fetchFriends();
+                    .fetchFriends(context);
               },
               child: FutureBuilder<void>(
                 future: friendsList,
@@ -88,7 +88,7 @@ class _FriendsScreenState extends State<FriendsScreen> {
             RefreshIndicator(
               onRefresh: () async {
                 await Provider.of<FriendProvider>(context, listen: false)
-                    .fetchPotentialFriends();
+                    .fetchPotentialFriends(context);
               },
               child: FutureBuilder<void>(
                 future: potentialFriendList,
@@ -104,7 +104,7 @@ class _FriendsScreenState extends State<FriendsScreen> {
             RefreshIndicator(
               onRefresh: () async {
                 await Provider.of<FriendProvider>(context, listen: false)
-                    .fetchFriendRequests();
+                    .fetchFriendRequests(context);
               },
               child: const FriendRequestsList(),
             ),

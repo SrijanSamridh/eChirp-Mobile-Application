@@ -21,7 +21,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
     super.initState();
     // Fetch notifications when the screen is first initialized
     Provider.of<NotificationProvider>(context, listen: false)
-        .fetchNotifications();
+        .fetchNotifications(context);
   }
 
   void doNothing(context) {}
@@ -30,14 +30,14 @@ class _NotificationScreenState extends State<NotificationScreen> {
       BuildContext context, String notificationId, String reply) {
     setState(() {
       Provider.of<NotificationProvider>(context, listen: false)
-          .replyToNotifications(notificationId, reply);
+          .replyToNotifications(context, notificationId, reply);
     });
   }
 
   @override
   Widget build(BuildContext context) {
     _notificationProvider = Provider.of<NotificationProvider>(context);
-    _notificationProvider.fetchNotifications();
+    _notificationProvider.fetchNotifications(context);
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(

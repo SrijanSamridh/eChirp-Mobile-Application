@@ -18,16 +18,16 @@ class UserProvider extends ChangeNotifier {
   Future<Events?> get eventsAttended => _eventsAttended;
   Future<Events?> get eventsCreated => _eventsCreated;
 
-  Future<void> fetchUserData(String id, bool loggedUser) async {
+  Future<void> fetchUserData(BuildContext context, String id, bool loggedUser) async {
     try {
-      _eventsAttended = EventController().fetchEvents('/attended');
-      _eventsCreated = EventController().fetchEvents('/created');
+      _eventsAttended = EventController().fetchEvents(context, '/attended');
+      _eventsCreated = EventController().fetchEvents(context, '/created');
 
       // Fetch profile data based on id and loggedUser status
       // Assigned the fetched data to _profileData
       _profileData = loggedUser
-          ? UserDataController().fetchUserData()
-          : FriendController().fetchFriendProfile('/$id');
+          ? UserDataController().fetchUserData(context)
+          : FriendController().fetchFriendProfile(context, '/$id');
       notifyListeners(); // Notify listeners after updating data
     } catch (e) {
       debugPrint('Error fetching profile data: $e');

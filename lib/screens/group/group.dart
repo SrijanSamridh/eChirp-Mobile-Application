@@ -25,7 +25,7 @@ class _GroupScreenState extends State<GroupScreen> {
 
   @override
   void initState() {
-    Provider.of<GroupProvider>(context, listen: false).fetchGroups().then((_) {
+    Provider.of<GroupProvider>(context, listen: false).fetchGroups(context).then((_) {
       // Set a delay to show "No Data Found" after 3 seconds
       Future.delayed(const Duration(seconds: 1), () {
         if (!_dataLoaded) {
@@ -74,19 +74,19 @@ class _GroupScreenState extends State<GroupScreen> {
             RefreshIndicator(
                 onRefresh: () async {
                   await Provider.of<GroupProvider>(context, listen: false)
-                      .fetchGroups();
+                      .fetchGroups(context);
                 },
                 child: _buildMyGroupsList()),
             RefreshIndicator(
                 onRefresh: () async {
                   await Provider.of<GroupProvider>(context, listen: false)
-                      .fetchGroups();
+                      .fetchGroups(context);
                 },
                 child: _buildJoinedGroupsList()),
             RefreshIndicator(
                 onRefresh: () async {
                   await Provider.of<GroupProvider>(context, listen: false)
-                      .fetchGroups();
+                      .fetchGroups(context);
                 },
                 child: _buildAllGroupsList()),
           ],

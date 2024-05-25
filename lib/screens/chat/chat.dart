@@ -93,7 +93,7 @@ class __ChatScreenContentState extends State<_ChatScreenContent> {
   @override
   Widget build(BuildContext context) {
     _chatProvider = Provider.of<ChatProvider>(context);
-    _chatProvider.fetchMessages(widget.id);
+    _chatProvider.fetchMessages(context, widget.id);
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(

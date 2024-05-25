@@ -26,7 +26,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final UserProvider _userProvider = UserProvider();
 
   Future<void> _initProfileData(String id) async {
-    await _userProvider.fetchUserData(id, true);
+    await _userProvider.fetchUserData(context, id, true);
   }
 
   String username = "";
@@ -40,7 +40,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Future<void> _initPotentialFriendList() async {
     await Provider.of<FriendProvider>(context, listen: false)
-        .fetchPotentialFriends();
+        .fetchPotentialFriends(context);
     setState(() {});
   }
 

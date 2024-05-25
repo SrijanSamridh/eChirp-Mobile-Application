@@ -29,9 +29,9 @@ class NotificationController {
       ReceivedAction receivedAction) async {}
 
   // API calls here below
-  Future<Notifications?> fetchNotifications() async {
+  Future<Notifications?> fetchNotifications(BuildContext context) async {
     try {
-      var response = await ApiClient().get('/notification');
+      var response = await ApiClient().get(context, '/notification');
       final decodedResponse = json.decode(response);
 
       if (decodedResponse is! Map<String, dynamic>) {
