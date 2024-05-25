@@ -1,11 +1,12 @@
 import 'package:echirp/API/provider/chat_provider.dart';
 import 'package:echirp/API/provider/notification_provider.dart';
+import 'package:echirp/API/services/api_client.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 class SocketConnection {
   static final IO.Socket socket = IO.io(
-    'http://23.23.60.2:8080',
+    domains[Platform.aws],
     IO.OptionBuilder().setTransports(['websocket']) // for Flutter or Dart VM
         .build(),
   );

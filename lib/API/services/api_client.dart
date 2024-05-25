@@ -5,10 +5,23 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
+enum Platform {
+  vercel,
+  aws,
+  local
+}
+
+
+Map<Platform, String> domains = {
+  Platform.vercel : 'https://e-craze-server.vercel.app',
+  Platform.aws : 'http://23.23.60.2:8080',
+  Platform.local: 'http://localhost:8080'
+};
+
 // const String baseUrl = 'https://e-chirp-server.vercel.app/api';
 // const String baseUrl = 'https://api.eventchirp.com/api';
 // const String baseUrl = 'http://localhost:8080/api';
-const String baseUrl = 'http://23.23.60.2:8080/api';
+String baseUrl = '${domains[Platform.vercel]}/api';
 
 class ApiClient {
   var client = http.Client();
