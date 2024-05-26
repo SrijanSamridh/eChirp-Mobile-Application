@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../screens/search/search.dart';
-import '../utils/global_variabes.dart';
+import '../utils/global_variables.dart';
 
 class CustomSearchBar extends StatelessWidget {
   const CustomSearchBar({
@@ -35,7 +35,7 @@ class CustomSearchBar extends StatelessWidget {
         style: TextStyle(
           color: textColor ?? Colors.white,
         ),
-        cursorColor: GlobalVariables.kPrimaryColor,
+        cursorColor: GlobalVariables.colors.primary,
         decoration: InputDecoration(
           prefixIcon: Padding(
             padding: const EdgeInsets.only(left: 6),
@@ -54,8 +54,8 @@ class CustomSearchBar extends StatelessWidget {
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(18),
-            borderSide: const BorderSide(
-              color: GlobalVariables.kPrimaryColor,
+            borderSide: BorderSide(
+              color: GlobalVariables.colors.primary,
               width: 1,
             ),
           ),

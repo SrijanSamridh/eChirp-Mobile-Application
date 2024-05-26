@@ -3,15 +3,18 @@
 import 'dart:convert';
 
 import 'package:echirp/API/models/user.models.dart';
-import 'package:echirp/API/services/base_client.dart';
+import 'package:echirp/API/services/api_client.dart';
 import 'package:flutter/material.dart';
 
 import 'package:http/http.dart' as http;
 
+import '../services/helper/api_error.dart';
+import '../services/helper/api_error_handler.dart';
+
 class AuthController {
   var client = http.Client();
 
-  Future<User?> signIn(var payload) async {
+  Future<User?> signIn(BuildContext context, var payload) async {
     debugPrint('Authenticating data...');
     var body = payload;
 
@@ -47,9 +50,15 @@ class AuthController {
       } else {
         debugPrint(
             'Error: ${response.statusCode}, ${response.reasonPhrase}, $response');
+        throw ApiError(
+          statusCode: response.statusCode,
+          message: "Failed to fetch data",
+          details: response.body,
+        );
       }
     } catch (error) {
       debugPrint('Error: $error');
+        ApiErrorHandler.showErrorToast(context, error);
     }
     // Return null if an error occurs
     return null;
@@ -92,14 +101,14 @@ class AuthController {
       } else {
         debugPrint(
             'Error: ${response.statusCode}, ${response.reasonPhrase}, $response');
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-                '${response.body.split('Path')[1].split('providerId')[0]} ${response.body.split('Path')[2].split('"')[0]}'),
-          ),
+        throw ApiError(
+          statusCode: response.statusCode,
+          message: "Failed to fetch data",
+          details: response.body,
         );
       }
     } catch (error) {
+        ApiErrorHandler.showErrorToast(context, error);
       debugPrint('Error: $error');
     }
     return null;

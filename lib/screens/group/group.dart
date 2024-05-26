@@ -25,9 +25,9 @@ class _GroupScreenState extends State<GroupScreen> {
 
   @override
   void initState() {
-    Provider.of<GroupProvider>(context, listen: false).fetchGroups().then((_) {
+    Provider.of<GroupProvider>(context, listen: false).fetchGroups(context).then((_) {
       // Set a delay to show "No Data Found" after 3 seconds
-      Future.delayed(const Duration(seconds: 3), () {
+      Future.delayed(const Duration(seconds: 1), () {
         if (!_dataLoaded) {
           setState(() {
             _dataLoaded = true;
@@ -46,7 +46,7 @@ class _GroupScreenState extends State<GroupScreen> {
       length: 3,
       child: Scaffold(
         appBar: PreferredSize(
-          preferredSize: Size.fromHeight(size.height * 0.18),
+          preferredSize: Size.fromHeight(size.height * 0.20),
           child: CustomAppBar(
             size: size,
             title: 'Groups',
@@ -74,19 +74,19 @@ class _GroupScreenState extends State<GroupScreen> {
             RefreshIndicator(
                 onRefresh: () async {
                   await Provider.of<GroupProvider>(context, listen: false)
-                      .fetchGroups();
+                      .fetchGroups(context);
                 },
                 child: _buildMyGroupsList()),
             RefreshIndicator(
                 onRefresh: () async {
                   await Provider.of<GroupProvider>(context, listen: false)
-                      .fetchGroups();
+                      .fetchGroups(context);
                 },
                 child: _buildJoinedGroupsList()),
             RefreshIndicator(
                 onRefresh: () async {
                   await Provider.of<GroupProvider>(context, listen: false)
-                      .fetchGroups();
+                      .fetchGroups(context);
                 },
                 child: _buildAllGroupsList()),
           ],
@@ -106,14 +106,15 @@ class _GroupScreenState extends State<GroupScreen> {
 
     if (myGroups.isEmpty && _dataLoaded) {
       return Center(
-          child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Lottie.asset('assets/animations/under-development.json',
-              height: size.height * 0.35),
-          const Text("Opps! No Data Available, create a group today."),
-        ],
-      ));
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Lottie.asset('assets/animations/under-development.json',
+                height: size.height * 0.35),
+            const Text("Opps! No Data Available, create a group today."),
+          ],
+        ),
+      );
     }
 
     return ListView.builder(
@@ -128,7 +129,7 @@ class _GroupScreenState extends State<GroupScreen> {
                         title: group.name.toString(),
                         image: '',
                         id: group.groupId.toString(),
-                        participants: group.participants,
+                        participants: group.participants, index: index, myGroups: true,
                       ))),
           child: GroupTile(
             image: group.imageUrl ?? '',
@@ -153,14 +154,15 @@ class _GroupScreenState extends State<GroupScreen> {
 
     if (joinedGroups.isEmpty && _dataLoaded) {
       return Center(
-          child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Lottie.asset('assets/animations/under-development.json',
-              height: size.height * 0.35),
-          const Text("Join a group today Swipe right."),
-        ],
-      ));
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Lottie.asset('assets/animations/under-development.json',
+                height: size.height * 0.35),
+            const Text("Join a group today Swipe right."),
+          ],
+        ),
+      );
     }
 
     return ListView.builder(
@@ -169,14 +171,17 @@ class _GroupScreenState extends State<GroupScreen> {
         final group = joinedGroups[index];
         return GestureDetector(
           onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => ChatScreen(
-                        title: group.name.toString(),
-                        image: '',
-                        id: group.groupId.toString(),
-                        participants: group.participants,
-                      ))),
+            context,
+            MaterialPageRoute(
+              builder: (context) => ChatScreen(
+                title: group.name.toString(),
+                image: '',
+                id: group.groupId.toString(),
+                participants: group.participants,
+                index: index, myGroups: false,
+              ),
+            ),
+          ),
           child: GroupTile(
             image: group.imageUrl ?? '',
             title: group.name ?? '',
@@ -200,14 +205,15 @@ class _GroupScreenState extends State<GroupScreen> {
 
     if (allGroups.isEmpty && _dataLoaded) {
       return Center(
-          child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Lottie.asset('assets/animations/under-development.json',
-              height: size.height * 0.35),
-          const Text("Opps! No Data Available, Create your own Group."),
-        ],
-      ));
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Lottie.asset('assets/animations/under-development.json',
+                height: size.height * 0.35),
+            const Text("Opps! No Data Available, Create your own Group."),
+          ],
+        ),
+      );
     }
 
     return ListView.builder(
@@ -216,16 +222,18 @@ class _GroupScreenState extends State<GroupScreen> {
         final group = allGroups[index];
         return GestureDetector(
           onTap: () {
-            Navigator.pushNamed(context, GroupInfoScreen.routeName,
-                arguments: () {
-              GroupController().sendRequest(group.groupId.toString());
+            Navigator.pushNamed(context, GroupInfoScreen.routeName, arguments: {
+              'onPressed': () {
+                GroupController().sendRequest(group.groupId.toString());
+              },
+              'index': index
             });
           },
           child: GroupTile(
             image: group.imageUrl ?? '',
             title: group.name ?? '',
-            recentMessage: 'Are we playing today?',
-            senderName: 'John Doe',
+            recentMessage: '${group.owner?.username}',
+            senderName: 'Owned By',
             totalMembers: group.participants?.length ?? 0,
           ),
         );

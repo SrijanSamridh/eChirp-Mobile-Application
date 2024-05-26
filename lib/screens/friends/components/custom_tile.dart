@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:echirp/screens/profile/profile.dart';
-import 'package:echirp/utils/global_variabes.dart';
+import 'package:echirp/utils/global_variables.dart';
 
 import '../../../API/provider/friend_provider.dart';
 
@@ -133,7 +133,7 @@ class CustomTile extends StatelessWidget {
                           width: size.height * 0.04,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(200),
-                            gradient: GlobalVariables.kPrimaryGradientColor,
+                            gradient: GlobalVariables.colors.primaryGradient,
                           ),
                           child: IconButton(
                             onPressed: () {
@@ -162,7 +162,7 @@ class CustomTile extends StatelessWidget {
                           width: size.height * 0.04,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(50),
-                            gradient: GlobalVariables.kPrimaryGradientColor,
+                            gradient: GlobalVariables.colors.primaryGradient,
                           ),
                           child: IconButton(
                             onPressed: () {
@@ -183,7 +183,7 @@ class CustomTile extends StatelessWidget {
                           width: size.height * 0.04,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(50),
-                            gradient: GlobalVariables.kPrimaryGradientColor,
+                            gradient: GlobalVariables.colors.primaryGradient,
                           ),
                           child: IconButton(
                             onPressed: () {},

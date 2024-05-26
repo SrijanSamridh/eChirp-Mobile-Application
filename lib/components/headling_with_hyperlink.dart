@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../utils/global_variabes.dart';
+import '../utils/global_variables.dart';
 
 class HeadlineWithHyperLink extends StatelessWidget {
   const HeadlineWithHyperLink({
@@ -31,12 +31,12 @@ class HeadlineWithHyperLink extends StatelessWidget {
           ),
           TextButton(
             onPressed: onPressed,
-            child: const Text(
+            child: Text(
               "see all",
               style: TextStyle(
-                color: GlobalVariables.kPrimaryColor,
+                color: GlobalVariables.colors.primary,
                 decoration: TextDecoration.underline,
-                decorationColor: GlobalVariables.kPrimaryColor,
+                decorationColor: GlobalVariables.colors.primary,
               ),
             ),
           ),

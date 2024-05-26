@@ -3,15 +3,13 @@
 import 'dart:convert';
 
 import 'package:echirp/API/provider/user_provider.dart';
-import 'package:echirp/API/services/base_client.dart';
 import 'package:echirp/screens/profile/profile.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
-import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../API/models/user.models.dart';
+import '../../../API/services/api_client.dart';
 
 class EditProfileScreen extends StatefulWidget {
   static const String routeName = '/edit-profile';
@@ -46,7 +44,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       };
 
       // Get Token
-      String token = await BaseClient().getToken();
+      String token = await ApiClient().getToken();
 
       // Header Configuration
       var headers = <String, String>{
@@ -95,7 +93,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   Future<void> _initProfileData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String id = prefs.getString('_id').toString();
-    await _userProvider.fetchUserData(id, true);
+    await _userProvider.fetchUserData(context, id, true);
   }
 
   @override

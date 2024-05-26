@@ -1,9 +1,9 @@
-// ignore_for_file: avoid_print
+// ignore_for_file: avoid_print, use_build_context_synchronously
 
 import 'package:flutter/material.dart';
 import 'package:echirp/API/controller/friend.controller.dart';
 import 'package:echirp/API/models/friends.model.dart';
-import 'package:echirp/API/models/potentialFriends.dart';
+import 'package:echirp/API/models/potential_friends.dart';
 import 'package:echirp/API/models/friendRequest.models.dart';
 
 class FriendProvider extends ChangeNotifier {
@@ -18,11 +18,11 @@ class FriendProvider extends ChangeNotifier {
   List<FriendRequests>? get friendRequests => _friendRequests;
   bool get isLoading => _isLoading;
 
-  Future<void> fetchFriends() async {
+  Future<void> fetchFriends(BuildContext context) async {
     _isLoading = true;
     notifyListeners();
     try {
-      _myFriends = await friendController.fetchMyFriends('/friends');
+      _myFriends = await friendController.fetchMyFriends(context, '/friends');
     } catch (e) {
       print('Error fetching friends: $e');
     }
@@ -30,12 +30,12 @@ class FriendProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> fetchPotentialFriends() async {
+  Future<void> fetchPotentialFriends(BuildContext context) async {
     _isLoading = true;
     notifyListeners();
     try {
       _potentialFriends =
-          await friendController.fetchPotentialFriends('/potential');
+          await friendController.fetchPotentialFriends(context, '/potential');
       for (int i = 0; i < _potentialFriends!.potentialFriends.length; i++) {
         print("${_potentialFriends?.potentialFriends[i].friend.username} : ${_potentialFriends?.potentialFriends[i].count} mutual");
       }
@@ -46,12 +46,12 @@ class FriendProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> fetchFriendRequests() async {
+  Future<void> fetchFriendRequests(BuildContext context) async {
     _isLoading = true;
     notifyListeners();
     try {
       print("Fetching Requests...");
-      _friendRequests = await friendController.fetchFriendRequests('/requests');
+      _friendRequests = await friendController.fetchFriendRequests(context, '/requests');
       print(_friendRequests);
     } catch (e) {
       print('Error fetching friend requests: $e');
@@ -66,7 +66,7 @@ class FriendProvider extends ChangeNotifier {
     try {
       await friendController.removeFriend(context, id);
       // Refresh the friends list after removing a friend
-      await fetchFriends();
+      await fetchFriends(context);
     } catch (e) {
       print('Error removing friend: $e');
     }
@@ -80,7 +80,7 @@ class FriendProvider extends ChangeNotifier {
     try {
       await friendController.sendFriendRequest(context, friendID);
       // Refresh the potential friends list after sending a request
-      await fetchPotentialFriends();
+      await fetchPotentialFriends(context);
     } catch (e) {
       print('Error sending friend request: $e');
     }
@@ -95,9 +95,9 @@ class FriendProvider extends ChangeNotifier {
     try {
       await friendController.acceptFriendRequest(context, friendID);
       // Refresh the friend requests list after accepting a request
-      await fetchFriendRequests();
+      await fetchFriendRequests(context);
       // Refresh the friends list after accepting a request
-      await fetchFriends();
+      await fetchFriends(context);
     } catch (e) {
       print('Error accepting friend request: $e');
     }

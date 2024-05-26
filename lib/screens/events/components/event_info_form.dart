@@ -1,7 +1,7 @@
 import 'package:echirp/components/custom_fields.dart';
 import 'package:flutter/material.dart';
 
-import '../../../utils/global_variabes.dart';
+import '../../../utils/global_variables.dart';
 
 class EventInfoForm extends StatefulWidget {
   const EventInfoForm({

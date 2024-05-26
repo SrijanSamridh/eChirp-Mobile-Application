@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import '../../API/controller/friend.controller.dart';
 import '../../API/models/friends.model.dart';
-import '../../utils/global_variabes.dart';
+import '../../utils/global_variables.dart';
 import '../friends/components/custom_tile.dart';
 
 class SearchScreen extends StatefulWidget {
@@ -62,7 +62,7 @@ class _SearchScreenState extends State<SearchScreen> {
 
   Widget _buildSearchBar() {
     return Material(
-      color: GlobalVariables.kPrimaryColor,
+      color: GlobalVariables.colors.primary,
       borderRadius: BorderRadius.circular(18),
       elevation: 1,
       child: Row(
@@ -75,13 +75,13 @@ class _SearchScreenState extends State<SearchScreen> {
               style: const TextStyle(
                 color: Colors.black,
               ),
-              cursorColor: GlobalVariables.kPrimaryColor,
+              cursorColor: GlobalVariables.colors.primary,
               decoration: InputDecoration(
-                prefixIcon: const Padding(
-                  padding: EdgeInsets.only(left: 6),
+                prefixIcon: Padding(
+                  padding: const EdgeInsets.only(left: 6),
                   child: Icon(
                     Icons.search,
-                    color: GlobalVariables.kPrimaryColor,
+                    color: GlobalVariables.colors.primary,
                     size: 18,
                   ),
                 ),
@@ -94,8 +94,8 @@ class _SearchScreenState extends State<SearchScreen> {
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(18),
-                  borderSide: const BorderSide(
-                    color: GlobalVariables.kPrimaryColor,
+                  borderSide: BorderSide(
+                    color: GlobalVariables.colors.primary,
                     width: 1,
                   ),
                 ),
@@ -140,7 +140,7 @@ class _SearchScreenState extends State<SearchScreen> {
 
   Future<void> _searchUsers(String query) async {
     setState(() {
-      _searchResults = friendController.searchPeople('/search', query);
+      _searchResults = friendController.searchPeople(context, '/search', query);
     });
   }
 

@@ -1,25 +1,26 @@
 import 'package:echirp/API/provider/event_provider.dart';
-import 'package:echirp/utils/global_variabes.dart';
+import 'package:echirp/utils/data_formatter.dart';
+import 'package:echirp/utils/global_variables.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
-import '../../API/provider/friend_provider.dart';
 
 class EventDetail extends StatelessWidget {
   static const String routeName = '/event-detail';
 
   int index;
-  bool isLoggedUser = true;
 
   EventDetail({
     Key? key,
     required this.index,
   }) : super(key: key);
+
+  bool isLoggedUser = true;
+
   @override
   Widget build(BuildContext context) {
     final event =
         Provider.of<EventsProvider>(context, listen: false).allEvents?.events;
-    print(event?[index].dateOfEvent);
+    debugPrint(event?[index].dateOfEvent.toString());
     Size mq = MediaQuery.of(context).size;
     return Scaffold(
       extendBodyBehindAppBar: true,
@@ -30,7 +31,7 @@ class EventDetail extends StatelessWidget {
         children: [
           // Background Image
           Container(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               image: DecorationImage(
                 image: AssetImage('assets/images/eventBackground.png'),
                 fit: BoxFit.cover,
@@ -45,7 +46,7 @@ class EventDetail extends StatelessWidget {
             child: Stack(children: [
               Container(
                 //padding: EdgeInsets.all(20),
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   // color: Colors.black,
 
                   gradient: LinearGradient(
@@ -69,17 +70,17 @@ class EventDetail extends StatelessWidget {
                       padding: const EdgeInsets.only(top: 100.0),
                       child: Container(
                         decoration: BoxDecoration(
-                          gradient: GlobalVariables.kPrimaryGradientColor,
+                          gradient: GlobalVariables.colors.primaryGradient,
                           borderRadius: BorderRadius.circular(50),
                         ),
-                        padding: EdgeInsets.all(20),
+                        padding: const EdgeInsets.all(20),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Container(
+                                SizedBox(
                                   height: 110,
                                   width: 100,
                                   child: ClipRRect(
@@ -90,19 +91,18 @@ class EventDetail extends StatelessWidget {
                                         fit: BoxFit.fill,
                                       )),
                                 ),
-                                SizedBox(width: 10),
+                                const SizedBox(width: 10),
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      formatDate(event?[index]
+                                      DataFormatter.formatDate(event?[index]
                                               .dateOfEvent
                                               .toString() ??
                                           '')
                                       // "${event?[index].dateOfEvent.toString() ??'date'}"
-
                                       ,
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                         color: Colors.white,
                                         fontSize: 20,
                                         fontWeight: FontWeight.bold,
@@ -110,23 +110,23 @@ class EventDetail extends StatelessWidget {
                                     ),
                                     Text(
                                       "${event?[index].startTime} to ${event?[index].endTime}",
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                           fontSize: 20,
                                           color: Colors.white,
                                           fontWeight: FontWeight.bold),
                                     ),
                                     Row(
                                       children: [
-                                        Icon(
+                                        const Icon(
                                           Icons.location_pin,
                                           color: Colors.white,
                                         ),
-                                        Container(
+                                        SizedBox(
                                           width: mq.width * 0.5,
                                           child: Text(
                                             "${event?[index].location}, ${event?[index].address}",
                                             softWrap: true,
-                                            style: TextStyle(
+                                            style: const TextStyle(
                                                 fontSize: 14,
                                                 color: Colors.white70,
                                                 fontWeight: FontWeight.bold),
@@ -138,22 +138,22 @@ class EventDetail extends StatelessWidget {
                                 ),
                               ],
                             ),
-                            SizedBox(height: 10),
+                            const SizedBox(height: 10),
                             // Description
                             Text(
                               event?[index].eventDescription ??
                                   "No description available",
-                              style: TextStyle(
+                              style: const TextStyle(
                                   color: Colors.white70,
                                   fontSize: 14,
                                   fontWeight: FontWeight.bold),
                             ),
-                            SizedBox(height: 10),
+                            const SizedBox(height: 10),
                             // Number of Mutual Friends
                             Container(
                               width: mq.width,
                               alignment: Alignment.centerRight,
-                              child: Text(
+                              child: const Text(
                                 '33 Mutual Friends attending',
                                 // event?[index].,
                                 style: TextStyle(
@@ -166,7 +166,7 @@ class EventDetail extends StatelessWidget {
                       ),
                     ),
 
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     // Row of RRECT Images
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 5.0),
@@ -180,21 +180,21 @@ class EventDetail extends StatelessWidget {
                         ],
                       ),
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     // Tile with Leading Avatar, Title, Subtitle, and Trailing Join Button
                     Padding(
                       padding: const EdgeInsets.only(bottom: 18.0),
                       child: ListTile(
-                        leading: CircleAvatar(
+                        leading: const CircleAvatar(
                           backgroundImage:
                               AssetImage('assets/images/dummyDP.png'),
                         ),
-                        title: Text(
+                        title: const Text(
                           'Created by:',
                           style: TextStyle(color: Colors.white, fontSize: 14),
                         ),
                         subtitle: isLoggedUser
-                            ? Text(
+                            ? const Text(
                                 "You",
                                 style: TextStyle(
                                     color: Colors.white,
@@ -207,12 +207,12 @@ class EventDetail extends StatelessWidget {
                                 children: [
                                   Text(
                                     event?[index].createdBy?.username ?? '',
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                         color: Colors.white,
                                         fontSize: 16,
                                         fontWeight: FontWeight.bold),
                                   ),
-                                  Text('Friends',
+                                  const Text('Friends',
                                       style: TextStyle(
                                           color: Colors.white38,
                                           fontSize: 14,
@@ -223,7 +223,7 @@ class EventDetail extends StatelessWidget {
                           width: 110,
                           height: 40,
                           decoration: BoxDecoration(
-                              gradient: GlobalVariables.kPrimaryGradientColor,
+                              gradient: GlobalVariables.colors.primaryGradient,
                               borderRadius: BorderRadius.circular(50)),
                           child: isLoggedUser
                               ? TextButton(
@@ -235,7 +235,7 @@ class EventDetail extends StatelessWidget {
                                       },
                                     );
                                   },
-                                  child: Text(
+                                  child: const Text(
                                     'Cancel Event',
                                     style: TextStyle(
                                         color: Colors.white, fontSize: 12),
@@ -243,7 +243,7 @@ class EventDetail extends StatelessWidget {
                                 )
                               : TextButton(
                                   onPressed: () {},
-                                  child: Text(
+                                  child: const Text(
                                     'Joined',
                                     style: TextStyle(color: Colors.white),
                                   ),
@@ -267,22 +267,22 @@ class EventDetail extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.end,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Container(
+                          SizedBox(
                             width: mq.width * 0.6,
                             child: RichText(
                               text: TextSpan(
-                                style: TextStyle(
+                                style: const TextStyle(
                                   color: Colors.white,
                                 ),
                                 children: <TextSpan>[
                                   TextSpan(
                                       text: event?[index].eventTitle,
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                           fontSize: 20,
                                           fontWeight: FontWeight.bold)),
                                   TextSpan(
                                     text: "   ${event?[index].eventMode!}",
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                         fontSize: 15,
                                         fontWeight: FontWeight.w400),
                                   ),
@@ -292,7 +292,7 @@ class EventDetail extends StatelessWidget {
                           ),
                           Text(
                             "At ${event?[index].location ?? ''}",
-                            style: TextStyle(
+                            style: const TextStyle(
                                 color: Colors.white,
                                 //fontWeight: FontWeight.bold,
                                 fontSize: 24),
@@ -305,12 +305,12 @@ class EventDetail extends StatelessWidget {
                         children: [
                           Text(
                             event?[index].maxParticipants.toString() ?? '',
-                            style: TextStyle(
+                            style: const TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 32),
                           ),
-                          Text(
+                          const Text(
                             "Guests",
                             style: TextStyle(
                                 color: Colors.white,
@@ -329,17 +329,6 @@ class EventDetail extends StatelessWidget {
       ),
     );
   }
-}
-
-// Function to convert date string to day-month-year format
-String formatDate(String dateString) {
-  DateTime date = DateTime.parse(dateString);
-  final List<String> months = [
-    '', // Leave an empty string at index 0 to match month numbers with indices
-    'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August',
-    'September', 'October', 'November', 'December'
-  ];
-  return '${date.day} ${months[date.month]} ${date.year}';
 }
 
 Widget Images(String url) {
@@ -362,7 +351,7 @@ Widget CustomDialog(BuildContext context) {
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(30.0),
     ),
-    title: Text(
+    title: const Text(
       'Do you want to cancel the event?',
       textAlign: TextAlign.center,
       style: TextStyle(
@@ -387,24 +376,24 @@ Widget CustomDialog(BuildContext context) {
               onPressed: () {
                 // Action when No button is pressed
               },
-              child: Text(
+              child: const Text(
                 'Yes',
                 style: TextStyle(color: Colors.orange),
               ),
             ),
           ),
-          SizedBox(width: 16), // Add space between buttons
+          const SizedBox(width: 16), // Add space between buttons
           Container(
             width: 110,
             height: 40,
             decoration: BoxDecoration(
-                gradient: GlobalVariables.kPrimaryGradientColor,
+                gradient: GlobalVariables.colors.primaryGradient,
                 borderRadius: BorderRadius.circular(30)),
             child: TextButton(
               onPressed: () {
                 Navigator.pop(context);
               },
-              child: Text(
+              child: const Text(
                 'No',
                 style: TextStyle(color: Colors.white),
               ),

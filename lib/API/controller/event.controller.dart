@@ -3,16 +3,16 @@
 import 'dart:convert';
 
 import 'package:echirp/API/models/event.models.dart';
-import 'package:echirp/API/services/base_client.dart';
+import 'package:echirp/API/services/api_client.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class EventController {
-  final client = BaseClient();
+  final client = ApiClient();
 
-  Future<Events?> fetchEvents(String route) async {
+  Future<Events?> fetchEvents(BuildContext context, String route) async {
     try {
-      final response = await client.get("/events$route");
+      final response = await client.get(context, "/events$route");
 
       if (response == null || response.isEmpty) {
         debugPrint('Unexpected response format: $response');
@@ -59,7 +59,8 @@ class EventController {
         return response;
       } else {
         debugPrint('Empty or null response received');
-        return http.Response('', 204); // Return an empty response with status code 204
+        return http.Response(
+            '', 204); // Return an empty response with status code 204
       }
     } catch (e) {
       debugPrint('Error posting event: $e');
@@ -69,7 +70,7 @@ class EventController {
 
   Future<dynamic> createEvent(dynamic body) async {
     // Get Token
-    String token = await BaseClient().getToken();
+    String token = await ApiClient().getToken();
 
     // Header Config
     var headers = <String, String>{

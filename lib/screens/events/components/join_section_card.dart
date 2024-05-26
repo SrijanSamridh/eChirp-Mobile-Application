@@ -1,6 +1,5 @@
+import 'package:echirp/utils/data_formatter.dart';
 import 'package:flutter/material.dart';
-// ignore: depend_on_referenced_packages
-import 'package:intl/intl.dart';
 import '../../../components/custom_btn.dart';
 
 class JoinSectionCard extends StatelessWidget {
@@ -52,8 +51,9 @@ class JoinSectionCard extends StatelessWidget {
             borderRadius: BorderRadius.circular(30.0),
             child: Image(
               image: AssetImage(imgUrl),
-              fit: BoxFit.fitWidth,
               height: size.height * 0.3,
+              width: size.width,
+              fit: BoxFit.fitWidth,
             ),
           ),
           Align(
@@ -132,7 +132,7 @@ class JoinSectionCard extends StatelessWidget {
                                     size: 15,
                                   ),
                                   Text(
-                                    ' ${formatDate(date.toString(), false)} at ${formatTime(time)}',
+                                    ' ${DataFormatter.formatDateWithFlag(date.toString(), false)} at ${DataFormatter.formatTimeWithoutSeconds(time)}',
                                     style: const TextStyle(
                                       color: Colors.white,
                                       fontSize: 12,
@@ -180,31 +180,5 @@ class JoinSectionCard extends StatelessWidget {
         ],
       ),
     );
-  }
-  String formatDate(String dateString, bool created) {
-    try {
-      DateTime date = DateTime.parse(dateString);
-      String formattedDate;
-
-      created
-          ? formattedDate = DateFormat('dd MMM yyyy').format(date)
-          : formattedDate = DateFormat('dd MMM').format(date);
-
-      return formattedDate;
-    } catch (e) {
-      debugPrint(e.toString());
-      return "";
-    }
-  }
-
-  String formatTime(String timeString) {
-    try {
-      DateTime dateTime = DateTime.parse('2022-01-01 $timeString');
-      String formattedTime = DateFormat('h:mm a').format(dateTime);
-      return formattedTime;
-    } catch (e) {
-      debugPrint(e.toString());
-      return "${e.toString().split(" ")[4]} ${e.toString().split(" ")[5]}";
-    }
   }
 }

@@ -1,7 +1,7 @@
 import 'package:echirp/API/provider/user_provider.dart';
 import 'package:echirp/components/custom_btn.dart';
 import 'package:echirp/screens/profile/settings/edit_profile.dart';
-import 'package:echirp/utils/global_variabes.dart';
+import 'package:echirp/utils/global_variables.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -32,7 +32,7 @@ class _ProfileSettingsState extends State<ProfileSettings> {
   }
 
   Future<void> _initProfileData() async {
-    await _userProvider.fetchUserData(widget.id, widget.loggedUser);
+    await _userProvider.fetchUserData(context, widget.id, widget.loggedUser);
   }
 
   @override
@@ -112,9 +112,9 @@ class _ProfileSettingsState extends State<ProfileSettings> {
                             Navigator.pushNamed(
                                 context, EditProfileScreen.routeName);
                           },
-                          child: const Card(
-                            shadowColor: GlobalVariables.kPrimaryColor,
-                            child: ListTile(
+                          child: Card(
+                            shadowColor: GlobalVariables.colors.primary,
+                            child: const ListTile(
                               leading: Icon(Icons.edit),
                               title: Text('Edit profile',
                                   style: TextStyle(

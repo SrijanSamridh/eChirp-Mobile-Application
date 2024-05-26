@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../../../components/custom_dropdown.dart';
 import '../../../components/custom_sub_dropdown.dart';
-import '../../../utils/global_variabes.dart';
+import '../../../utils/global_variables.dart';
 
 class CreateGroupScreen extends StatefulWidget {
   static const String routeName = '/create-group';
@@ -156,7 +156,7 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
                 child: Container(
                   padding: const EdgeInsets.all(8.0),
                   decoration: BoxDecoration(
-                    gradient: GlobalVariables.kPrimaryGradientColor,
+                    gradient: GlobalVariables.colors.primaryGradient,
                     borderRadius: BorderRadius.circular(50),
                   ),
                   child: Icon(

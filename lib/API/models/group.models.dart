@@ -109,10 +109,14 @@ class Group {
 
 class Owner {
   String? id;
+  String? username;
+  String? providerId;
   bool? owned;
 
   Owner({
     this.id,
+    this.username,
+    this.providerId,
     this.owned,
   });
 
@@ -122,11 +126,15 @@ class Owner {
 
   factory Owner.fromJson(Map<String, dynamic> json) => Owner(
         id: json["_id"],
+        username: json["username"],
+        providerId: json["providerId"],
         owned: json["owned"],
       );
 
   Map<String, dynamic> toJson() => {
         "_id": id,
+        "username": username,
+        "providerId" : providerId,
         "owned": owned,
       };
 }

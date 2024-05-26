@@ -60,13 +60,16 @@ class GroupTile extends StatelessWidget {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text(
-                                title.trimRight(),
-                                overflow: TextOverflow.fade,
-                                style: const TextStyle(
-                                  color: Color(0xff565656),
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 17,
+                              SizedBox(
+                                width: size.width * 0.4,
+                                child: Text(
+                                  title.trimRight(),
+                                  overflow: TextOverflow.ellipsis,
+                                  style: const TextStyle(
+                                    color: Color(0xff565656),
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 17,
+                                  ),
                                 ),
                               ),
                               const SizedBox(width: 10),

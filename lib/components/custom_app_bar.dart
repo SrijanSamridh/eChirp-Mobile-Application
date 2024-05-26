@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../utils/global_variabes.dart';
+import '../utils/global_variables.dart';
 import 'custom_search_bar.dart';
 
 class CustomAppBar extends StatelessWidget {
@@ -48,24 +48,24 @@ class CustomAppBar extends StatelessWidget {
                   ElevatedButton(
                     style: ButtonStyle(
                         foregroundColor:
-                            MaterialStateProperty.all(Colors.white),
-                        backgroundColor: MaterialStateProperty.all(
-                            GlobalVariables.kPrimaryColor),
-                        textStyle: MaterialStatePropertyAll(
+                            WidgetStateProperty.all(Colors.white),
+                        backgroundColor: WidgetStateProperty.all(
+                            GlobalVariables.colors.primary),
+                        textStyle: WidgetStatePropertyAll(
                           TextStyle(
                               fontSize: size.height * 0.012,
                               fontWeight: FontWeight.bold),
                         ),
                         iconSize:
-                            MaterialStateProperty.all(size.height * 0.02)),
+                        WidgetStateProperty.all(size.height * 0.02)),
                     onPressed: onPressed,
                     child: Row(
                       children: [
-                        Icon(Icons.add),
-                        SizedBox(width: 8.0),
+                        const Icon(Icons.add),
+                        const SizedBox(width: 8.0),
                         showGroup
-                        ? Text('Create Group')
-                        : Text('Create Event'),
+                        ? const Text('Create Group')
+                        : const Text('Create Event'),
                       ],
                     ),
                   ),
@@ -74,9 +74,9 @@ class CustomAppBar extends StatelessWidget {
               const SizedBox(height: 10.0),
               CustomSearchBar(
                 searchFor: searchfor,
-                backgroundColor: GlobalVariables.kPrimaryColor,
+                backgroundColor: GlobalVariables.colors.primary,
                 fillColor: Colors.white,
-                iconColor: GlobalVariables.kPrimaryColor,
+                iconColor: GlobalVariables.colors.primary,
                 iconSize: 18,
                 textColor: Colors.black,
                 textSize: 15,
@@ -86,8 +86,8 @@ class CustomAppBar extends StatelessWidget {
         ),
       ),
       bottom: TabBar(
-          indicatorColor: GlobalVariables.kPrimaryColor,
-          labelColor: GlobalVariables.kPrimaryColor,
+          indicatorColor: GlobalVariables.colors.primary,
+          labelColor: GlobalVariables.colors.primary,
           tabs: tabs),
     );
   }

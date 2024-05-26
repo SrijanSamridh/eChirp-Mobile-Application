@@ -1,16 +1,17 @@
 // ignore_for_file: avoid_print
 
 import 'dart:convert';
-import 'package:echirp/API/services/base_client.dart';
+import 'package:echirp/API/services/api_client.dart';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import '../models/group.models.dart';
 
 class GroupController {
-  final client = BaseClient();
+  final client = ApiClient();
 
   Future<Groups> createGroup(Map<String, dynamic> requestBody) async {
     // Get Token
-    String token = await BaseClient().getToken();
+    String token = await ApiClient().getToken();
 
     // Header Config
     var headers = <String, String>{
@@ -54,13 +55,13 @@ class GroupController {
     }
   }
 
-  Future<Groups?> fetchGroups(String type) async {
+  Future<Groups?> fetchGroups(BuildContext context,String type) async {
     try {
       var response;
       if (type == "all") {
-        response = await client.get("/groups/$type");
+        response = await client.get(context ,"/groups/$type");
       } else {
-        response = await client.get("/groups?type=$type");
+        response = await client.get(context, "/groups?type=$type");
       }
       print("\n\n\n$type :: ${response.toString()}");
       if (response == null || response.isEmpty) {
@@ -96,6 +97,18 @@ class GroupController {
   Future<void> sendRequest(String groupId) async {
     try {
       final response = await client.post('/notification', {"groupId": groupId});
+      var responseData = response['message'];
+      return responseData;
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  Future<void> addParticipant(
+      String groupId, List<Map<String, String>> participants) async {
+    try {
+      final response = await client.post(
+          '/participants', {"groupId": groupId, "participants": participants});
       var responseData = response['message'];
       return responseData;
     } catch (e) {

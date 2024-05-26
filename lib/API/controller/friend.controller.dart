@@ -4,16 +4,16 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import '../models/friendRequest.models.dart';
 import '../models/friends.model.dart';
-import '../models/potentialFriends.dart';
+import '../models/potential_friends.dart';
 import '../models/userData.model.dart';
-import '../services/base_client.dart';
+import '../services/api_client.dart';
 
 class FriendController {
-  final client = BaseClient();
+  final client = ApiClient();
 
-  Future<List<Friends>?> fetchMyFriends(String route) async {
+  Future<List<Friends>?> fetchMyFriends(BuildContext context, String route) async {
     try {
-      final response = await client.get("/friend$route");
+      final response = await client.get(context, "/friend$route");
       if (response == null || response.isEmpty) return null;
 
       final List<dynamic> decodedResponse = json.decode(response);
@@ -28,9 +28,9 @@ class FriendController {
     }
   }
 
-  Future<List<Friends>?> searchPeople(String route, String query) async {
+  Future<List<Friends>?> searchPeople(BuildContext context,String route, String query) async {
     try {
-      final response = await client.get("/friend$route?term=$query");
+      final response = await client.get(context, "/friend$route?term=$query");
       if (response == null || response.isEmpty) return null;
 
       final List<dynamic> decodedResponse = json.decode(response);
@@ -45,9 +45,9 @@ class FriendController {
     }
   }
 
-  Future<PotentialFriends?> fetchPotentialFriends(String route) async {
+  Future<PotentialFriends?> fetchPotentialFriends(BuildContext context, String route) async {
     try {
-      final response = await client.get("/friend$route");
+      final response = await client.get(context, "/friend$route");
       if (response == null || response.isEmpty) return null;
 
       final decodedResponse = json.decode(response);
@@ -68,9 +68,9 @@ class FriendController {
     }
   }
 
-  Future<List<FriendRequests>?> fetchFriendRequests(String route) async {
+  Future<List<FriendRequests>?> fetchFriendRequests(BuildContext context, String route) async {
     try {
-      final response = await client.get("/friend$route");
+      final response = await client.get(context, "/friend$route");
       if (response == null || response.isEmpty) return null;
 
       final List<dynamic> decodedResponse = json.decode(response);
@@ -170,9 +170,9 @@ class FriendController {
     }
   }
 
-  Future<UserData?> fetchFriendProfile(String route) async {
+  Future<UserData?> fetchFriendProfile(BuildContext context, String route) async {
     try {
-      final response = await client.get("/friend/profile$route");
+      final response = await client.get(context, "/friend/profile$route");
       if (response == null || response.isEmpty) return null;
 
       final decodedResponse = json.decode(response);

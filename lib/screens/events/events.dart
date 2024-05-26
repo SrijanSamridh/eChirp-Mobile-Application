@@ -24,7 +24,7 @@ class EventsScreenState extends State<EventsScreen> {
   void initState() {
     super.initState();
     _eventsProvider = Provider.of<EventsProvider>(context, listen: false);
-    _eventsProvider.fetchEvents();
+    _eventsProvider.fetchEvents(context);
   }
 
   @override
@@ -35,7 +35,7 @@ class EventsScreenState extends State<EventsScreen> {
       length: 4,
       child: Scaffold(
         appBar: PreferredSize(
-          preferredSize: Size.fromHeight(size.height * 0.18),
+          preferredSize: Size.fromHeight(size.height * 0.20),
           child: CustomAppBar(
             size: size,
             showCreate: true,
@@ -93,7 +93,7 @@ class EventsScreenState extends State<EventsScreen> {
                   imgUrl: 'assets/images/dummy_event.png',
                   profileImg: 'assets/images/dummyDP.png',
                   username: event!.createdBy?.username ?? 'By Unknown User',
-                  typeOfEvent: event.eventMode.toString() ?? 'Unknown Event Type',
+                  typeOfEvent: event.eventMode ?? 'Unknown Event Type',
                   date: event.dateOfEvent,
                   time: event.startTime ?? 'Unknown Time',
                   location: event.location ?? 'Unknown Location',

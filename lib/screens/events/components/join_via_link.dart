@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:echirp/API/controller/event.controller.dart';
 import '../../../components/custom_btn.dart';
-import '../../../utils/global_variabes.dart';
+import '../../../utils/global_variables.dart';
 import 'upload_status.dart';
 
 class JoinViaLink extends StatelessWidget {
@@ -85,7 +85,7 @@ class JoinViaLink extends StatelessWidget {
                   style: const TextStyle(
                     color: Colors.black,
                   ),
-                  cursorColor: GlobalVariables.kPrimaryColor,
+                  cursorColor: GlobalVariables.colors.primary,
                   decoration: InputDecoration(
                     filled: true,
                     contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: size.width * 0.05),
@@ -95,15 +95,15 @@ class JoinViaLink extends StatelessWidget {
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(18),
-                      borderSide: const BorderSide(
-                        color: GlobalVariables.kPrimaryColor,
+                      borderSide: BorderSide(
+                        color: GlobalVariables.colors.primary,
                         width: 1,
                       ),
                     ),
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(18),
                       borderSide: BorderSide(
-                        color: GlobalVariables.kPrimaryColor.withOpacity(0.5),
+                        color: GlobalVariables.colors.primary.withOpacity(0.5),
                         width: 1,
                       ),
                     ),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../utils/global_variabes.dart';
+import '../utils/global_variables.dart';
 
 class CustomFields {
   Padding customLabel(
@@ -56,15 +56,15 @@ class CustomFields {
           label: Text(label),
           isDense: true,
           contentPadding: contentPadding,
-          enabledBorder: const OutlineInputBorder(
-            borderSide: BorderSide(color: GlobalVariables.kPrimaryColor),
-            borderRadius: BorderRadius.all(
+          enabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: GlobalVariables.colors.primary),
+            borderRadius: const BorderRadius.all(
               Radius.circular(30),
             ),
           ),
-          focusedBorder: const OutlineInputBorder(
-            borderSide: BorderSide(color: GlobalVariables.kPrimaryColor),
-            borderRadius: BorderRadius.all(
+          focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: GlobalVariables.colors.primary),
+            borderRadius: const BorderRadius.all(
               Radius.circular(30),
             ),
           ),
@@ -90,14 +90,14 @@ class CustomFields {
             width: size.width * 0.36,
             child: TextFormField(
               controller: dateCtl,
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 labelText: "YYYY-MM-DD",
                 hintText: "YYYY-MM-DD",
                 isDense: true,
-                contentPadding: EdgeInsets.fromLTRB(10, 10, 10, 0),
+                contentPadding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
                 enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: GlobalVariables.kPrimaryColor),
-                    borderRadius: BorderRadius.all(Radius.circular(30))),
+                    borderSide: BorderSide(color: GlobalVariables.colors.primary),
+                    borderRadius: const BorderRadius.all(Radius.circular(30))),
               ),
               onTap: () async {
                 DateTime? date = DateTime(1900);
@@ -134,16 +134,16 @@ class CustomFields {
           Expanded(
             child: TextFormField(
               controller: startTimeCtl,
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 labelText: "Start Time",
                 hintText: "HH:mm",
                 isDense: true,
-                contentPadding: EdgeInsets.fromLTRB(10, 10, 10, 0),
+                contentPadding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
                 enabledBorder: OutlineInputBorder(
                   borderSide: BorderSide(
-                    color: GlobalVariables.kPrimaryColor,
+                    color: GlobalVariables.colors.primary,
                   ),
-                  borderRadius: BorderRadius.all(
+                  borderRadius: const BorderRadius.all(
                     Radius.circular(30),
                   ),
                 ),
@@ -176,16 +176,16 @@ class CustomFields {
           Expanded(
             child: TextFormField(
               controller: endTimeCtl,
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 labelText: "End Time",
                 hintText: "HH:mm",
                 isDense: true,
-                contentPadding: EdgeInsets.fromLTRB(10, 10, 10, 0),
+                contentPadding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
                 enabledBorder: OutlineInputBorder(
                   borderSide: BorderSide(
-                    color: GlobalVariables.kPrimaryColor,
+                    color: GlobalVariables.colors.primary,
                   ),
-                  borderRadius: BorderRadius.all(
+                  borderRadius: const BorderRadius.all(
                     Radius.circular(30),
                   ),
                 ),
