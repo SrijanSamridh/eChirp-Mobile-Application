@@ -51,11 +51,11 @@ class EventController {
 
       if (response.isNotEmpty) {
         var message = response['message'];
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(message),
-          ),
-        );
+        // ScaffoldMessenger.of(context).showSnackBar(
+        //   SnackBar(
+        //     content: Text(message),
+        //   ),
+        // );
         return response;
       } else {
         debugPrint('Empty or null response received');

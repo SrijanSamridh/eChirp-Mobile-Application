@@ -49,4 +49,33 @@ class LightColors extends AppColorScheme {
 
   @override
   Color get badgeColor => Colors.red;
+
+  @override
+  Color get error => Colors.red;
+
+  @override
+  Color get success => Colors.green;
+
+  @override
+  Color get warning => Colors.yellow;
+
+  @override
+  LinearGradient get errorGradient => const LinearGradient(
+    begin: Alignment.centerLeft,
+    end: Alignment.centerRight,
+    colors: [
+      Color(0xFFFF4E4E),
+      Color(0xFFFFB1B1),
+    ],
+  );
+
+  @override
+  LinearGradient get successGradient => const LinearGradient(
+    begin: Alignment.centerLeft,
+    end: Alignment.centerRight,
+    colors: [
+      Color(0xFF00FFA8),
+      Color(0xFF4EFEFF),
+    ],
+  );
 }

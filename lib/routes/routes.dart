@@ -1,3 +1,4 @@
+import 'package:echirp/screens/events/components/join_via_link_status.dart';
 import 'package:flutter/material.dart';
 import 'package:echirp/components/bottom_bar.dart';
 import 'package:echirp/screens/auth/auth.dart';
@@ -40,6 +41,7 @@ final Map<String, WidgetBuilder> routes = {
   CreateGroupScreen.routeName: (_) => const CreateGroupScreen(),
   GroupFormScreen.routeName: (_) => const GroupFormScreen(),
   EventDetail.routeName: (_) => EventDetail(index: 0),
+  JoinViaLinkStatus.routeName: (_) => const JoinViaLinkStatus(isSuccess: true),
 };
 
 // Centralized route generator
@@ -95,6 +97,11 @@ Route<dynamic> onGenerateRoute(RouteSettings routeSettings) {
       final index = routeSettings.arguments as int;
       return MaterialPageRoute(
         builder: (_) => EventDetail(index: index),
+      );
+    case JoinViaLinkStatus.routeName:
+      final args = routeSettings.arguments as Map<String, dynamic>;
+      return MaterialPageRoute(
+        builder: (_) => JoinViaLinkStatus(isSuccess: args['isSuccess'], eventCode: args['eventCode'], errorMessage: args['errorMessage'],),
       );
     default:
       if (routes.containsKey(routeSettings.name)) {

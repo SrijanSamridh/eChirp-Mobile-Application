@@ -155,6 +155,16 @@ class CustomFields {
                 time = await showTimePicker(
                   context: context,
                   initialTime: TimeOfDay.now(),
+                  builder: (BuildContext context, Widget? child) {
+                    return Theme(
+                      data: ThemeData.light().copyWith(
+                        colorScheme: ColorScheme.light(
+                          primary: GlobalVariables.colors.primary,
+                        ),
+                      ),
+                      child: child!,
+                    );
+                  },
                 );
 
                 // ignore: use_build_context_synchronously
@@ -197,6 +207,16 @@ class CustomFields {
                 time = await showTimePicker(
                   context: context,
                   initialTime: TimeOfDay.now(),
+                  builder: (BuildContext context, Widget? child) {
+                    return Theme(
+                      data: ThemeData.light().copyWith(
+                        colorScheme: ColorScheme.light(
+                          primary: GlobalVariables.colors.primary,
+                        ),
+                      ),
+                      child: child!,
+                    );
+                  },
                 );
 
                 // ignore: use_build_context_synchronously
@@ -215,4 +235,5 @@ class CustomFields {
       ),
     );
   }
+
 }

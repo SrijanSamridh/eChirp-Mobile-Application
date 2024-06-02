@@ -49,4 +49,24 @@ class DarkColors extends AppColorScheme {
   @override
   // TODO: implement badgeColor
   Color get badgeColor => throw UnimplementedError();
+
+  @override
+  // TODO: implement error
+  Color get error => throw UnimplementedError();
+
+  @override
+  // TODO: implement success
+  Color get success => throw UnimplementedError();
+
+  @override
+  // TODO: implement warning
+  Color get warning => throw UnimplementedError();
+
+  @override
+  // TODO: implement errorGradient
+  LinearGradient get errorGradient => throw UnimplementedError();
+
+  @override
+  // TODO: implement successGradient
+  LinearGradient get successGradient => throw UnimplementedError();
 }

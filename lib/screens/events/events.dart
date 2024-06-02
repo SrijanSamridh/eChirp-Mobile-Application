@@ -1,5 +1,6 @@
 import 'package:echirp/screens/events/event_detail.dart';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:echirp/API/controller/event.controller.dart';
 import 'package:echirp/screens/events/create_event.dart';
@@ -78,7 +79,17 @@ class EventsScreenState extends State<EventsScreen> {
         if (eventsProvider.allEvents == null) {
           return const Center(child: CircularProgressIndicator());
         } else if (eventsProvider.allEvents!.events!.isEmpty) {
-          return const Center(child: Text('No events available'));
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Lottie.asset(
+                'assets/animations/empty_list.json',
+                height: size.height * 0.2,
+              ),
+              // SizedBox(height: size.height * 0.1),
+              const Text('No events available'),
+            ],
+          );
         } else {
           return ListView.builder(
             itemCount: eventsProvider.allEvents!.events?.length,
@@ -98,7 +109,7 @@ class EventsScreenState extends State<EventsScreen> {
                   time: event.startTime ?? 'Unknown Time',
                   location: event.location ?? 'Unknown Location',
                   onPressed: () =>
-                      _eventsProvider.joinEvent(context, event.id ?? ""),
+                      _eventsProvider.joinEvent(context, event.id ?? ""), shareEventCode: event.id!,
                 ),
               );
             },
@@ -114,7 +125,17 @@ class EventsScreenState extends State<EventsScreen> {
         if (eventsProvider.myEvents == null) {
           return const Center(child: CircularProgressIndicator());
         } else if (eventsProvider.myEvents!.events!.isEmpty) {
-          return const Center(child: Text('No events available'));
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Lottie.asset(
+                'assets/animations/empty_list.json',
+                height: size.height * 0.2,
+              ),
+              // SizedBox(height: size.height * 0.1),
+              const Text('No events available'),
+            ],
+          );
         } else {
           return ListView.builder(
             itemCount: eventsProvider.myEvents!.events?.length,
@@ -147,7 +168,17 @@ class EventsScreenState extends State<EventsScreen> {
         if (eventsProvider.upcomingEvents == null) {
           return const Center(child: CircularProgressIndicator());
         } else if (eventsProvider.upcomingEvents!.events!.isEmpty) {
-          return const Center(child: Text('No events available'));
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Lottie.asset(
+                'assets/animations/empty_list.json',
+                height: size.height * 0.2,
+              ),
+              // SizedBox(height: size.height * 0.1),
+              const Text('No events available'),
+            ],
+          );
         } else {
           return ListView.builder(
             itemCount: eventsProvider.upcomingEvents!.events?.length,

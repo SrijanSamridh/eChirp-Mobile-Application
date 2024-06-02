@@ -17,6 +17,13 @@ abstract class AppColorScheme {
   Color get inputFieldEnabledBorder;
   Color get messageText;
   Color get messageBackground;
+  Color get success;
+  Color get error;
+  Color get warning;
   LinearGradient get primaryGradient;
   LinearGradient get unselectedCardGradient;
+
+  LinearGradient get successGradient;
+
+  LinearGradient get errorGradient;
 }

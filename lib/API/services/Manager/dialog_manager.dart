@@ -1,6 +1,21 @@
+import 'package:echirp/utils/global_variables.dart';
 import 'package:flutter/material.dart';
 
 class DialogManager {
+
+  void showToast(BuildContext context, String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        action: SnackBarAction(
+          label: 'OK',
+          onPressed: () {
+            // Do something when 'OK' is pressed
+          },
+        ),
+      ),
+    );
+  }
   // Show error dialog
   static void showErrorDialog({
     required BuildContext context,
@@ -79,7 +94,7 @@ class DialogManager {
   }) {
     final snackBar = SnackBar(
       content: Text(
-        '$title: $message',
+        '$title${title == '' ? '' : ':'} $message',
         style: TextStyle(color: textColor),
       ),
       backgroundColor: backgroundColor,

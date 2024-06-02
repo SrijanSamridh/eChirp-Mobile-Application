@@ -1,54 +1,99 @@
-// ignore_for_file: use_build_context_synchronously
+import 'dart:convert';
 
+import 'package:echirp/API/services/Manager/dialog_manager.dart';
+import 'package:echirp/screens/events/components/join_via_link_status.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:echirp/API/controller/event.controller.dart';
+import '../../../API/services/helper/api_error.dart';
 import '../../../components/custom_btn.dart';
 import '../../../utils/global_variables.dart';
 import 'upload_status.dart';
 
-class JoinViaLink extends StatelessWidget {
+class JoinViaLink extends StatefulWidget {
   final Size size;
-  final TextEditingController _codeController = TextEditingController();
   final EventController eventController;
 
-  JoinViaLink({
+  const JoinViaLink({
     Key? key,
     required this.size,
     required this.eventController,
   }) : super(key: key);
 
-  void showToast(BuildContext context, String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(message),
-        action: SnackBarAction(
-          label: 'OK',
-          onPressed: () {
-            // Do something when 'OK' is pressed
-          },
-        ),
-      ),
-    );
+  @override
+  _JoinViaLinkState createState() => _JoinViaLinkState();
+}
+
+class _JoinViaLinkState extends State<JoinViaLink> {
+  final TextEditingController _codeController = TextEditingController();
+  final FocusNode _focusNode = FocusNode();
+
+  @override
+  void initState() {
+    super.initState();
+    _focusNode.addListener(_handleFocusChange);
+  }
+
+  @override
+  void dispose() {
+    _focusNode.removeListener(_handleFocusChange);
+    _codeController.dispose();
+    _focusNode.dispose();
+    super.dispose();
+  }
+
+  void _handleFocusChange() async {
+    if (_focusNode.hasFocus) {
+      ClipboardData? clipboardData = await Clipboard.getData('text/plain');
+      if (clipboardData != null && clipboardData.text != null && clipboardData.text!.isNotEmpty) {
+        setState(() {
+          _codeController.text = clipboardData.text!;
+        });
+      }
+    }
   }
 
   Future<void> _joinEvent(BuildContext context) async {
     try {
-      var response = await eventController.postEvent(context ,_codeController.text);
+      var response = await widget.eventController.postEvent(context, _codeController.text);
       if (response != null) {
         debugPrint('Response from server: $response');
+        Navigator.pushNamed(context, JoinViaLinkStatus.routeName, arguments: {
+          'isSuccess': true,
+          'eventCode': _codeController.text
+        });
       }
-      Navigator.pushNamed(context, UploadStatusScreen.routeName, arguments: "public");
     } catch (e) {
+      String errorMessage = 'Something went wrong. Please try again later.';
+      if (e is ApiError && e.details != null) {
+        debugPrint('Error details: ${e.details}');
+
+        // Extract error message using split
+        if (e.details.contains('Details:')) {
+          try {
+            String details = e.details.split('Details:').last.trim();
+            if (details.startsWith('{') && details.endsWith('}')) {
+              final errorDetails = jsonDecode(details);
+              errorMessage = errorDetails['message'] ?? errorMessage;
+            } else {
+              errorMessage = details;
+            }
+          } catch (parseError) {
+            debugPrint("Error parsing error details: $parseError");
+          }
+        } else {
+          errorMessage = e.details;
+        }
+      }
       debugPrint("Error joining event: $e");
-      showToast(context, "Failed to join event. Please try again later.");
+      Navigator.pushNamed(context, JoinViaLinkStatus.routeName, arguments: {
+        'isSuccess': false,
+        'eventCode': _codeController.text,
+        'errorMessage': errorMessage,
+      });
     }
   }
-  
-  // @override
-  // void dispose() {
-  //   _codeController.dispose();
-  //   super.dispose();
-  // }
+
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +102,7 @@ class JoinViaLink extends StatelessWidget {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            SizedBox(height: size.height * 0.02),
+            SizedBox(height: widget.size.height * 0.02),
             Image.asset(
               'assets/images/Groupjoinvialink.png',
             ),
@@ -65,16 +110,16 @@ class JoinViaLink extends StatelessWidget {
               "Want to join?",
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: size.height * 0.02),
+            SizedBox(height: widget.size.height * 0.02),
             Padding(
-              padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: size.width*0.1),
+              padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: widget.size.width * 0.1),
               child: Text(
                 textAlign: TextAlign.center,
                 "Please enter the event link code you received to gain access and join the event.",
-                style: TextStyle(fontSize: size.height * 0.014),
+                style: TextStyle(fontSize: widget.size.height * 0.014),
               ),
             ),
-            SizedBox(height: size.height * 0.03),
+            SizedBox(height: widget.size.height * 0.03),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Material(
@@ -82,13 +127,14 @@ class JoinViaLink extends StatelessWidget {
                 elevation: 1,
                 child: TextFormField(
                   controller: _codeController,
+                  focusNode: _focusNode,
                   style: const TextStyle(
                     color: Colors.black,
                   ),
                   cursorColor: GlobalVariables.colors.primary,
                   decoration: InputDecoration(
                     filled: true,
-                    contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: size.width * 0.05),
+                    contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: widget.size.width * 0.05),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(18),
                       borderSide: BorderSide.none,
@@ -117,13 +163,13 @@ class JoinViaLink extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(height: size.height * 0.06),
+            SizedBox(height: widget.size.height * 0.06),
             CustomBtn(
               text: 'Join',
-              size: size,
+              size: widget.size,
               onPressed: () => _joinEvent(context),
-              height: size.height * 0.01,
-              width: size.width * 0.08,
+              height: widget.size.height * 0.01,
+              width: widget.size.width * 0.08,
             ),
           ],
         ),

@@ -1,10 +1,12 @@
-import 'package:echirp/utils/data_formatter.dart';
+import 'package:echirp/API/services/helper/helper.dart';
 import 'package:flutter/material.dart';
+
 import '../../../components/custom_btn.dart';
+import '../../../utils/data_formatter.dart';
 
 class JoinSectionCard extends StatelessWidget {
   const JoinSectionCard({
-    super.key,
+    Key? key,
     required this.size,
     required this.imgUrl,
     required this.profileImg,
@@ -14,7 +16,8 @@ class JoinSectionCard extends StatelessWidget {
     required this.time,
     required this.location,
     required this.onPressed,
-  });
+    required this.shareEventCode,
+  }) : super(key: key);
 
   final Size size;
   final String imgUrl;
@@ -24,7 +27,7 @@ class JoinSectionCard extends StatelessWidget {
   final DateTime? date;
   final String time;
   final String location;
-
+  final String shareEventCode;
   final VoidCallback onPressed;
 
   @override
@@ -36,15 +39,16 @@ class JoinSectionCard extends StatelessWidget {
         vertical: size.height * 0.01,
       ),
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(30.0),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.5),
-              spreadRadius: 2,
-              blurRadius: 3,
-              offset: const Offset(1, 3), // changes position of shadow
-            ),
-          ]),
+        borderRadius: BorderRadius.circular(30.0),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.5),
+            spreadRadius: 2,
+            blurRadius: 3,
+            offset: const Offset(1, 3), // changes position of shadow
+          ),
+        ],
+      ),
       child: Stack(
         children: [
           ClipRRect(
@@ -60,7 +64,7 @@ class JoinSectionCard extends StatelessWidget {
             alignment: Alignment.bottomCenter,
             child: Container(
               height: size.height * 0.13,
-              width: size.width * 3,
+              width: size.width,
               decoration: const BoxDecoration(
                 color: Color.fromARGB(208, 0, 0, 0),
                 borderRadius: BorderRadius.only(
@@ -70,59 +74,52 @@ class JoinSectionCard extends StatelessWidget {
               ),
               child: Padding(
                 padding: EdgeInsets.symmetric(
-                    horizontal: size.width * 0.03,
-                    vertical: size.height * 0.01),
+                  horizontal: size.width * 0.03,
+                  vertical: size.height * 0.01,
+                ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            children: [
-                              ClipRRect(
-                                borderRadius: const BorderRadius.all(
-                                    Radius.circular(100)),
-                                child: Image.asset(
-                                  profileImg,
-                                  height: 30,
-                                  fit: BoxFit.fitWidth,
-                                ),
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            ClipRRect(
+                              borderRadius:
+                              const BorderRadius.all(Radius.circular(100)),
+                              child: Image.asset(
+                                profileImg,
+                                height: 30,
+                                fit: BoxFit.fitWidth,
                               ),
-                              const SizedBox(width: 10.0),
-                              Text(
-                                "By $username",
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                            ),
+                            const SizedBox(width: 10.0),
+                            Text(
+                              "By $username",
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
                               ),
-                            ],
-                          ),
-                          const Icon(
-                            Icons.share,
-                            color: Colors.white,
-                          )
-                        ]),
-                    // Row(
-                    //   children: [
-                    //     Text(
-                    //       typeOfEvent,
-                    //       style: const TextStyle(
-                    //         color: Colors.white,
-                    //         fontSize: 12,
-                    //         fontWeight: FontWeight.bold,
-                    //       ),
-                    //     ),
-                    //   ],
-                    // ),
+                            ),
+                          ],
+                        ),
+                        IconButton(
+                          color: Colors.white,
+                          onPressed: () {
+                            Helper().share(context, shareEventCode);
+                          },
+                          icon: const Icon(Icons.share),
+                        ),
+                      ],
+                    ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Column(
                           children: [
                             SizedBox(
-                              width: size.width*0.4,
+                              width: size.width * 0.4,
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
@@ -142,7 +139,7 @@ class JoinSectionCard extends StatelessWidget {
                               ),
                             ),
                             SizedBox(
-                              width: size.width*0.4,
+                              width: size.width * 0.4,
                               child: Row(
                                 children: [
                                   const Icon(
@@ -169,7 +166,7 @@ class JoinSectionCard extends StatelessWidget {
                           width: size.width * 0.025,
                           height: size.height * 0.015,
                           textSize: size.height * 0.015,
-                        )
+                        ),
                       ],
                     ),
                   ],
