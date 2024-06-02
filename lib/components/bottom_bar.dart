@@ -37,7 +37,8 @@ class _BottomBarState extends State<BottomBar> {
 
   @override
   Widget build(BuildContext context) {
-    final notificationCount = Provider.of<NotificationProvider>(context).newMessagesCount;
+    final notificationCount =
+        Provider.of<NotificationProvider>(context).newMessagesCount;
 
     return Scaffold(
       body: _screens[widget.page],

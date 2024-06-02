@@ -13,6 +13,7 @@ import '../../components/custom_search_bar.dart';
 import '../../components/headling_with_hyperlink.dart';
 import 'components/event_brief_card.dart';
 import 'components/mutual_friends_card.dart';
+import 'components/triple_profile_pic.dart';
 
 class HomeScreen extends StatefulWidget {
   static const String routeName = '/home';
@@ -258,71 +259,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      Stack(
-                        alignment: AlignmentDirectional.topCenter,
-                        children: [
-                          Container(
-                            height: 26.0,
-                            width: 26.0,
-                            margin: EdgeInsets.only(left: size.width * 0.18),
-                            decoration: BoxDecoration(
-                                gradient:
-                                    GlobalVariables.colors.primaryGradient,
-                                borderRadius: const BorderRadius.all(
-                                    Radius.circular(50.0)),
-                                border: Border.all(
-                                    color: GlobalVariables.colors.primary)),
-                            child: ClipRRect(
-                              borderRadius:
-                                  const BorderRadius.all(Radius.circular(50.0)),
-                              child: Image.asset(
-                                'assets/images/goupPP.png',
-                                height: 25.0,
-                              ),
-                            ),
-                          ),
-                          Container(
-                            height: 26.0,
-                            width: 26.0,
-                            margin: EdgeInsets.only(left: size.width * 0.1),
-                            decoration: BoxDecoration(
-                                gradient:
-                                    GlobalVariables.colors.primaryGradient,
-                                borderRadius: const BorderRadius.all(
-                                    Radius.circular(50.0)),
-                                border: Border.all(
-                                    color: GlobalVariables.colors.primary)),
-                            child: ClipRRect(
-                              borderRadius:
-                                  const BorderRadius.all(Radius.circular(50.0)),
-                              child: Image.asset(
-                                'assets/images/goupPP.png',
-                                height: 25.0,
-                              ),
-                            ),
-                          ),
-                          Container(
-                            height: 26.0,
-                            width: 26.0,
-                            margin: EdgeInsets.only(left: size.width * 0.02),
-                            decoration: BoxDecoration(
-                                gradient:
-                                    GlobalVariables.colors.primaryGradient,
-                                borderRadius: const BorderRadius.all(
-                                    Radius.circular(50.0)),
-                                border: Border.all(
-                                    color: GlobalVariables.colors.primary)),
-                            child: ClipRRect(
-                              borderRadius:
-                                  const BorderRadius.all(Radius.circular(50.0)),
-                              child: Image.asset(
-                                'assets/images/goupPP.png',
-                                height: 25.0,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
+                      TripleProfilePic(size: size, path1: 'assets/images/goupPP.png', path2: 'assets/images/goupPP.png', path3: 'assets/images/goupPP.png',),
                       const SizedBox(width: 8.0),
                       const Text(
                         '33 mutual friends',

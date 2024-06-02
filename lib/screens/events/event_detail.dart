@@ -1,8 +1,11 @@
+import 'package:echirp/API/models/event.models.dart';
 import 'package:echirp/API/provider/event_provider.dart';
 import 'package:echirp/utils/data_formatter.dart';
 import 'package:echirp/utils/global_variables.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import '../home/components/triple_profile_pic.dart';
 
 class EventDetail extends StatelessWidget {
   static const String routeName = '/event-detail';
@@ -21,25 +24,23 @@ class EventDetail extends StatelessWidget {
     final event =
         Provider.of<EventsProvider>(context, listen: false).allEvents?.events;
     debugPrint(event?[index].dateOfEvent.toString());
-    Size mq = MediaQuery.of(context).size;
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
+      backgroundColor: Colors.black,
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
+        elevation: 0,
+        iconTheme: const IconThemeData(
+          color: Colors.white, // Change your color here
+        ),
       ),
-      body: Stack(
-        children: [
-          // Background Image
-          Container(
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage('assets/images/eventBackground.png'),
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
+      body: SingleChildScrollView(
+        child: Stack(children: [
+          Image.asset('assets/images/eventBackground.png'),
           // Content Container
           Positioned(
+            top: size.height * 0.3,
             bottom: 0,
             left: 0,
             right: 0,
@@ -58,6 +59,8 @@ class EventDetail extends StatelessWidget {
                       Colors.black,
                       Colors.black,
                       Colors.black,
+                      Colors.black54,
+                      // Colors.black45,
                       Colors.transparent // Transparent color at the top
                     ],
                   ),
@@ -66,105 +69,8 @@ class EventDetail extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     // Orange Container
-                    Padding(
-                      padding: const EdgeInsets.only(top: 100.0),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          gradient: GlobalVariables.colors.primaryGradient,
-                          borderRadius: BorderRadius.circular(50),
-                        ),
-                        padding: const EdgeInsets.all(20),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                SizedBox(
-                                  height: 110,
-                                  width: 100,
-                                  child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(30),
-                                      child: Image.network(
-                                        event?[index].coverImgUrl ??
-                                            'assets/images/dummyDP.png',
-                                        fit: BoxFit.fill,
-                                      )),
-                                ),
-                                const SizedBox(width: 10),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      DataFormatter.formatDate(event?[index]
-                                              .dateOfEvent
-                                              .toString() ??
-                                          '')
-                                      // "${event?[index].dateOfEvent.toString() ??'date'}"
-                                      ,
-                                      style: const TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                    Text(
-                                      "${event?[index].startTime} to ${event?[index].endTime}",
-                                      style: const TextStyle(
-                                          fontSize: 20,
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    Row(
-                                      children: [
-                                        const Icon(
-                                          Icons.location_pin,
-                                          color: Colors.white,
-                                        ),
-                                        SizedBox(
-                                          width: mq.width * 0.5,
-                                          child: Text(
-                                            "${event?[index].location}, ${event?[index].address}",
-                                            softWrap: true,
-                                            style: const TextStyle(
-                                                fontSize: 14,
-                                                color: Colors.white70,
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 10),
-                            // Description
-                            Text(
-                              event?[index].eventDescription ??
-                                  "No description available",
-                              style: const TextStyle(
-                                  color: Colors.white70,
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                            const SizedBox(height: 10),
-                            // Number of Mutual Friends
-                            Container(
-                              width: mq.width,
-                              alignment: Alignment.centerRight,
-                              child: const Text(
-                                '33 Mutual Friends attending',
-                                // event?[index].,
-                                style: TextStyle(
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
+                    buildInfoCard(size, event),
+                    // IntroInfoCard(size: size),
 
                     const SizedBox(height: 20),
                     // Row of RRECT Images
@@ -173,17 +79,17 @@ class EventDetail extends StatelessWidget {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Images(event?[index].img1Url ?? ''),
-                          Images(event?[index].img2Url ?? ''),
-                          Images(event?[index].img3Url ?? ''),
-                          Images(event?[index].img4Url ?? ''),
+                          Images(size, event?[index].img1Url ?? ''),
+                          Images(size, event?[index].img2Url ?? ''),
+                          Images(size, event?[index].img3Url ?? ''),
+                          Images(size, event?[index].img4Url ?? ''),
                         ],
                       ),
                     ),
-                    const SizedBox(height: 20),
+                    // const SizedBox(height: 10),
                     // Tile with Leading Avatar, Title, Subtitle, and Trailing Join Button
                     Padding(
-                      padding: const EdgeInsets.only(bottom: 18.0),
+                      padding: const EdgeInsets.only(bottom: 12.0),
                       child: ListTile(
                         leading: const CircleAvatar(
                           backgroundImage:
@@ -254,88 +160,301 @@ class EventDetail extends StatelessWidget {
                   ],
                 ),
               ),
-              Container(
-                height: mq.height * 0.1,
-                alignment: Alignment.bottomCenter,
-                //color: Colors.red,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          SizedBox(
-                            width: mq.width * 0.6,
-                            child: RichText(
-                              text: TextSpan(
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                ),
-                                children: <TextSpan>[
-                                  TextSpan(
-                                      text: event?[index].eventTitle,
-                                      style: const TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.bold)),
-                                  TextSpan(
-                                    text: "   ${event?[index].eventMode!}",
-                                    style: const TextStyle(
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.w400),
+              Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: Container(
+                  height: size.height * 0.1,
+                  alignment: Alignment.bottomCenter,
+                  // color: Colors.red,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(
+                              width: size.width * 0.75,
+                              child: RichText(
+                                text: TextSpan(
+                                  style: const TextStyle(
+                                    color: Colors.white,
                                   ),
-                                ],
+                                  children: <TextSpan>[
+                                    TextSpan(
+                                        text: event?[index].eventTitle,
+                                        style: TextStyle(
+                                            fontSize: size.height * 0.022,
+                                            fontWeight: FontWeight.bold)),
+                                    TextSpan(
+                                      text: "   ${event?[index].eventMode!}",
+                                      style: TextStyle(
+                                          fontSize: size.height * 0.015,
+                                          fontWeight: FontWeight.w400),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
-                          ),
-                          Text(
-                            "At ${event?[index].location ?? ''}",
-                            style: const TextStyle(
+                            Text(
+                              "At ${event?[index].location ?? ''}",
+                              style: TextStyle(
                                 color: Colors.white,
                                 //fontWeight: FontWeight.bold,
-                                fontSize: 24),
-                          ),
-                        ],
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Text(
-                            event?[index].maxParticipants.toString() ?? '',
-                            style: const TextStyle(
+                                fontSize: size.height * 0.022,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Text(
+                              event?[index].maxParticipants.toString() ?? '',
+                              style: TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,
-                                fontSize: 32),
-                          ),
-                          const Text(
-                            "Guests",
-                            style: TextStyle(
+                                fontSize: size.height * 0.032,
+                              ),
+                            ),
+                            Text(
+                              "Guests",
+                              style: TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.w400,
-                                fontSize: 15),
-                          ),
-                        ],
-                      )
-                    ],
+                                fontSize: size.height * 0.015,
+                              ),
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
                   ),
                 ),
               ),
             ]),
           ),
+        ]),
+      ),
+    );
+  }
+
+  Padding buildInfoCard(Size size, List<Event>? event) {
+    return Padding(
+      padding: EdgeInsets.only(
+        top: size.height * 0.12,
+        left: size.width * 0.01,
+        right: size.width * 0.01,
+      ),
+      child: Container(
+        height: size.height * 0.35,
+        decoration: BoxDecoration(
+          gradient: GlobalVariables.colors.primaryGradient,
+          borderRadius: BorderRadius.circular(35),
+        ),
+        padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(
+                  height: 110,
+                  width: 100,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(30),
+                    child: Image.asset(
+                      'assets/images/goupPP.png',
+                      fit: BoxFit.fill,
+                    ),
+                    // Image.network(
+                    //   event?[index].coverImgUrl ??
+                    //       'assets/images/goupPP.png',
+                    //   fit: BoxFit.fill,
+                    // ),
+                  ),
+                ),
+                const SizedBox(width: 10),
+                SizedBox(
+                  height: size.height * 0.132,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Text(
+                        DataFormatter.formatDate(
+                            event?[index].dateOfEvent.toString() ?? '')
+                        // "${event?[index].dateOfEvent.toString() ??'date'}"
+                        ,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: size.height * 0.018,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Text(
+                        "${event?[index].startTime} to ${event?[index].endTime}",
+                        style: TextStyle(
+                            fontSize: size.height * 0.015,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          const Icon(
+                            Icons.location_pin,
+                            color: Colors.white,
+                          ),
+                          SizedBox(
+                            width: size.width * 0.55,
+                            child: Expanded(
+                              child: Text(
+                                "${event?[index].location}, ${event?[index].address}",
+                                softWrap: true,
+                                style: TextStyle(
+                                    fontSize: size.height * 0.015,
+                                    color: Colors.white70,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 10),
+            // Description
+            Expanded(
+              child: Text(
+                event?[index].eventDescription ?? "No description available",
+                style: const TextStyle(
+                    color: Colors.white70,
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold),
+              ),
+            ),
+            // const SizedBox(height: 10),
+            // Number of Mutual Friends
+            Row(
+              // mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Container(
+                  width: size.width,
+                  alignment: Alignment.centerRight,
+                  child: const Text(
+                    '33 Mutual Friends attending',
+                    // event?[index].,
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+                TripleProfilePic(
+                  size: size,
+                  path2: 'assets/images/goupPP.png',
+                  path3: 'assets/images/goupPP.png',
+                  path1: 'assets/images/goupPP.png',
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class IntroInfoCard extends StatelessWidget {
+  const IntroInfoCard({
+    super.key,
+    required this.size,
+  });
+
+  final Size size;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 10.0),
+      padding: EdgeInsets.all(size.height * 0.02),
+      height: size.height * 0.28,
+      width: size.width,
+      decoration: BoxDecoration(
+          gradient: GlobalVariables.colors.primaryGradient,
+          borderRadius: BorderRadius.circular(30.0)),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Row(
+            children: [
+              const ClipRRect(
+                borderRadius: BorderRadius.all(Radius.circular(16.0)),
+                child: Image(image: AssetImage('assets/images/goupPP.png')),
+              ),
+              const SizedBox(width: 10.0),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text(
+                    "Mumbai Events",
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: size.height * 0.018),
+                  ),
+                  Text(
+                    "23.1k members",
+                    style: TextStyle(
+                        color: const Color.fromARGB(205, 255, 255, 255),
+                        fontWeight: FontWeight.bold,
+                        fontSize: size.height * 0.015),
+                  ),
+                ],
+              ),
+            ],
+          ),
+          const Text(
+            'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla consequat odio in turpis tempor condimentum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. ',
+            style: TextStyle(
+              color: Colors.white,
+            ),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              TripleProfilePic(
+                size: size,
+                path1: 'assets/images/goupPP.png',
+                path2: 'assets/images/goupPP.png',
+                path3: 'assets/images/goupPP.png',
+              ),
+              const SizedBox(width: 8.0),
+              const Text(
+                '33 mutual friends',
+                style: TextStyle(color: Colors.white),
+              )
+            ],
+          )
         ],
       ),
     );
   }
 }
 
-Widget Images(String url) {
+Widget Images(Size size, String url) {
   return Container(
-    color: Colors.white10,
-    height: 80,
+    height: size.height * 0.08,
     width: 90,
+    decoration: BoxDecoration(borderRadius: BorderRadius.circular(20)),
     child: ClipRRect(
         borderRadius: BorderRadius.circular(20),
         child: Image.network(
